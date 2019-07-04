@@ -1,0 +1,13 @@
+﻿#RegisterPic {
+    border: 2px solid black;
+    padding: 25px;
+    background: url(https://www.artsfon.com/download.php?file=201503/1920x1080/artsfon.com-61922.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.footer{
+    height: 10px;
+}
+.WhiteSmoke {
+    background-color: #F5F5F5;
+}
