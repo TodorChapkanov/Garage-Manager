@@ -8,6 +8,6 @@ namespace GM.Services.Contracts
 {
    public interface IFuelTypeServices 
     {
-        Task<List<FuelType>> GetAllTypes();
+        ICollection<FuelType> GetAllTypes();
     }
 }

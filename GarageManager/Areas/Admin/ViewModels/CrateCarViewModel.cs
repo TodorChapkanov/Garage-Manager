@@ -29,7 +29,7 @@ namespace GarageManager.Areas.User.Controllers
         public int Кilometers { get; set; }
 
         [Required]
-        [Range(GlobalConstants.CarMinYearOfManufactore, int.MaxValue)]
+        [DataType(DataType.Date)]
         public DateTime? YearOfManufacture { get; set; }
 
         [Required]

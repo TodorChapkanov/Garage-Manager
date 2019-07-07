@@ -4,10 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GM-@ViewData["Title"]</title>
-   
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/reset-css.css" />
@@ -28,13 +29,29 @@
                         <div class="bg-dark p-0">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <div class="collapse navbar-collapse d-flex " id="navbarNav">
+                                <div class="collapse navbar-collapse d-flex justify-content-between " id="navbarNav">
 
 
-                                    <a class="nav-link text-white" href="/Home/Index">Home</a>
+                                    <a class="nav-link text-white" asp-action="Index" asp-controller="Home">Home</a>
+                                    <div>
+                                        <a class="dnav-link active dropdown-toggle text-white" id="navbarDropdown" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Customers Action
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Customers" asp-action="Create">Create New Customer</a>
+                                            <a class="dropdown-item text-black-50" asp-action="AllCustomers" asp-controller="Customers" asp-area="Admin">All Customers</a>
+                                        </div>
+                                    </div>
 
-                                    <a class="nav-link nav active text-white" href="/Admin/Customers/Create">Create New Customer</a>
-                                    <a class="nav-link nav active text-white" asp-action="AllCustomers" asp-controller="Customers" asp-area="Admin">All Customers</a>
+                                    <div>
+                                        <a class="dnav-link active dropdown-toggle text-white" id="navbarDropdown" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Cars Action
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Cars" asp-action="Create">Create New Car</a>
+                                        </div>
+                                    </div>
+                                    
                                     <div>
                                         <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Events

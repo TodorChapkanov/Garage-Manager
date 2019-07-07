@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GM.DAL.Contracts;
 using GM.Domain;
@@ -16,9 +17,9 @@ namespace GM.Services
             this.transmissionTypeRepository = transmissionTypeRepository;
         }
 
-        public Task<List<TransmissionType>> GetAllTypes()
+        public ICollection<TransmissionType> GetAllTypes()
         {
-            var result = this.transmissionTypeRepository.GetAllTransmissionTypes().ToListAsync();
+            var result = this.transmissionTypeRepository.GetAllTransmissionTypes().ToList();
 
             return result;
         }

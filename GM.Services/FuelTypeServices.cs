@@ -17,9 +17,9 @@ namespace GM.Services
             this.fuelTypeRepository = fuelTypeRepository;
         }
 
-        public Task<List<FuelType>> GetAllTypes()
+        public ICollection<FuelType> GetAllTypes()
         {
-            var result = fuelTypeRepository.GetAllFuelTypes().ToListAsync();
+            var result = fuelTypeRepository.GetAllFuelTypes().ToList();
 
             return result;
         }

@@ -6,6 +6,6 @@ namespace GM.Services.Contracts
 {
     public interface ITransmissionTypeServices
     {
-        Task<List<TransmissionType>> GetAllTypes();
+        ICollection<TransmissionType> GetAllTypes();
     }
 }

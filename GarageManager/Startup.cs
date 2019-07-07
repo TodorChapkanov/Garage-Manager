@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using GM.DAL;
+using GM.DAL.Contracts;
+using GM.Data;
+using GM.Domain;
+using GM.Services;
+using GM.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using GM.Domain;
-using GM.Data;
-using GM.DAL.Contracts;
-using GM.DAL;
-using GM.Services.Contracts;
-using GM.Services;
 
 namespace GarageManager
 {
@@ -75,7 +71,10 @@ namespace GarageManager
             services.AddScoped<ITransmissionTypeRepository, TransmissionTypeRepository>();
             services.AddScoped<ITransmissionTypeServices, TransimissionTypeServices>();
 
-           
+
+
+             services
+               .AddAutoMapper(typeof(Startup)); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

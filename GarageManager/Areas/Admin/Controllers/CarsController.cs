@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using GarageManager.Areas.Admin.BindingViewModels;
 using GarageManager.Areas.Admin.Controllers;
 using GM.Services;
@@ -29,10 +30,9 @@ namespace GarageManager.Areas.User.Controllers
 
         public IActionResult Create()
         {
-            var allManufacturers =  this.manufacturerServices.GetAllAsync().ToList();
-            var allFuelTypes = this.fuelTypeServices.GetAllTypes().Result;
-            var allTransmissionType = this.transmissionTypeServices.GetAllTypes().Result;
-
+            var allManufacturers =  this.manufacturerServices.GetAll().ToList();
+            var allFuelTypes = this.fuelTypeServices.GetAllTypes();
+            var allTransmissionType = this.transmissionTypeServices.GetAllTypes();
 
 
             var model = new CreateCarViewModel

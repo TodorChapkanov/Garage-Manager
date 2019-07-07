@@ -9,6 +9,6 @@ namespace GM.Services.Contracts
 {
     public interface IManufacturerServices
     {
-       ICollection<VehicleManufacturer> GetAllAsync();
+       ICollection<VehicleManufacturer> GetAll();
     }
 }

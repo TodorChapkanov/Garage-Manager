@@ -22,7 +22,7 @@ namespace GarageManager.Areas.Admin.BindingViewModels
         public int Кilometers { get; set; }
 
         [Required]
-       [DataType(DataType.Date)]
+        [DataType(DataType.Date)]
         public DateTime YearOfManufacture { get; set; }
 
         [Required]

@@ -5,6 +5,7 @@ using GM.DAL;
 using GM.DAL.Contracts;
 using GM.Domain;
 using GM.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace GM.Services
 {
@@ -17,7 +18,7 @@ namespace GM.Services
             this.repository = repository;
         }
 
-        public ICollection<VehicleManufacturer> GetAllAsync()
+        public ICollection<VehicleManufacturer> GetAll()
         {
             var result = this.repository.GetAll().ToList();
 
