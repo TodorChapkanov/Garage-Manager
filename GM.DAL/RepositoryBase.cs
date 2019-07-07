@@ -14,6 +14,7 @@ namespace GM.DAL
     {
         protected readonly GMDbContext dbContext;
 
+        
         public RepositoryBase(GMDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -56,30 +57,31 @@ namespace GM.DAL
             return this.dbContext.Set<TEntity>().AsNoTracking();
         }
 
-        protected async Task<IEnumerable<TEntity>> PaginateEntitiesAsync(
-            IQueryable<TEntity> entities,
-            string orderMember,
-            OrderDirection orderDirection,
-            int pageIndex,
-            int itemsPerPage)
-        {
-            switch (orderDirection)
-            {
-                case OrderDirection.Ascending:
-                default:
-                    entities = entities.OrderByMember(orderMember);
+      //protected async Task<IEnumerable<TEntity>> PaginateEntitiesAsync(
+      //    IQueryable<TEntity> entities,
+      //    string orderMember,
+      //    OrderDirection orderDirection,
+      //    int pageIndex,
+      //    int itemsPerPage)
+      //{
+      //    switch (orderDirection)
+      //    {
+      //        case OrderDirection.Ascending:
+      //        default:
+      //            entities = entities.OrderByMember(orderMember);
+      //
+      //            break;
+      //        case OrderDirection.Descending:
+      //            entities = entities.OrderByMemberDescending(orderMember);
+      //
+      //            break;
+      //    }
+      //
+      //    return await entities
+      //        .Skip((pageIndex - 1) * itemsPerPage)
+      //        .Take(itemsPerPage)
+      //        .ToListAsync();
+      //}
 
-                    break;
-                case OrderDirection.Descending:
-                    entities = entities.OrderByMemberDescending(orderMember);
-
-                    break;
-            }
-
-            return await entities
-                .Skip((pageIndex - 1) * itemsPerPage)
-                .Take(itemsPerPage)
-                .ToListAsync();
-        }
     }
 }

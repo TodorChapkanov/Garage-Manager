@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Common;
 
 namespace GM.Domain
 {
     public class Car
     {
-        private const int VinNumberMaxLength = 17;
-        private const int MinKilometers = 0;
-        private const int MaxKilometers = 1000000;
-        private const int MinYearOfManufactore = 1886;
-        private const int MaxEngineHorsePower = 5000;
-        private const int MinEngineHorsePower = 0;
-        private const int MaxEngineModelLength = 20;
-
+       
         public Car()
         {
             this.Services = new HashSet<Service>();
@@ -23,7 +17,7 @@ namespace GM.Domain
         public string Id { get; set; }
 
         [Required]
-        [MaxLength(VinNumberMaxLength)]
+        [MaxLength(GlobalConstants.CarVinNumberMaxLength)]
         public string Vin { get; set; }
 
         [Required]
@@ -41,19 +35,19 @@ namespace GM.Domain
         public Customer Customer { get; set; }
 
         [Required]
-        [Range(MinKilometers,MaxKilometers)]
+        [Range(GlobalConstants.CarMinKilometers, GlobalConstants.CarMaxKilometers)]
         public int Кilometers { get; set; }
 
         [Required]
-        [Range(MinYearOfManufactore, int.MaxValue)]
+        [Range(GlobalConstants.CarMinYearOfManufactore, int.MaxValue)]
         public DateTime? YearOfManufacture { get; set; }
 
         [Required]
-        [StringLength(MaxEngineModelLength)]
+        [StringLength(GlobalConstants.CarMaxEngineModelLength)]
         public string EngineModel { get; set; }
 
         [Required]
-        [Range(MinEngineHorsePower, MaxEngineHorsePower)]
+        [Range(GlobalConstants.CarMinEngineHorsePower, GlobalConstants.CarMaxEngineHorsePower)]
         public int EngineHorsePower { get; set; }
 
         public string FuelTypeId { get; set; }
@@ -66,6 +60,8 @@ namespace GM.Domain
         public TransmissionType Transmission { get; set; }
 
         public ICollection<Service> Services { get; set; }
+
+        public bool ISFinished { get; set; }
 
 
     }

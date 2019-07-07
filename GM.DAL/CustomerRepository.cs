@@ -13,9 +13,9 @@ namespace GM.DAL
         {
         }
 
-        public ICollection<object> All()
+        public IQueryable<Customer> GetAll()
         {
-            return  base.All().Select(customer => new { FullName = customer.FirstName, LastName = customer.LastName, id = customer.Id}).ToList();
+            return base.All();
         }
         //TODO Create DTO
     }

@@ -5,13 +5,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GarageManager.Models;
+using GM.Data;
+using GM.Domain;
 
 namespace GarageManager.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly GMDbContext context;
+
+        public HomeController(GMDbContext context)
+        {
+            this.context = context;
+        }
+
+       
         public IActionResult Index()
         {
+         
             return View();
         }
 

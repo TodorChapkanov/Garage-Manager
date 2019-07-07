@@ -8,6 +8,14 @@
 .footer{
     height: 10px;
 }
-.WhiteSmoke {
+.bg.WhiteSmoke {
     background-color: #F5F5F5;
 }
+.w-10{
+    width: 10px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%
+} 

@@ -14,7 +14,7 @@ namespace GM.Domain
 
         [Required]
         [MaxLength(MaxFirstNameLength)]
-        public int FirstName { get; set; }
+        public string FirstName { get; set; }
 
         [Required]
         [MaxLength(MaxLastNameLength)]

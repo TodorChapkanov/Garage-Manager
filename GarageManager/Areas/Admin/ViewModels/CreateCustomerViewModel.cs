@@ -6,11 +6,11 @@ namespace GarageManager.Areas.User.Views
     public class CreateViewModel
     {
         [Required]
-        [StringLength(Constants.MaxLengthCustomerName, ErrorMessage = Constants.CustomeNameLengthErrorMessage, MinimumLength = Constants.MaxLengthCustomerName)]
+        [StringLength(GlobalConstants.MaxLengthCustomerName, ErrorMessage = GlobalConstants.CustomeNameLengthErrorMessage, MinimumLength = GlobalConstants.MinLengthCutomerName)]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(Constants.MaxLengthCustomerName, ErrorMessage = Constants.CustomeNameLengthErrorMessage, MinimumLength = Constants.MaxLengthCustomerName)]
+        [StringLength(GlobalConstants.MaxLengthCustomerName, ErrorMessage = GlobalConstants.CustomeNameLengthErrorMessage, MinimumLength = GlobalConstants.MinLengthCutomerName)]
         public string LastName { get; set; }
 
 

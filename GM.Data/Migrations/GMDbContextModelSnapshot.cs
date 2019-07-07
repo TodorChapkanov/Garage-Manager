@@ -36,6 +36,8 @@ namespace GM.Data.Migrations
 
                     b.Property<string>("FuelTypeId");
 
+                    b.Property<bool>("ISFinished");
+
                     b.Property<string>("ManufactureID")
                         .IsRequired();
 
@@ -80,10 +82,12 @@ namespace GM.Data.Migrations
                         .IsRequired();
 
                     b.Property<string>("FirstName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("LastName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired();
@@ -119,7 +123,7 @@ namespace GM.Data.Migrations
                     b.ToTable("FuelTypes");
                 });
 
-            modelBuilder.Entity("GM.Domain.GmUser", b =>
+            modelBuilder.Entity("GM.Domain.GMUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -138,7 +142,8 @@ namespace GM.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<int>("FirstName")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(30);
 
                     b.Property<string>("LastName")
@@ -465,7 +470,7 @@ namespace GM.Data.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 
-            modelBuilder.Entity("GM.Domain.GmUser", b =>
+            modelBuilder.Entity("GM.Domain.GMUser", b =>
                 {
                     b.HasOne("GM.Domain.Department", "Department")
                         .WithMany("Employees")
@@ -487,7 +492,7 @@ namespace GM.Data.Migrations
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GM.Domain.GmUser", "Mechanic")
+                    b.HasOne("GM.Domain.GMUser", "Mechanic")
                         .WithMany()
                         .HasForeignKey("MechanicId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -545,7 +550,7 @@ namespace GM.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("GM.Domain.GmUser")
+                    b.HasOne("GM.Domain.GMUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -553,7 +558,7 @@ namespace GM.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("GM.Domain.GmUser")
+                    b.HasOne("GM.Domain.GMUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -566,7 +571,7 @@ namespace GM.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GM.Domain.GmUser")
+                    b.HasOne("GM.Domain.GMUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -574,7 +579,7 @@ namespace GM.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("GM.Domain.GmUser")
+                    b.HasOne("GM.Domain.GMUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

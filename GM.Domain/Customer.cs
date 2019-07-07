@@ -15,11 +15,11 @@ namespace GM.Domain
         public string Id { get; set; }
 
         [Required]
-        [StringLength(Constants.MaxLengthCustomerName)]
+        [StringLength(GlobalConstants.MaxLengthCustomerName)]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(Constants.MaxLengthCustomerName)]
+        [StringLength(GlobalConstants.MaxLengthCustomerName)]
         public string LastName { get; set; }
 
         //TODO Add property for  Full Name 

@@ -50,11 +50,30 @@ namespace GarageManager
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<GMDbContext>();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 5;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = true;
+            });
+
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerServices, CustomerServices>();
+            services.AddScoped<ICarRepository, CarRepository>();
+            services.AddScoped<ICarServices, CarServices>();
+            services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
+            services.AddScoped<IManufacturerServices, ManufacturerServices>();
+            services.AddScoped<IModelRepositoty, ModelRepository>();
+            services.AddScoped<IModelServices, ModelServices>();
+            services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
+            services.AddScoped<IFuelTypeServices, FuelTypeServices>();
+            services.AddScoped<ITransmissionTypeRepository, TransmissionTypeRepository>();
+            services.AddScoped<ITransmissionTypeServices, TransimissionTypeServices>();
 
            
         }
