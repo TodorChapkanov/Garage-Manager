@@ -1,0 +1,37 @@
+﻿@model List<GarageManager.Areas.Admin.BindingViewModels.AllCustomersDetailsViewModel>
+
+@{
+    ViewData["Title"] = "All Customers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">AllCustomers</h1>
+
+
+<div>
+    <table class="table table-hover w-75 mx-auto ">
+        <thead>
+            <tr class="row mx-auto">
+                <th>#</th>
+                <th class="col-5">Name</th>
+                <th class="col-lg-4">Email</th>
+                <th class="col-lg-2 text-center">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count(); i++)
+            {
+                <tr class="row mx-auto ">
+                    <th>@(i + 1)</th>
+                    <td class="col-sm-5">@Model[i].FullName</td>
+                    <td class="col-sm-4">@Model[i].Email</td>
+                    <th class="col-md-2   d-flex justify-content-around">
+                        <a asp-action="Details" asp-controller="Customers" asp-area="Admin" asp-route-id="@Model[i].Id">Details</a>
+                        <a asp-action="Edit" asp-controller="Customers" asp-area="Admin" asp-route-id="@Model[i].Id">Edit</a>
+                        <a asp-action="AllCarsById" asp-controller="Cars" asp-area="Admin" asp-route-id="@Model[i].Id">Cars</a>
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

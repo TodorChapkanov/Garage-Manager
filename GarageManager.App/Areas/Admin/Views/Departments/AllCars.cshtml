@@ -1,0 +1,40 @@
+﻿@model GarageManager.App.Areas.Admin.ViewModels.Department.DepartmentCarsList
+
+@{
+    ViewData["Title"] = "Department Cars";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@Model.Name</h1>
+
+<div class="container-fluid">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Make</th>
+                <th scope="col">Model</th>
+                <th scope="col">Register Plait</th>
+                <th scope="col" class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in Model.Cars)
+            {
+
+
+            <tr>
+
+                <td>@car.Make</td>
+                <td>@car.Model</td>
+                <td>@car.RegistrationPlate</td>
+                <th class="d-flex justify-content-around">
+                    <a asp-action="ServiceDetails" asp-controller="Departments" asp-area="Admin" asp-route-Id="@car.Id">Details</a>
+                </th>
+            </tr>
+
+            }
+        </tbody>
+
+    </table>
+
+</div>

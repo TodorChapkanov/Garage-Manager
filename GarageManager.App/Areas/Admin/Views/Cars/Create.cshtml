@@ -1,0 +1,113 @@
+﻿@model GarageManager.Areas.User.Controllers.CreateCarViewModel
+
+@{
+    ViewData["Title"] = "Create Car";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Create</h1>
+
+<hr />
+<div class="">
+    <div class=" mx-auto w-50">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row d-flex justify-content-around mx-auto">
+                <div class="form-group w-25">
+                    <label asp-for="Vin" class="control-label"></label>
+                    <input asp-for="Vin" class="form-control" />
+                    <span asp-validation-for="Vin" class="text-danger"></span>
+                </div>
+                <div class="form-group w-25 ">
+                    <label asp-for="RegistrationPlate" class="control-label"></label>
+                    <input asp-for="RegistrationPlate" class="form-control" />
+                    <span asp-validation-for="RegistrationPlate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mx-auto justify-content-around">
+                <div class="form-group w-25">
+                    <label asp-for="AllManufacturers" class="control-label"></label>
+                    <select asp-for="ManufacturerId" asp-items="@Model.AllManufacturers" class="form-control">
+                        <option disabled selected>--- SELECT ---</option>
+                    </select>
+                </div>
+                <div class="form-group w-25">
+                    <label asp-for="ModelName" class="control-label"></label>
+                    <select asp-for="ModelName" asp-items="@(new SelectList(string.Empty))" class="form-control"></select>
+                </div>
+            </div>
+            <div class="row mx-auto justify-content-around">
+                <div class="form-group w-25">
+                    <label asp-for="Кilometers" class="control-label"></label>
+                    <input asp-for="Кilometers" class="form-control" />
+                    <span asp-validation-for="Кilometers" class="text-danger"></span>
+                </div>
+                <div class="form-group w-25">
+                    <label asp-for="YearOfManufacturing" class="control-label"></label>
+                    <input asp-for="YearOfManufacturing" class="form-control" />
+                    <span asp-validation-for="YearOfManufacturing" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row justify-content-around mx-auto">
+                <div class="form-group w-25">
+                    <label asp-for="EngineModel" class="control-label"></label>
+                    <input asp-for="EngineModel" class="form-control" />
+                    <span asp-validation-for="EngineModel" class="text-danger"></span>
+                </div>
+                <div class="form-group w-25">
+                    <label asp-for="EngineHorsePower" class="control-label"></label>
+                    <input asp-for="EngineHorsePower" class="form-control" />
+                    <span asp-validation-for="EngineHorsePower" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mx-auto justify-content-around">
+                <div class="form-group w-25">
+                    <label asp-for="FuelTypes" class="control-label"></label>
+                    <select asp-for="FuelTypeId" asp-items="Model.FuelTypes" class="form-control">
+                        <option disabled selected>--- Fuel ---</option>
+                    </select>
+                </div>
+
+                <div class="form-group w-25">
+                    <label asp-for="Transmissions" class="control-label"></label>
+                    <select asp-for="TransmissionId" asp-items="@Model.Transmissions" class="form-control">
+                        <option disabled selected>--- Transmission ---</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group text-center mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+  
+<script type="text/javascript">
+      $(document).ready(function () {
+          var items = "<option>-All-</option>";
+           $('#ModelName').html(items);
+       });</script>
+   
+   
+<script type="text/javascript">
+   $(document).ready(function () {
+       $('#ManufacturerId').change(function() {
+           var url = '@Url.Content("~/")' + "Admin/Cars/AllModels/";
+           var ddlSourse = "#ManufacturerId";
+           $.getJSON(url, { id: $(ddlSourse).val() }, function (data) {
+               var items = "<option>-All-</option>";
+                $('#ModelName').empty();
+               $.each(data, function (i, vehModel) {
+                    items += "<option>" + vehModel.text + "</option>"
+               });
+               $('#ModelName').html(items);
+           });
+       });
+   });
+    </script>
+}

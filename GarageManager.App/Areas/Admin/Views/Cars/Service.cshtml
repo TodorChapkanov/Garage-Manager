@@ -1,0 +1,42 @@
+﻿@model GarageManager.App.Areas.Admin.ViewModels.Car.AddToServiceViewModel
+
+@{
+    ViewData["Title"] = "Add For Service";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+       Model.Description =  TempData["description"]!= null?TempData["description"].ToString(): string.Empty;
+}
+
+<h1>Add For Service</h1>
+
+<h4>AddToServiceViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddToService">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group ">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"> </textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Departments" class="control-label"></label>
+                <select asp-for="DepartmentId" asp-items="@Model.Departments" class="form-control">
+                    <option disabled selected>--- Department ---</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

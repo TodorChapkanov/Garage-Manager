@@ -1,0 +1,84 @@
+﻿@model GarageManager.App.Areas.Admin.ViewModels.Department.CarServicesDetailsViewModel
+
+@{
+    ViewData["Title"] = "ServiceDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ServiceDetails</h1>
+
+<h4>CarServicesDetailsViewModel</h4>
+<hr />
+<div>
+    <div>
+        <div class="row mx-auto justify-content-around">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Make" class="control-label"></label>
+                    <input asp-for="Make" class="form-control" />
+                    <span asp-validation-for="Make" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Model" class="control-label"></label>
+                    <input asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RegisterPlate" class="control-label"></label>
+                    <input asp-for="RegisterPlate" class="form-control" />
+                    <span asp-validation-for="RegisterPlate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ServiceId" class="control-label"></label>
+                    <input asp-for="ServiceId" class="form-control" />
+                    <span asp-validation-for="ServiceId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+        </div>
+        <table class="table table-hovermx-auto ">
+            <thead>
+                <tr class="row mx-auto">
+                    <th class="col-sm-4">Name</th>
+                    <th class="col-sm-3">Email</th>
+                    <th class="col-sm-2">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var part in Model.Parts)
+                {
+                    <tr class="row mx-auto ">
+                        <td class="col-sm-4">@part.Name</td>
+                        <td class="col-sm-3">@part.Price</td>
+                        <th class="col-md-2   d-flex justify-content-around">
+                            <a asp-action="Details" asp-controller="Customers" asp-area="Admin" asp-route-id="@part.Id">Details</a>
+                            <a asp-action="Edit" asp-controller="Customers" asp-area="Admin" asp-route-id="@part.Id">Edit</a>
+                            <a asp-action="AllCarsById" asp-controller="Cars" asp-area="Admin" asp-route-id="@part.Id">Cars</a>
+                        </th>
+                    </tr>
+                }
+                @foreach (var repair in Model.Repairs)
+                {
+                    <tr class="row mx-auto ">
+                        <td>@repair.Description</td>
+                        <td>@repair.Hours</td>
+                        <th class="col-md-2   d-flex justify-content-around">
+                            <a asp-action="Details" asp-controller="Customers" asp-area="Admin" asp-route-id="@repair.Id">Details</a>
+                            <a asp-action="Edit" asp-controller="Customers" asp-area="Admin" asp-route-id="@repair.Id">Edit</a>
+                            <a asp-action="AllCarsById" asp-controller="Cars" asp-area="Admin" asp-route-id="@repair.Id">Cars</a>
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

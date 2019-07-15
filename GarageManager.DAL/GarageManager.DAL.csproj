@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GarageManager.Data\GarageManager.Data.csproj" />
+    <ProjectReference Include="..\GarageManager.Domain\GarageManager.Domain.csproj" />
+    <ProjectReference Include="..\GarageManager.Extensions\GarageManager.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>
