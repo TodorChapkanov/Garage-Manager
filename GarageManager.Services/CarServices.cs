@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using GarageManager.DAL.Contracts;
+﻿using GarageManager.DAL.Contracts;
+using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
     public class CarServices : ICarServices
     {
-        private readonly ICarRepository carRepository;
-        private readonly IModelServices modelServices;
-        private readonly IDepartmentServices departmentServices;
+        private readonly IRepository<Car> carRepository;
+        private readonly IRepository<VehicleModel> modelServices;
+        private readonly IRepository<Department> departmentServices;
 
-        public CarServices(ICarRepository carRepository, IModelServices modelServices, IDepartmentServices departmentServices)
+        public CarServices(IRepository<Car> carRepository, IRepository<VehicleModel> modelServices, IRepository<Department> departmentServices)
         {
             this.carRepository = carRepository;
             this.modelServices = modelServices;
@@ -29,7 +26,12 @@ namespace GarageManager.Services
 
         public async Task<IEnumerable<Car>> GetAllByCustomerIdAsync(string id)
         {
-            var result = await this.carRepository.GetAllCarsByCustomerId(id).ToListAsync();
+            var result = await this.carRepository
+                .All()
+                .Include(car => car.Manufacturer)
+                .Include(car => car.Model)
+                .Where(customer => customer.CustomerId == id)
+                .ToListAsync();
             return result;
         }
 
@@ -47,7 +49,7 @@ namespace GarageManager.Services
 
         {
 
-            var modelId = (await this.modelServices.GetByNameAsync(modelName)).Id;
+            var modelId = (await this.modelServices.All().FirstOrDefaultAsync(model => model.Name == modelName)).Id;
             var carFromDb = new Car();
             try
             {
@@ -71,13 +73,13 @@ namespace GarageManager.Services
             }
 
 
-            await this.carRepository.CreateNewAsync(carFromDb);
+            await this.carRepository.CreateAsync(carFromDb);
             return true;
         }
 
         public async Task<CustomerCarDetails> GetDetailsByIdAsync(string id)
         {
-            var carFromDb = this.carRepository.GetAll()
+            var carFromDb = this.carRepository.All()
                 .Include(car => car.Manufacturer)
                 .Include(car => car.Model)
                 .Include(car => car.Customer)
@@ -129,7 +131,7 @@ namespace GarageManager.Services
                 carFromDb.FuelTypeId = fuelTypeId;
                 carFromDb.TransmissionId = transmissionId;
 
-               await this.carRepository.UpdateCarAsync(carFromDb);
+               await this.carRepository.UpdateAsync(carFromDb);
             }
 
             catch (Exception)
@@ -148,7 +150,7 @@ namespace GarageManager.Services
                 var departmentFromDb = await this.departmentServices.GetByIdAsync(departmentId);
                 carFromDb.Description = carDescription;
                 carFromDb.DepartmentId = departmentFromDb.Id;
-                await this.carRepository.UpdateCarAsync(carFromDb);
+                await this.carRepository.UpdateAsync(carFromDb);
 
                 return true;
 

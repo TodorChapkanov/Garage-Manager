@@ -2,6 +2,7 @@
 using GarageManager.DAL;
 using GarageManager.DAL.Contracts;
 using GarageManager.Data;
+using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services;
 using GarageManager.Services.Contracts;
@@ -58,19 +59,13 @@ namespace GarageManager
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddTransient(typeof(IRepository<>), typeof(RepositoryBase<>));
             services.AddScoped<ICustomerServices, CustomerServices>();
-            services.AddScoped<ICarRepository, CarRepository>();
             services.AddScoped<ICarServices, CarServices>();
-            services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
             services.AddScoped<IManufacturerServices, ManufacturerServices>();
-            services.AddScoped<IModelRepositoty, ModelRepository>();
             services.AddScoped<IModelServices, ModelServices>();
-            services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
             services.AddScoped<IFuelTypeServices, FuelTypeServices>();
-            services.AddScoped<ITransmissionTypeRepository, TransmissionTypeRepository>();
             services.AddScoped<ITransmissionTypeServices, TransimissionTypeServices>();
-            services.AddTransient<IDepartmentRepositoty, DepartmentRepository>();
             services.AddScoped<IDepartmentServices, DepartmentServices>();
 
 

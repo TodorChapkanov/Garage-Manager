@@ -51,7 +51,7 @@
                     <tr class="row mx-auto ">
                         <td class="col-sm-4">@part.Name</td>
                         <td class="col-sm-3">@part.Price</td>
-                        <th class="col-md-2   d-flex justify-content-around">
+                        <th class="col-sm-2   d-flex justify-content-around">
                             <a asp-action="Details" asp-controller="Customers" asp-area="Admin" asp-route-id="@part.Id">Details</a>
                             <a asp-action="Edit" asp-controller="Customers" asp-area="Admin" asp-route-id="@part.Id">Edit</a>
                             <a asp-action="AllCarsById" asp-controller="Cars" asp-area="Admin" asp-route-id="@part.Id">Cars</a>
@@ -61,10 +61,10 @@
                 @foreach (var repair in Model.Repairs)
                 {
                     <tr class="row mx-auto ">
-                        <td>@repair.Description</td>
-                        <td>@repair.Hours</td>
-                        <th class="col-md-2   d-flex justify-content-around">
-                            <a asp-action="Details" asp-controller="Customers" asp-area="Admin" asp-route-id="@repair.Id">Details</a>
+                        <td class="col-sm-4">@repair.Description</td>
+                        <td class="col-sm-3">@repair.Hours</td>
+                        <th class="col-sm-2   d-flex justify-content-around">
+                            <a asp-action="Details" asp-controller="Customers" asp-area="Admin" asp-route-id="@Model.ServiceId">Аdd Сervice </a>
                             <a asp-action="Edit" asp-controller="Customers" asp-area="Admin" asp-route-id="@repair.Id">Edit</a>
                             <a asp-action="AllCarsById" asp-controller="Cars" asp-area="Admin" asp-route-id="@repair.Id">Cars</a>
                         </th>

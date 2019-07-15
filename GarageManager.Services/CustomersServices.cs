@@ -1,5 +1,6 @@
 ﻿using GarageManager.DAL.Contracts;
 using GarageManager.Data;
+using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO;
@@ -15,9 +16,9 @@ namespace GarageManager.Services
    
     public class CustomerServices : ICustomerServices
     {
-        private readonly ICustomerRepository customerRepository;
+        private readonly IRepository<Customer> customerRepository;
 
-        public CustomerServices( ICustomerRepository customerRepository)
+        public CustomerServices( IRepository<Customer> customerRepository)
         {
             this.customerRepository = customerRepository;
         }
@@ -46,7 +47,7 @@ namespace GarageManager.Services
         public  Task<List<CustomerDetail>> GetAllCustomersDetailsAsync()
         {
            
-           var allCustomersDetails =  this.customerRepository.GetAll()
+           var allCustomersDetails =  this.customerRepository.All()
                 .Select(details => new CustomerDetail
                 {
                     Id = details.Id,
@@ -62,8 +63,7 @@ namespace GarageManager.Services
 
         public async Task<CustomerEditDetails> EditCustomerDetailsByIdAsync(string id)
         {
-            var customerFromDb = (await this.customerRepository
-                 .GetByIdAsync(id));
+            var customerFromDb = (await this.customerRepository.GetByIdAsync(id));
               var customerDetails = new CustomerEditDetails
                 { 
                     FirstName = customerFromDb.FirstName,

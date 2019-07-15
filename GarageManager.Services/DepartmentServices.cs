@@ -1,4 +1,5 @@
 ﻿using GarageManager.DAL.Contracts;
+using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO;
@@ -11,17 +12,17 @@ namespace GarageManager.Services
 {
     public class DepartmentServices : IDepartmentServices
     {
-        private readonly IDepartmentRepositoty departmentRepository;
-        private readonly ICarRepository carRepository;
+        private readonly IRepository<Department> departmentRepository;
+        private readonly IRepository<Car> carRepository;
 
-        public DepartmentServices(IDepartmentRepositoty departmentRepository, ICarRepository carRepository)
+        public DepartmentServices(IRepository<Department> departmentRepository, IRepository<Car> carRepository)
         {
             this.departmentRepository = departmentRepository;
             this.carRepository = carRepository;
         }
         public async Task<IEnumerable<DepartmentAll>> AllDepartments()
         {
-            var result = await this.departmentRepository.GetAll()
+            var result = await this.departmentRepository.All()
                 .Select(department => new DepartmentAll
                 {
                     Id = department.Id,
@@ -42,7 +43,8 @@ namespace GarageManager.Services
 
         public async Task<DepartmentAllCars> GetDepartmentCars(string id)
         {
-            var departmentFromDb = (await this.departmentRepository.GetAllCarsInDepartment(id))
+            var departmentFromDb =await this.departmentRepository.All().Where(department => department.Id == id)
+                .Include(department => department.Cars)
                 .Select(department => new DepartmentAllCars
                 {
                     Name = department.Name,
@@ -53,14 +55,14 @@ namespace GarageManager.Services
                         Model = car.Model.Name,
                         RegisterPlate = car.RegistrationPlate,
                     }).ToList()
-                });
+                }).FirstOrDefaultAsync();
 
-            return departmentFromDb.FirstOrDefault();
+            return departmentFromDb;
         }
 
         public async Task<CarServicesDetails> GetCarServicesAsync(string id)
         {
-            var carServices = await this.carRepository.GetAll().Where(car => car.Id == id).Include(car => car.Manufacturer).Include(car => car.Model).Include(car => car.Services).Include(service => service.Services.Parts).Include(services => services.Services.Repairs).Select(car => new CarServicesDetails
+            var carServices = await this.carRepository.All().Where(car => car.Id == id).Include(car => car.Manufacturer).Include(car => car.Model).Include(car => car.Services).Include(service => service.Services.Parts).Include(services => services.Services.Repairs).Select(car => new CarServicesDetails
             {
                 Make = car.Manufacturer.Name,
                 Model = car.Model.Name,
@@ -85,6 +87,11 @@ namespace GarageManager.Services
 
             return carServices;
 
+        }
+
+        public string CreatePart(string name, string number, decimal price)
+        {
+            return null;
         }
     }
 }

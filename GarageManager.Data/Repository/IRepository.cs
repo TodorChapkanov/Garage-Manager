@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using GarageManager.Domain;
 
-namespace GarageManager.DAL.Contracts
+namespace GarageManager.Data.Repository
 {
     public interface IRepository<TEntity> where TEntity : class
     {
@@ -25,6 +25,8 @@ namespace GarageManager.DAL.Contracts
         Task DeleteAsync(TEntity entity);
 
         IQueryable<TEntity> All();
+
+        Task<TEntity> GetByIdAsync(string id);
 
     }
 }

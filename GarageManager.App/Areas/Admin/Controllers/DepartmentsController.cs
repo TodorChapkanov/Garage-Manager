@@ -1,4 +1,5 @@
-﻿using GarageManager.App.Areas.Admin.ViewModels.Department;
+﻿using GarageManager.App.Areas.Admin.BindingModels.Part;
+using GarageManager.App.Areas.Admin.ViewModels.Department;
 using GarageManager.App.Areas.Admin.ViewModels.Part;
 using GarageManager.App.Areas.Admin.ViewModels.Repair;
 using GarageManager.Areas.Admin.Controllers;
@@ -66,8 +67,23 @@ namespace GarageManager.App.Areas.Admin.Controllers
                 })
             };
 
-
             return this.View(model);
+        }
+
+        public IActionResult AddPart()
+        {
+
+            return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult AddPart(AddPartBindingModel model, string id)
+        {
+            if (!ModelState.IsValid)
+            {
+
+            }
+            return this.View();
         }
     }
 }

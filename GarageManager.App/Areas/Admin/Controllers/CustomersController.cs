@@ -38,7 +38,7 @@ namespace GarageManager.Areas.User.Controllers
             await this.customerService
                 .CreateNewAsync(model.FirstName, model.LastName, model.Email, model.PhoneNumber);
 
-            return this.Redirect("/AllCustomers");
+            return this.Redirect("/Admin/Customers/AllCustomers");
        }
 
 
