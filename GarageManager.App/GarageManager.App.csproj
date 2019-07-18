@@ -18,7 +18,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Employees\" />
     <Folder Include="Areas\User\ViewModels\" />
     <Folder Include="Areas\User\Views\" />
     <Folder Include="Views\Customers\" />
@@ -28,13 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GarageManager.Services\GarageManager.Services.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Compile Update="Areas\Admin\BindingViewModels\CustomerCreateBindingViewModel.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
+    <ProjectReference Include="..\Web\GarageManager.Web.Models\GarageManager.Web.Models.csproj" />
   </ItemGroup>
 
 

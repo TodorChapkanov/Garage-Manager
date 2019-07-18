@@ -13,11 +13,11 @@ namespace GarageManager.Domain
 
 
         [Required]
-        [StringLength(GlobalConstants.MaxLengthCustomerName)]
+        [StringLength(GlobalConstants.CustomerNameMaxLength)]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(GlobalConstants.MaxLengthCustomerName)]
+        [StringLength(GlobalConstants.CustomerNameMaxLength)]
         public string LastName { get; set; }
 
         //TODO Add property for  Full Name 

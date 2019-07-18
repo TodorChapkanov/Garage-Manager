@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Domain
 {
-    public class VehicleModel
+    public class VehicleModel : BaseEntity
     {
         private const int MaxNameLength = 30;
-        public string Id { get; set; }
+        
 
         [Required]
         [StringLength(MaxNameLength)]

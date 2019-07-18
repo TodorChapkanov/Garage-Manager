@@ -3,14 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Domain
 {
-    public class VehicleManufacturer
+    public class VehicleManufacturer : BaseEntity
     {
         public VehicleManufacturer()
         {
             this.Cars = new HashSet<Car>();
             this.VehicleModels = new HashSet<VehicleModel>();
         }
-        public string Id { get; set; }
 
         [Required]
         public string Name { get; set; }

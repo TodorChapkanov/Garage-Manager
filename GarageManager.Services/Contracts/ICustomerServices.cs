@@ -15,12 +15,11 @@ namespace GarageManager.Services.Contracts
             string email,
             string phoneNumber);
 
-        Task<List<Customer>> GetAllAsync();
         Task<List<CustomerDetail>> GetAllCustomersDetailsAsync();
 
          Task<CustomerEditDetails> EditCustomerDetailsByIdAsync(string id);
 
-     
+        Task<int> Delete(string id);
 
         Task<bool> UpdateCustomerByIdAsync(
              string id,

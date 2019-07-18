@@ -24,6 +24,7 @@ namespace GarageManager.Data
         public DbSet<TransmissionType> TransmissionTypes { get; set; }
         public DbSet<VehicleManufacturer> VehicleManufacturers { get; set; }
         public DbSet<VehicleModel> VehicleModels { get; set; }
+        public DbSet<ServiceIntervention> ServiceInterventions { get; set; }
         public DbSet<ServicePart> ServiceParts { get; set; }
         public DbSet<ServiceRepair> ServiceRepairs { get; set; }
 

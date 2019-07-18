@@ -2,13 +2,14 @@
 {
     public class GlobalConstants
     {
+        public const string StringLengthErrorMessage = "{0} should be between {2} and {1} symbols!";
         // Customer Form 
-        public const int MinLengthCutomerName = 3;
-        public const int MaxLengthCustomerName = 20;
-        public const string CustomeNameLengthErrorMessage = "Name should be between {2} and {1} symbols!";
+        public const int CustomerNameMinLength = 3;
+        public const int CustomerNameMaxLength = 20;
+        public const string CustomeNameLengthErrorMessage = "{0} should be between {2} and {1} symbols!";
         public const int PasswordMinLength = 4;
         public const int PasswordMaxLength = 20;
-        public const string PasswordErrorMssage = "Password should be between {2} and{1} symbold";
+        public const string PasswordErrorMssage = "{0} should be between {2} and{1} symbold!";
         public const string ConfirmPasswordError = "Confirm Password and Password are not equal!";
         public const string InvalidPhoneNumber = "The Phone Number is not valid";
         public const int PhoneNumberMinLength = 8;
@@ -32,22 +33,31 @@
 
         //Administrator Roles
         public const string AdministratorRoleName = "Admin";
-        public const string ТinsmithDepartmentManagerRoleName = "ТinsmithDepartmentManager";
-        public const string PaintingDepartmentManagerRoleName = "PaintingDepartmentManager";
-        public const string MechanikDepartmentManagerRoleName = "MechanikDepartmentManager";
-        public const string WarehouseDepartmentManagerRoleName = "WarehouseDepartmentManager";
+        public const string EmployeeRoleName = "Employee";
 
         public const string DefaultLogoutUrl = "/Home/Index";
 
         //Display Names
-        public const string CustomerFirsDisplayName = "Firs Name";
-        public const string CustomerLastDisplayName = "Last Name";
-        public const string CarYearOfManufacturingDisplayName = "Year of Manugacturing";
-        public const string CarEngineModelDisplayName = "Engine Model";
-        public const string CarEngineHorsePowerDisplayName = "Engine Horse Power";
-        public const string CarFuelTypeDisplayName = "Fuel Type";
-        public const string CarModelDisplayName = "Model";
-        public const string CarManufacturersDisplayName = "Make";
-        public const string CarRegistrationPlateDisplayName = "Registration Plate";
+        public const string DisplayFirstName = "Firs Name";
+        public const string DisplayLastName = "Last Name";
+        public const string YearOfManufacturingDisplayName = "Year of Manugacturing";
+        public const string EngineModelDisplayName = "Engine Model";
+        public const string EngineHorsePowerDisplayName = "Engine Horse Power";
+        public const string FuelTypeDisplayName = "Fuel Type";
+        public const string ModelDisplayName = "Model";
+        public const string ManufacturersDisplayName = "Make";
+        public const string RegistrationPlateDisplayName = "Registration Plate";
+        public const string PhoneNumberDisplayName = "Phone Number";
+
+        //Parts
+        public const int PartNameMinLength = 4;
+        public const int PartNameMaxLength = 60;
+        public const int PartNumberMinLength = 6;
+        public const int PartNumberMaxLength = 25;
+        public const double PartPriceMinValue = 0.1;
+        public const double PartPriceMaxValue = 50000;
+
+        //Parts error messages
+        public const string PartPriceErrorMessage = "Price must be greater than {1}!";
     }
 }

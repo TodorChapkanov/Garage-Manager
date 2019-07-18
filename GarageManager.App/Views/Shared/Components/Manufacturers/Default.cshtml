@@ -1,0 +1,9 @@
+﻿@model GarageManager.App.Views.Shared.Components.Models.ManufacturerModel
+
+
+
+  
+        <label asp-for="AllManufacturers" class="control-label"></label>
+        <select asp-for="ManufacturerId" asp-items="@Model.AllManufacturers" class="form-control">
+            <option disabled selected>--- SELECT ---</option>
+        </select>

@@ -98,32 +98,16 @@ namespace GarageManager.Areas.Identity.Pages.Account
                     {
                         Name = GlobalConstants.AdministratorRoleName,
                         NormalizedName = GlobalConstants.AdministratorRoleName.ToUpper()
+                        
                     });
-
                     await _roleManager.CreateAsync(new IdentityRole
                     {
-                        Name = GlobalConstants.ТinsmithDepartmentManagerRoleName,
-                        NormalizedName = GlobalConstants.ТinsmithDepartmentManagerRoleName.ToUpper()
+                        Name = GlobalConstants.EmployeeRoleName,
+                        NormalizedName = GlobalConstants.EmployeeRoleName.ToUpper()
+
                     });
 
-                    await _roleManager.CreateAsync(new IdentityRole
-                    {
-                        Name = GlobalConstants.PaintingDepartmentManagerRoleName,
-                        NormalizedName = GlobalConstants.PaintingDepartmentManagerRoleName.ToUpper()
-                    });
 
-                    await _roleManager.CreateAsync(new IdentityRole
-                    {
-                        Name = GlobalConstants.MechanikDepartmentManagerRoleName,
-                        NormalizedName = GlobalConstants.MechanikDepartmentManagerRoleName.ToUpper()
-                    });
-
-                    await _roleManager
-                   .CreateAsync(new IdentityRole
-                   {
-                       Name = GlobalConstants.WarehouseDepartmentManagerRoleName,
-                       NormalizedName = GlobalConstants.WarehouseDepartmentManagerRoleName.ToUpper()
-                   });
                 }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -131,6 +115,13 @@ namespace GarageManager.Areas.Identity.Pages.Account
                 if (_userManager.Users.Count() == 1)
                 {
                     await _userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
+                    user.CreatedOn = DateTime.UtcNow;
+                    user.RecruitedOn = DateTime.UtcNow;
+                    //TODO Create Datime Provider
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, GlobalConstants.EmployeeRoleName);
                 }
 
                 if (result.Succeeded)

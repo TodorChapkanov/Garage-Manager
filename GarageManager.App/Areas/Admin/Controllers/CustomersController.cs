@@ -1,7 +1,6 @@
-﻿using GarageManager.App.Areas.Admin.BindingViewModels;
-using GarageManager.Areas.Admin.BindingViewModels;
+﻿using GarageManager.App.Models.BindingModels;
+using GarageManager.App.Models.ViewModels.Customer;
 using GarageManager.Areas.Admin.Controllers;
-using GarageManager.Areas.Admin.ViewModels;
 using GarageManager.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -21,10 +20,7 @@ namespace GarageManager.Areas.User.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-          
             return this.View();
-            //TODO beautify View
-
         }
 
         [HttpPost]
@@ -72,13 +68,14 @@ namespace GarageManager.Areas.User.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            var customerDetails = await this.customerService.EditCustomerDetailsByIdAsync(id);
+            var customerFromDb = await this.customerService.EditCustomerDetailsByIdAsync(id);
             var model = new CustomerDetailsViewModel
             {
-                FirstName = customerDetails.FirstName,
-                LastName = customerDetails.LastName,
-                Email = customerDetails.Email,
-                PhoneNumber = customerDetails.PhoneNumber
+                Id= customerFromDb.Id,
+                FirstName = customerFromDb.FirstName,
+                LastName = customerFromDb.LastName,
+                Email = customerFromDb.Email,
+                PhoneNumber = customerFromDb.PhoneNumber
             };
 
             return this.View(model);
@@ -106,9 +103,10 @@ namespace GarageManager.Areas.User.Controllers
             return redirect;
         }
 
-       // public async Task<IActionResult> AllCars(string customerId)
-       // {
-       //   
-       // }
+        public IActionResult Delete(string id)
+        {
+            this.customerService.Delete(id);
+            return this.Redirect("/Admin/Customers/AllCustomers");
+        }
     }
 }

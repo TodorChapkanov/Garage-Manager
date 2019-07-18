@@ -1,21 +1,18 @@
-﻿using GarageManager.DAL.Contracts;
-using GarageManager.Data.Repository;
+﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
     public class ModelServices : IModelServices
     {
-        private readonly IRepository<VehicleModel> modelRepositoty;
+        private readonly IDeletableEntityRepository<VehicleModel> modelRepositoty;
 
-        public ModelServices(IRepository<VehicleModel> modelRepositoty)
+        public ModelServices(IDeletableEntityRepository<VehicleModel> modelRepositoty)
         {
             this.modelRepositoty = modelRepositoty;
         }

@@ -27,6 +27,8 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("CustomerId")
                         .IsRequired();
 
+                    b.Property<DateTime?>("DeletedOn");
+
                     b.Property<string>("DepartmentId");
 
                     b.Property<string>("Description")
@@ -39,6 +41,8 @@ namespace GarageManager.Data.Migrations
                         .HasMaxLength(20);
 
                     b.Property<string>("FuelTypeId");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<bool>("IsFinished");
 
@@ -86,12 +90,16 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("DeletedOn");
+
                     b.Property<string>("Email")
                         .IsRequired();
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(20);
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -110,6 +118,10 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -122,6 +134,10 @@ namespace GarageManager.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Type")
                         .IsRequired();
@@ -143,6 +159,8 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<DateTime>("CreatedOn");
 
+                    b.Property<DateTime?>("DeletedOn");
+
                     b.Property<string>("DepartmentId");
 
                     b.Property<string>("Email")
@@ -153,6 +171,8 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(30);
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -203,11 +223,17 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<string>("DepartmentId");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("Number");
 
-                    b.Property<double>("Price");
+                    b.Property<decimal>("Price");
 
                     b.HasKey("Id");
 
@@ -219,25 +245,28 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<string>("DepartmentId");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500);
 
                     b.Property<double>("Hours");
 
-                    b.Property<string>("MechanicId")
-                        .IsRequired();
+                    b.Property<bool>("IsDeleted");
 
-                    b.Property<double>("PricePerHour");
+                    b.Property<bool>("IsFinished");
+
+                    b.Property<decimal>("PricePerHour");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MechanicId");
 
                     b.ToTable("RepairTypes");
                 });
 
-            modelBuilder.Entity("GarageManager.Domain.ServiceInterventions", b =>
+            modelBuilder.Entity("GarageManager.Domain.ServiceIntervention", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -245,9 +274,11 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("CarId")
                         .IsRequired();
 
-                    b.Property<bool>("IsFinished");
+                    b.Property<DateTime?>("DeletedOn");
 
-                    b.Property<decimal>("TotalCost");
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsFinished");
 
                     b.HasKey("Id");
 
@@ -263,6 +294,10 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<string>("ServiceId");
 
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.HasKey("PartId", "ServiceId");
 
                     b.HasIndex("ServiceId");
@@ -276,6 +311,10 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<string>("ServiceId");
 
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.HasKey("RepairId", "ServiceId");
 
                     b.HasIndex("ServiceId");
@@ -287,6 +326,10 @@ namespace GarageManager.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -302,6 +345,10 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -314,6 +361,10 @@ namespace GarageManager.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("ManufactirerId");
 
@@ -478,19 +529,11 @@ namespace GarageManager.Data.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 
-            modelBuilder.Entity("GarageManager.Domain.Repair", b =>
-                {
-                    b.HasOne("GarageManager.Domain.GMUser", "Mechanic")
-                        .WithMany()
-                        .HasForeignKey("MechanicId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GarageManager.Domain.ServiceInterventions", b =>
+            modelBuilder.Entity("GarageManager.Domain.ServiceIntervention", b =>
                 {
                     b.HasOne("GarageManager.Domain.Car", "Car")
                         .WithOne("Services")
-                        .HasForeignKey("GarageManager.Domain.ServiceInterventions", "CarId")
+                        .HasForeignKey("GarageManager.Domain.ServiceIntervention", "CarId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -501,7 +544,7 @@ namespace GarageManager.Data.Migrations
                         .HasForeignKey("PartId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("GarageManager.Domain.ServiceInterventions", "Service")
+                    b.HasOne("GarageManager.Domain.ServiceIntervention", "Service")
                         .WithMany("Parts")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -514,7 +557,7 @@ namespace GarageManager.Data.Migrations
                         .HasForeignKey("RepairId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("GarageManager.Domain.ServiceInterventions", "Service")
+                    b.HasOne("GarageManager.Domain.ServiceIntervention", "Service")
                         .WithMany("Repairs")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Restrict);

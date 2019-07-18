@@ -1,4 +1,4 @@
-﻿@model GarageManager.App.Areas.Admin.ViewModels.Car.EditCarViewModel
+﻿@model GarageManager.App.Models.ViewModels.Car.EditCarViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -72,6 +72,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <a class="btn btn-primary" asp-action="Delete" asp-controller="Cars" asp-area="Admin" asp-route-customerId="@Model.CustomerId" asp-route-carId="@Model.Id">Delete</a>
             </div>
         </form>
     </div>

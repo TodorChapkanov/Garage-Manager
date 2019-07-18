@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GarageManager.Models;
+using GarageManager.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using GarageManager.Models;
-using GarageManager.Data;
-using GarageManager.Domain;
+using System.Diagnostics;
 
 namespace GarageManager.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly GMDbContext context;
+        private readonly IEmployeesServices employeesService;
 
-        public HomeController(GMDbContext context)
+        public HomeController(IEmployeesServices employeesService)
         {
-            this.context = context;
+            this.employeesService = employeesService;
         }
 
        
         public IActionResult Index()
         {
-         
+            TempData["IsAnyEmployee"] = this.employeesService.IsAnyEmployee();
+                
             return View();
         }
 

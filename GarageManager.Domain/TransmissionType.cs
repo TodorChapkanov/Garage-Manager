@@ -3,12 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Domain
 {
-    public class TransmissionType
+    public class TransmissionType : BaseEntity
     {
-        
-
-        public string Id { get; set; }
-
         [Required]
         [StringLength(GlobalConstants.MaxTransmissionTypeNameLength)]
         public string  Type { get; set; }

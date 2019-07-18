@@ -1,4 +1,4 @@
-﻿@model GarageManager.Areas.User.Controllers.CreateCarViewModel
+﻿@model GarageManager.App.Models.BindingModels.CreateCarBindingViewModel
 
 @{
     ViewData["Title"] = "Create Car";
@@ -26,10 +26,7 @@
             </div>
             <div class="row mx-auto justify-content-around">
                 <div class="form-group w-25">
-                    <label asp-for="AllManufacturers" class="control-label"></label>
-                    <select asp-for="ManufacturerId" asp-items="@Model.AllManufacturers" class="form-control">
-                        <option disabled selected>--- SELECT ---</option>
-                    </select>
+                    @await Component.InvokeAsync("Manufacturers")
                 </div>
                 <div class="form-group w-25">
                     <label asp-for="ModelName" class="control-label"></label>
@@ -43,9 +40,9 @@
                     <span asp-validation-for="Кilometers" class="text-danger"></span>
                 </div>
                 <div class="form-group w-25">
-                    <label asp-for="YearOfManufacturing" class="control-label"></label>
-                    <input asp-for="YearOfManufacturing" class="form-control" />
-                    <span asp-validation-for="YearOfManufacturing" class="text-danger"></span>
+                    <label asp-for="ManufacturedOn" class="control-label"></label>
+                    <input asp-for="ManufacturedOn" class="form-control" />
+                    <span asp-validation-for="ManufacturedOn" class="text-danger"></span>
                 </div>
             </div>
             <div class="row justify-content-around mx-auto">
@@ -62,17 +59,11 @@
             </div>
             <div class="row mx-auto justify-content-around">
                 <div class="form-group w-25">
-                    <label asp-for="FuelTypes" class="control-label"></label>
-                    <select asp-for="FuelTypeId" asp-items="Model.FuelTypes" class="form-control">
-                        <option disabled selected>--- Fuel ---</option>
-                    </select>
+                    @await Component.InvokeAsync("FuelTypes")
                 </div>
 
                 <div class="form-group w-25">
-                    <label asp-for="Transmissions" class="control-label"></label>
-                    <select asp-for="TransmissionId" asp-items="@Model.Transmissions" class="form-control">
-                        <option disabled selected>--- Transmission ---</option>
-                    </select>
+                   @await Component.InvokeAsync("Transmissions")
                 </div>
             </div>
             <div class="form-group text-center mt-3">
@@ -86,17 +77,17 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-  
-<script type="text/javascript">
-      $(document).ready(function () {
-          var items = "<option>-All-</option>";
-           $('#ModelName').html(items);
-       });</script>
-   
-   
-<script type="text/javascript">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var items = "<option>-All-</option>";
+            $('#ModelName').html(items);
+        });</script>
+
+
+    <script type="text/javascript">
    $(document).ready(function () {
-       $('#ManufacturerId').change(function() {
+       $('#ManufacturerId').on("change paste input", function() {
            var url = '@Url.Content("~/")' + "Admin/Cars/AllModels/";
            var ddlSourse = "#ManufacturerId";
            $.getJSON(url, { id: $(ddlSourse).val() }, function (data) {

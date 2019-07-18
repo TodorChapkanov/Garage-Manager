@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace GarageManager.Domain
 {
 
-    public class GMUser : IdentityUser, IEntity<string>
+    public class GMUser :  IdentityUser, IEntity<string>, IDeletableEntity
     {
         private const int MaxFirstNameLength = 30;
         private const int MaxLastNameLength = 40;
@@ -29,5 +29,7 @@ namespace GarageManager.Domain
         public string  DepartmentId { get; set; }
 
         public Department Department { get; set; }
+        public bool IsDeleted { get; set ; }
+        public DateTime? DeletedOn { get ; set ; }
     }
 }

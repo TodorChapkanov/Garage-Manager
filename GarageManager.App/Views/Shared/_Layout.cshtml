@@ -6,9 +6,9 @@
     <title>GM-@ViewData["Title"]</title>
 
     <environment include="Development">
+        <link rel="stylesheet" type="text/css" href="~/css/reset-css.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-
+        <link rel="stylesheet" type="text/css" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/reset-css.css" />
@@ -17,8 +17,9 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+        <link rel="stylesheet" type="text/css" href="~/css/site.css" />
     </environment>
-    <link rel="stylesheet" href="~/css/site.css" />
+ 
 </head>
 <body class="w-100 h-100" >
     <div>
@@ -42,46 +43,34 @@
                                             <a class="dropdown-item text-black-50" asp-action="AllCustomers" asp-controller="Customers" asp-area="Admin">All Customers</a>
                                         </div>
                                     </div>
-
-                                    <div>
-                                        <a class="dnav-link active dropdown-toggle text-white" href="#" id="navbarDropdown" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Cars Action
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item text-black-50" asp-area="Admin" asp-controller="Cars" asp-action="Create">Create New Car</a>
-                                        </div>
-                                    </div>
-
                                     <div>
                                         <a class="dnav-link active dropdown-toggle text-white" href="#" id="navbarDropdown" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Departments
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item text-black-50"
-                                               asp-area="Admin"
+                                               asp-area="Employees"
                                                asp-controller="Departments"
-                                               asp-action="AllCars"
+                                               asp-action="CarsInDepartment"
                                                asp-route-id="fe109693-c5fe-46c4-ba1c-a42666c6a822"
                                                >Body Repair</a>
                                             <a class="dropdown-item text-black-50"
-                                               asp-area="Admin"
+                                               asp-area="Employees"
                                                asp-controller="Departments"
-                                               asp-action="AllCars"
+                                               asp-action="CarsInDepartment"
                                                asp-route-id="3d56b8a7-c53f-477e-8bfd-fdd2c80eff36">Mechanical Repair</a>
                                             <a class="dropdown-item text-black-50"
-                                               asp-area="Admin"
+                                               asp-area="Employees"
                                                asp-controller="Departments"
-                                               asp-action="AllCars"
+                                               asp-action="CarsInDepartment"
                                                asp-route-id="bd91b3b7-ee4d-4ad1-b171-8919d43f6597">Painting</a>
                                             <a class="dropdown-item text-black-50"
-                                               asp-area="Admin"
+                                               asp-area="Employees"
                                                asp-controller="Departments"
-                                               asp-action="AllCars"
+                                               asp-action="CarsInDepartment"
                                                asp-route-id="add6595c-c3ee-4168-8bc2-a0832a4c536b">Parts</a>
                                         </div>
                                     </div>
-
-
                                     <a class="nav-link text-white mr-2">Hello @User.Identity.Name</a>
                                     <a class="nav-link text-white mr-2" href="/Identity/Account/Logout">Logout</a>
                                 </div>
@@ -95,9 +84,6 @@
                                         </li>
                                     </ul>
                                     <ul class="nav navbar">
-                                        <li class="nav-item active">
-                                            <a class="nav-link text-white" href="/Identity/Account/Register">Register</a>
-                                        </li>
                                         <li class="nav-item active">
                                             <a class="nav-link text-white" href="/Identity/Account/Login">Login</a>
                                         </li>

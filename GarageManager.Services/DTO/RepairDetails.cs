@@ -8,6 +8,10 @@
 
         public double Hours { get; set; }
 
-        public double PricePerHour { get; set; }
+        public decimal PricePerHour { get; set; }
+
+        public bool IsFinished { get; set; }
+
+        public decimal TotalCosts { get; set; }
     }
 }

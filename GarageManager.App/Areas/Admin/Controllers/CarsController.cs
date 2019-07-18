@@ -1,10 +1,8 @@
-﻿using GarageManager.App.Areas.Admin.BindingViewModels;
-using GarageManager.App.Areas.Admin.ViewModels.Car;
-using GarageManager.Areas.Admin.BindingViewModels;
+﻿using GarageManager.App.Models.BindingModels;
+using GarageManager.App.Models.ViewModels.Car;
+using GarageManager.App.Models.ViewModels.Customer;
 using GarageManager.Areas.Admin.Controllers;
-using GarageManager.Areas.Admin.ViewModels;
 using GarageManager.Domain;
-using GarageManager.Services;
 using GarageManager.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,17 +18,17 @@ namespace GarageManager.Areas.User.Controllers
         private readonly IManufacturerServices manufacturerService;
         private readonly IModelServices modelService;
         private readonly IFuelTypeServices fuelTypeService;
-        private readonly ITransmissionTypeServices transmissionTypeService;
+        private readonly ITransmissionTypesServices transmissionTypeService;
         private readonly IDepartmentServices departmentService;
 
-        //TODO Bind DaeTime to Year Adn Month
+        
 
         public CarsController(
             ICarServices carService,
             IManufacturerServices manufacturerService,
             IModelServices modelService,
             IFuelTypeServices fuelTypeService,
-            ITransmissionTypeServices transmissionTypeService,
+            ITransmissionTypesServices transmissionTypeService,
             IDepartmentServices departmentService
             )
         {
@@ -42,94 +40,44 @@ namespace GarageManager.Areas.User.Controllers
             this.departmentService = departmentService;
         }
 
-        public async Task<IActionResult> Create(string id)
+        [HttpGet("/Admin/Cars/Create/{Id}")]
+        public  IActionResult Create()
         {
-            var allManufacturers = default(IEnumerable<VehicleManufacturer>);
-            var allFuelTypes = default(IEnumerable<FuelType>);
-            var allTransmissionType = default(IEnumerable<TransmissionType>);
-            var allTasks = new List<Task>();
-
-            allTasks.Add(Task.Run(async () =>
-            {
-                allManufacturers = (await this.manufacturerService.GetAllAsync())
-                                                                    .OrderBy(make => make.Name);
-            }));
-
-            allTasks.Add(Task.Run(async () =>
-            {
-                allFuelTypes = (await this.fuelTypeService.GetAllTypesAsync())
-                                                            .OrderBy(fuel => fuel.Type);
-            }));
-
-            allTasks.Add(Task.Run(async () =>
-            {
-                allTransmissionType = (await this.transmissionTypeService.GetAllTypesAsync())
-                                                                          .OrderBy(transmission => transmission.Type);
-            }));
-
-            await Task.WhenAll(allTasks);
-            var model = new CreateCarViewModel
-            {
-                CustomerId = id,
-                AllManufacturers = allManufacturers.Select(m => new SelectListItem(m.Name, m.Id)),
-                FuelTypes = allFuelTypes.Select(ft => new SelectListItem(ft.Type, ft.Id)),
-                Transmissions = allTransmissionType.Select(tr => new SelectListItem(tr.Type, tr.Id))
-            };
-
-            return View(model);
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateCarBindingViewModel carBVM)
         {
-            if (carBVM.Id == null)
+            if (carBVM.CustomerId == null)
             {
-                return this.Redirect($"/Admin/Cars/AllCarsById/{carBVM.Id}");
+                return this.View(carBVM);
             }
             if (!ModelState.IsValid)
             {
-                return RedirectToAction($"/Admin/Cars/Create/{carBVM.Id}");
+                return RedirectToAction($"/Admin/Cars/Create/{carBVM.CustomerId}");
             }
 
             var result = await this.carService.CreateAsync<Car>
                 (
-                carBVM.Id,
+                carBVM.CustomerId,
                 carBVM.Vin,
                 carBVM.RegistrationPlate,
                 carBVM.ManufacturerId,
                 carBVM.ModelName,
                 carBVM.Кilometers,
-                carBVM.YearOfManufacture,
+                carBVM.ManufacturedOn,
                 carBVM.EngineModel,
                 carBVM.EngineHorsePower,
                 carBVM.FuelTypeId,
                 carBVM.TransmissionId
                 );
-
-            return this.Redirect($"/Admin/Cars/AllCarsById/{carBVM.Id}");
+           
+            return this.Redirect($"/Admin/Cars/AllCarsById/{carBVM.CustomerId}");
 
         }
 
-        public async Task<IActionResult> Details(string id)
-        {
-            var result = await this.carService.GetDetailsByIdAsync(id);
-            var model = new CarDetailsViewModel
-            {
-                Id = result.Id,
-                Make = result.Make,
-                Model = result.Model,
-                RegistrationPlate = result.RegistrationPlate,
-                Vin = result.Vin,
-                ManufacturedOn = result.ManufacturedOn,
-                Кilometers = result.Кilometers,
-                EngineModel = result.EngineModel,
-                EngineHorsePower = result.EngineHorsePower,
-                FuelType = result.FuelType,
-                Transmission = result.Transmission
-            };
-
-            return this.View(model);
-        }
+       
 
         public async Task<IActionResult> Edit(string id)
         {
@@ -154,6 +102,8 @@ namespace GarageManager.Areas.User.Controllers
             var carData = await this.carService.GetDetailsByIdAsync(id);
             var model = new EditCarViewModel
             {
+                Id = carData.Id,
+                CustomerId = carData.CustomerId,
                 Vin = carData.Vin,
                 Make = carData.Make,
                 Model = carData.Model,
@@ -199,7 +149,14 @@ namespace GarageManager.Areas.User.Controllers
                 return this.Redirect($"/Admin/Cars/Edit/{model.Id}");
             }
 
-            return this.Redirect($"/Admin/Cars/Details/{model.Id}");
+            return this.Redirect($"/Employees/Cars/Details/{model.Id}");
+        }
+
+        public IActionResult Delete(string carId, string customerId)
+        {
+            this.carService.DeleteAsync(carId);
+
+            return this.Redirect($"/Admin/Cars/AllCarsById/{customerId}");
         }
 
 
@@ -210,7 +167,7 @@ namespace GarageManager.Areas.User.Controllers
                 CustomerId = id
             };
 
-            result.CustomerCars = (await this.carService.GetAllByCustomerIdAsync(result.CustomerId))
+            result.CustomerCars = (await this.carService.GetAllCarsByCustomerIdAsync(result.CustomerId))
                 .Select(car => new CustomerCarDetailsViewModel
                 {
                     Id = car.Id,
@@ -218,24 +175,14 @@ namespace GarageManager.Areas.User.Controllers
                     Model = car.Model.Name,
                     RegistrationPlate = car.RegistrationPlate
                 }).ToList();
-            //TODO beautify View
 
             return View(result);
         }
 
-        public async Task<IActionResult> Service()
+        public IActionResult Service()
         {
-            var model = new AddToServiceViewModel
-            {
-                Departments = (await this.departmentService.AllDepartments())
-                .Select(department => new SelectListItem
-                {
-                    Text = department.Name,
-                    Value = department.Id
-                }).ToList()
-            };
-
-
+            var model = new AddToServiceViewModel();
+            
 
             return this.View(model);
         }
@@ -251,7 +198,7 @@ namespace GarageManager.Areas.User.Controllers
             
              await this.carService.AddToService(model.Id, model.Description, model.DepartmentId);
 
-            return this.Redirect($"/Admin/Cars/Details/{model.Id}");
+            return this.Redirect($"/Employees/Cars/Details/{model.Id}");
         }
 
         public async Task<JsonResult> AllModels(string id)

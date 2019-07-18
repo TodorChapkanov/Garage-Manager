@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GarageManager.Data.Configurations
 {
-    public class ServiceConfig : IEntityTypeConfiguration<ServiceInterventions>
+    public class ServiceConfig : IEntityTypeConfiguration<ServiceIntervention>
     {
-        public void Configure(EntityTypeBuilder<ServiceInterventions> builder)
+        public void Configure(EntityTypeBuilder<ServiceIntervention> builder)
         {
             builder
                 .HasOne(service => service.Car)
                 .WithOne(car => car.Services)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             
         }

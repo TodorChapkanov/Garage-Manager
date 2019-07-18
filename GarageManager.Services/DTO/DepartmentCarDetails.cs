@@ -13,6 +13,6 @@ namespace GarageManager.Services.DTO
 
         public string RegisterPlate { get; set; }
 
-        public ICollection<ServiceInterventions> Services { get; set; }
+        public ICollection<ServiceIntervention> Services { get; set; }
     }
 }

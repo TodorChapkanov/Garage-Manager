@@ -1,20 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GarageManager.DAL;
-using GarageManager.DAL.Contracts;
-using GarageManager.Data.Repository;
+﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
     public class ManufacturerServices : IManufacturerServices
     {
-        private readonly IRepository<VehicleManufacturer> repository;
+        private readonly IDeletableEntityRepository<VehicleManufacturer> repository;
 
-        public ManufacturerServices(IRepository<VehicleManufacturer> repository)
+        public ManufacturerServices(IDeletableEntityRepository<VehicleManufacturer> repository)
         {
             this.repository = repository;
         }

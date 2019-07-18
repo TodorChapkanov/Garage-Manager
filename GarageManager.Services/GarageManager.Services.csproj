@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GarageManager.DAL\GarageManager.DAL.csproj" />
+    <ProjectReference Include="..\GarageManager.Data\GarageManager.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

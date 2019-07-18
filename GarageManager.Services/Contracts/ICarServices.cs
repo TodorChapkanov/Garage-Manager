@@ -9,7 +9,7 @@ namespace GarageManager.Services.Contracts
 {
     public interface ICarServices
     {
-        Task<IEnumerable<Car>> GetAllByCustomerIdAsync(string id);
+        Task<IEnumerable<Car>> GetAllCarsByCustomerIdAsync(string id);
 
         Task<bool> CreateAsync<TEntity>
             (
@@ -38,5 +38,9 @@ namespace GarageManager.Services.Contracts
            string transmissionId);
 
         Task<bool> AddToService(string carId, string carDescription, string departmentId);
+
+        Task<CarServicesDetails> GetCarServicesAsync(string id);
+
+        Task<int> DeleteAsync(string id);
     }
 }

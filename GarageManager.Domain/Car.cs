@@ -9,7 +9,7 @@ namespace GarageManager.Domain
     {
         public Car()
         {
-            this.Services = new ServiceInterventions();
+            this.Services = new ServiceIntervention();
         }
 
         [Required]
@@ -67,7 +67,7 @@ namespace GarageManager.Domain
 
         public TransmissionType Transmission { get; set; }
 
-        public ServiceInterventions Services { get; set; }
+        public ServiceIntervention Services { get; set; }
 
         public bool IsFinished { get; set; }
 

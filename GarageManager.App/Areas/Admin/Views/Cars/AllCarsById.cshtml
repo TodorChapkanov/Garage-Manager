@@ -1,4 +1,4 @@
-﻿@model GarageManager.Areas.Admin.ViewModels.CustomerCarViewModel
+﻿@model GarageManager.App.Models.ViewModels.Customer.CustomerCarViewModel
 
 @{
     ViewData["Title"] = "All Cars";
@@ -35,7 +35,7 @@
                             <td class="col-md-3">@car.Model</td>
                             <td class="col-md-3 ">@car.RegistrationPlate</td>
                             <th class="col-md-3 d-flex justify-content-around">
-                                <a asp-action="Details" asp-controller="Cars" asp-area="Admin" asp-route-Id="@car.Id">Details</a>
+                                <a asp-action="Details" asp-controller="Cars" asp-area="Employees" asp-route-Id="@car.Id">Details</a>
                                 <a asp-action="Edit" asp-controller="Cars" asp-area="Admin" asp-route-Id="@car.Id">Edit</a>
                                 <a asp-action="Service" asp-controller="Cars" asp-area="Admin" asp-route-Id="@car.Id">Service</a>
                             </th>
