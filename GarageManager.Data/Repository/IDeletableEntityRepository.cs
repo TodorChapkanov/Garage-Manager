@@ -1,4 +1,5 @@
 ﻿using GarageManager.Domain;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,7 +21,9 @@ namespace GarageManager.Data.Repository
 
         Task<int> Undelete(TEntity entity);
 
-        Task UpdateAsync(TEntity entity);
+        Task<int> UpdateAsync(TEntity entity);
+
+        Task<TEntity> GetEntityByKeyAsync(string key);
 
         IQueryable<TEntity> All();
     }

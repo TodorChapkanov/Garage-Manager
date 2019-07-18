@@ -1,6 +1,7 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
+using GarageManager.Services.DTO.Repair;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,6 +58,41 @@ namespace GarageManager.Services
                 });
 
             return carFromDb.Carid;
+        }
+
+        public async Task<RepairEditDetails> GetEditDetailsByIdAsync(string id)
+        {
+            var repairFromDb = (await this.repairRepository.GetAsync(id));
+
+            var part = new RepairEditDetails
+            {
+                Id = repairFromDb.Id,
+                Description = repairFromDb.Description,
+                Hours = repairFromDb.Hours,
+                PricePerHour = repairFromDb.PricePerHour,
+                IsFinished = repairFromDb.IsFinished
+            };
+
+            return part;
+        }
+        //TODO Resolve the problem with disposing DbContext
+        public async Task<bool> UpdatePartByIdAsync(
+            string id,
+            string description,
+            double hours,
+            decimal pricePerHour,
+            bool isFinished)
+        {
+
+            var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);    //All().FirstOrDefault(part => part.Id == id);
+            repairFromDb.Description = description;
+            repairFromDb.Hours = hours;
+            repairFromDb.PricePerHour = pricePerHour;
+            repairFromDb.IsFinished = isFinished;
+
+            await this.repairRepository.UpdateAsync(repairFromDb);
+
+            return true;
         }
     }
 }

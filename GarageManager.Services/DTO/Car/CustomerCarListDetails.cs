@@ -1,6 +1,10 @@
-﻿namespace GarageManager.App.Models.ViewModels.Car
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace GarageManager.Services.DTO.Car
 {
-    public class CustomerCarDetailsViewModel
+    public class CustomerCarListDetails
     {
         public string Id { get; set; }
 

@@ -57,6 +57,7 @@ namespace GarageManager
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
             services.AddTransient(typeof(IDeletableEntityRepository<>), typeof(DeletableEntityRepository<>));
             services.AddTransient<ICustomerServices, CustomerServices>();
             services.AddTransient<ICarServices, CarServices>();

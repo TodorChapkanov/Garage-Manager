@@ -19,6 +19,10 @@ namespace GarageManager.Domain
 
         public string DepartmentId { get; set; }
 
+        public int Quantity { get; set; }
+
+        public decimal TotalCost => this.Price* (decimal) this.Quantity;
+
         public ICollection<ServicePart> Services { get; set; }
         public bool IsDeleted { get ; set ; }
         public DateTime? DeletedOn { get ; set ; }

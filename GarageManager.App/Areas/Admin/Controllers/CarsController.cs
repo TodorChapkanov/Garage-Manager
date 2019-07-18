@@ -152,9 +152,9 @@ namespace GarageManager.Areas.User.Controllers
             return this.Redirect($"/Employees/Cars/Details/{model.Id}");
         }
 
-        public IActionResult Delete(string carId, string customerId)
+        public async Task<IActionResult> Delete(string carId, string customerId)
         {
-            this.carService.DeleteAsync(carId);
+           await this.carService.DeleteAsync(carId);
 
             return this.Redirect($"/Admin/Cars/AllCarsById/{customerId}");
         }
@@ -171,9 +171,10 @@ namespace GarageManager.Areas.User.Controllers
                 .Select(car => new CustomerCarDetailsViewModel
                 {
                     Id = car.Id,
-                    Make = car.Manufacturer.Name,
-                    Model = car.Model.Name,
-                    RegistrationPlate = car.RegistrationPlate
+                    Make = car.Make,
+                    Model = car.Model,
+                    RegistrationPlate = car.RegistrationPlate,
+                    IsInService = car.IsInService
                 }).ToList();
 
             return View(result);

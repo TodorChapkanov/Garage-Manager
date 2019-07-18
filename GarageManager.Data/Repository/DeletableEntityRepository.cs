@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Data.Repository
 {
-    public class DeletableEntityRepository<TEntity> : IDeletableEntityRepository<TEntity>//: RepositoryBase<TEntity>, IDeletableEntityRepository<TEntity>
+    public class DeletableEntityRepository<TEntity> :  IDeletableEntityRepository<TEntity>
         where TEntity : class, IDeletableEntity
     {
         protected readonly GMDbContext dbContext;
@@ -40,9 +40,13 @@ namespace GarageManager.Data.Repository
             entity.IsDeleted = true;
             entity.DeletedOn = DateTime.UtcNow;
           return await this.dbContext.SaveChangesAsync();
-           // return this.dbContext.Update();
+            //return this.dbContext.Update(entity);
         }
 
+        public async Task<TEntity> GetEntityByKeyAsync(string key)
+        {
+            return await this.dbContext.FindAsync<TEntity>(key);
+        }
 
         public async Task<TEntity> GetAsync(string key)
         {
@@ -55,16 +59,14 @@ namespace GarageManager.Data.Repository
         {
             entity.IsDeleted = false;
             entity.DeletedOn = null;
-            this.dbContext.Update(entity);
+             this.dbContext.Update(entity);
            return await this.dbContext.SaveChangesAsync();
             
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task<int> UpdateAsync(TEntity entity)
         {
-            this.dbContext.Update(entity);
-
-            await this.dbContext.SaveChangesAsync();
+            return await this.dbContext.SaveChangesAsync();
         }
 
         public IQueryable<TEntity> All()
@@ -72,31 +74,33 @@ namespace GarageManager.Data.Repository
             return this.dbContext.Set<TEntity>().Where(x => !x.IsDeleted);
         }
 
-      /*  protected async Task<IEnumerable<TEntity>> PaginateEntitiesAsync(
-            IQueryable<TEntity> entities,
-            string orderMember,
-            OrderDirection orderDirection,
-            int pageIndex,
-            int itemsPerPage)
-        {
-            switch (orderDirection)
-            {
-                case OrderDirection.Ascending:
-                default:
-                    entities = entities.OrderByMember(orderMember);
+       
 
-                    break;
-                case OrderDirection.Descending:
-                    entities = entities.OrderByMemberDescending(orderMember);
+        /*  protected async Task<IEnumerable<TEntity>> PaginateEntitiesAsync(
+              IQueryable<TEntity> entities,
+              string orderMember,
+              OrderDirection orderDirection,
+              int pageIndex,
+              int itemsPerPage)
+          {
+              switch (orderDirection)
+              {
+                  case OrderDirection.Ascending:
+                  default:
+                      entities = entities.OrderByMember(orderMember);
 
-                    break;
-            }
+                      break;
+                  case OrderDirection.Descending:
+                      entities = entities.OrderByMemberDescending(orderMember);
 
-            return await entities
-                .Skip((pageIndex - 1) * itemsPerPage)
-                .Take(itemsPerPage)
-                .ToListAsync();
-        }*/
+                      break;
+              }
+
+              return await entities
+                  .Skip((pageIndex - 1) * itemsPerPage)
+                  .Take(itemsPerPage)
+                  .ToListAsync();
+          }*/
         /* public DeletableEntityRepository(GMDbContext context)
              : base(context)
          {

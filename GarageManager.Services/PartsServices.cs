@@ -1,7 +1,9 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
+using GarageManager.Services.DTO.Part;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,7 +29,8 @@ namespace GarageManager.Services
             string carId,
             string name,
             string number,
-            decimal price)
+            decimal price,
+            int quantity)
         {
             var carFromDb = await this.carRepository
                 .All()
@@ -40,6 +43,7 @@ namespace GarageManager.Services
                 Name = name,
                 Number = number,
                 Price = price,
+                Quantity = quantity,
                 DepartmentId = carFromDb.DepartmentId
             };
             await this.partRepository.CreateAsync(part);
@@ -51,6 +55,47 @@ namespace GarageManager.Services
                 });
 
             return carFromDb.Id;
+        }
+
+        public async Task<PartEditDetils> GetEditDetailsByIdAsync(string id)
+        {
+            var partFromDb = (await this.partRepository.GetAsync(id));
+
+            var part = new PartEditDetils
+            {
+                Id = partFromDb.Id,
+                Name = partFromDb.Name,
+                Number = partFromDb.Number,
+                Price = partFromDb.Price,
+                Quantity = partFromDb.Quantity
+            };
+
+            return part;
+        }
+
+        public async Task<bool> UpdatePartByIdAsync(
+            string id,
+            string name,
+            string number,
+            decimal price,
+            int quantity)
+        {
+            //TODO Resolve the problem with disposing DbContext
+
+            var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);//.All().FirstOrDefault(part => part.Id == id);
+                partFromDb.Name = name;
+                partFromDb.Number = number;
+                partFromDb.Price = price;
+                partFromDb.Quantity = quantity;
+
+                await this.partRepository.UpdateAsync(partFromDb);
+        
+           /* catch (Exception ms)
+            {
+                throw new InvalidOperationException("Invalid Part Details!");
+            }*/
+
+            return true;
         }
     }
 }

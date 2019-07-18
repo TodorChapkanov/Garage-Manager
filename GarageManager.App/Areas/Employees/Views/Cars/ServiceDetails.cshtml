@@ -20,7 +20,7 @@
                             <h6 class="text-bold">Make: @Model.Make</h6>
                         </li>
                         <li class="list-group-item">
-                            <h6 class="text-bold">Model: @Model.Model</h6>
+                            <h6 class="text-bold ">Model: @Model.Model</h6>
                         </li>
                         <li class="list-group-item">
                             <h6 class="text-bold">Registration Plate: @Model.RegisterPlate</h6>
@@ -39,34 +39,39 @@
         <table class="table fixed_header table-hovermx-auto table-bordered ">
             <thead>
                 <tr class="row mx-auto">
-                    <th class="col-sm-6">Name</th>
-                    <th class="col-sm-4">Price</th>
-                    <th class="col-sm-2 text-center">Details</th>
+                    <th class="col-sm-4 bg-secondary text-white">Description</th>
+                    <th class="col-sm-2 bg-secondary text-white">Quantity</th>
+                    <th class="col-sm-2 bg-secondary text-white">Price</th>
+                    <th class="col-sm-2 bg-secondary text-white">Total Cost</th>
+                    <th class="col-sm-2 text-center bg-secondary text-white">Details</th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
                 @foreach (var part in Model.Parts)
                 {
-                    <tr class="row mx-auto bg-info">
-                        <td class="col-sm-6">@part.Name</td>
-                        <td class="col-sm-4">@part.Price</td>
+                    <tr class="row mx-auto">
+                        <td class="col-sm-4">@part.Name</td>
+                        <td class="col-sm-2">@part.Quantity</td>
+                        <td class="col-sm-2">@part.Price</td>
+                        <td class="col-sm-2">@part.TotalCost</td>
                         <th class="col-sm-2   d-flex justify-content-around">
-                            <a asp-action="Edit" asp-controller="Customers" asp-area="Employee" asp-route-id="@part.Id">Edit</a>
-                            <a asp-action="AllCarsById" asp-controller="Cars" asp-area="Employee" asp-route-id="@part.Id">Cars</a>
+                            <a class="text-dark" asp-action="Edit" asp-controller="Parts" asp-area="Employees" asp-route-id="@part.Id" asp-route-carId="@Model.Id">Edit</a>
                         </th>
                     </tr>
-                    
+
                 }
+               
                 @foreach (var repair in Model.Repairs)
                 {
                     if (repair.IsFinished)
                     {
-                        <tr class="row mx-auto bg-primary">
-                            <td class="col-sm-6">@repair.Description</td>
-                            <td class="col-sm-4">@repair.TotalCost</td>
+                        <tr class="row mx-auto bg-success">
+                            <td class="col-sm-4">@repair.Description</td>
+                            <td class="col-sm-2">@repair.Hours</td>
+                            <td class="col-sm-2">@repair.PricePerHour</td>
+                            <td class="col-sm-2">@repair.TotalCost</td>
                             <th class="col-sm-2   d-flex justify-content-around">
-                                <a asp-action="Edit" asp-controller="Customers" asp-area="Employee" asp-route-id="@repair.Id">Edit</a>
-                                <a asp-action="AllCarsById" asp-controller="Cars" asp-area="Employee" asp-route-id="@repair.Id">Cars</a>
+                                <a class="text-dark" asp-action="Edit" asp-controller="Repairs" asp-area="Employees"  asp-route-id="@repair.Id" asp-route-carId="@Model.Id">Edit</a>
                             </th>
                         </tr>
 
@@ -74,11 +79,12 @@
                     else
                     {
                         <tr class="row mx-auto bg-warning">
-                            <td class="col-sm-6">@repair.Description</td>
-                            <td class="col-sm-4">@repair.TotalCost</td>
+                            <td class="col-sm-4">@repair.Description</td>
+                            <td class="col-sm-2">@repair.Hours</td>
+                            <td class="col-sm-2">@repair.PricePerHour</td>
+                            <td class="col-sm-2">@repair.TotalCost</td>
                             <th class="col-sm-2   d-flex justify-content-around">
-                                <a asp-action="Edit" asp-controller="Customers" asp-area="Employee" asp-route-id="@repair.Id">Edit</a>
-                                <a asp-action="AllCarsById" asp-controller="Cars" asp-area="Employee" asp-route-id="@repair.Id">Cars</a>
+                                <a class="text-dark" asp-action="Edit" asp-controller="Repairs" asp-area="Employees" asp-route-id="@repair.Id" asp-route-carId="@Model.Id">Edit</a>
                             </th>
                         </tr>
                     }
@@ -88,8 +94,8 @@
         </table>
     </div>
     <div class="mx-auto text-center">
-        <a class="btn active btn-light text-center" asp-action="AddPart" asp-controller="Parts" asp-area="Employee" asp-route-id="@Model.Id">Add Part</a>
-        <a class="btn active btn-light text-center ml-3" asp-action="AddRepairService" asp-controller="Repairs" asp-area="Employee" asp-route-id="@Model.Id">Add Repair Service</a>
+        <a class="btn active btn-light text-center" asp-action="AddPart" asp-controller="Parts" asp-area="Employees" asp-route-id="@Model.Id">Add Part</a>
+        <a class="btn active btn-light text-center ml-3" asp-action="AddRepairService" asp-controller="Repairs" asp-area="Employees" asp-route-id="@Model.Id">Add Repair Service</a>
     </div>
 </div>
 

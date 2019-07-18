@@ -63,8 +63,9 @@ namespace GarageManager.App.Areas.Employees.Controllers
                 {
                     Id = part.Id,
                     Name = part.Name,
-                    Number = part.Number,
-                    Price = part.Price
+                    Price = part.Price,
+                    Quantity = part.Quantity,
+                    TotalCost = part.TotalCost
                 }),
                 Repairs = carModel.Repairs.Select(repair => new RepairDetailsViewModel
                 {

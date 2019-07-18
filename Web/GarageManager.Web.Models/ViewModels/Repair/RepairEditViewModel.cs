@@ -1,17 +1,13 @@
 ﻿using GarageManager.Common;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace GarageManager.Domain
+namespace GarageManager.Web.Models.ViewModels.Repair
 {
-    public class Repair : IDeletableEntity
+    public class RepairEditViewModel
     {
-        public Repair()
-        {
-            this.Id = Guid.NewGuid().ToString();
-        }
         public string Id { get; set; }
+
+        public string CarId { get; set; }
 
         [Required]
         [StringLength(
@@ -19,27 +15,19 @@ namespace GarageManager.Domain
             ErrorMessage = GlobalConstants.StringLengthErrorMessage,
             MinimumLength = GlobalConstants.RepairDescriptionMinLength)]
         public string Description { get; set; }
-        
+
         [Required]
-        [Range(GlobalConstants.MinRepairTime, 
-            GlobalConstants.MaxRepairTime, 
+        [Range(GlobalConstants.MinRepairTime,
+            GlobalConstants.MaxRepairTime,
             ErrorMessage = GlobalConstants.RepairTimeErrorMessage)]
         public double Hours { get; set; }
 
         [Required]
-        [Range(GlobalConstants.RepairMinPricePerHour, 
-            GlobalConstants.RepairMaxPricePerHour, 
+        [Range(GlobalConstants.RepairMinPricePerHour,
+            GlobalConstants.RepairMaxPricePerHour,
             ErrorMessage = GlobalConstants.RepairPricePerHourErrorMessage)]
         public decimal PricePerHour { get; set; }
 
         public bool IsFinished { get; set; }
-
-        public string DepartmentId { get; set; }
-
-        public decimal TotalCosts => this.PricePerHour * (decimal)this.Hours;
-
-        public ICollection<ServiceRepair>  Services{ get; set; }
-        public bool IsDeleted { get; set ; }
-        public DateTime? DeletedOn { get ; set ; }
     }
 }

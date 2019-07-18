@@ -71,6 +71,6 @@ namespace GarageManager.Domain
 
         public bool IsFinished { get; set; }
 
-
+        public bool IsInService { get; set; }
     }
 }

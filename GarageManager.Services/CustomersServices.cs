@@ -101,7 +101,7 @@ namespace GarageManager.Services
         {
             try
             {
-                var cutomerFromDb =  this.customerRepository.GetAsync(id).Result;
+                var cutomerFromDb =  this.customerRepository.All().FirstOrDefault(customer => customer.Id == id);
                 return await this.customerRepository.DeleteAsync(cutomerFromDb);
             }
             catch (Exception ms)

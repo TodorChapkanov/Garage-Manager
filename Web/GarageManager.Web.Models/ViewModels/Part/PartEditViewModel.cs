@@ -1,19 +1,19 @@
 ﻿using GarageManager.Common;
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace GarageManager.App.Models.BindingModels.Part
+namespace GarageManager.Web.Models.ViewModels.Part
 {
-    public class PartCreateBindingModel
+    public class PartEditViewModel
     {
-        [BindProperty(Name = "id")]
+        public string Id { get; set; }
+
         public string CarId { get; set; }
 
         [Required]
         [StringLength(
-            GlobalConstants.PartNameMaxLength,
-            ErrorMessage = GlobalConstants.StringLengthErrorMessage, 
-            MinimumLength = GlobalConstants.PartNameMinLength)]
+           GlobalConstants.PartNameMaxLength,
+           ErrorMessage = GlobalConstants.StringLengthErrorMessage,
+           MinimumLength = GlobalConstants.PartNameMinLength)]
         public string Name { get; set; }
 
         [Required]
@@ -33,7 +33,7 @@ namespace GarageManager.App.Models.BindingModels.Part
         [Required]
         [Range(GlobalConstants.PartQuantityMinRange,
             GlobalConstants.PartQuantityMaxRange,
-            ErrorMessage =GlobalConstants.PartQuantityErrorMessage)]
+            ErrorMessage = GlobalConstants.PartQuantityErrorMessage)]
         public int Quantity { get; set; }
     }
 }

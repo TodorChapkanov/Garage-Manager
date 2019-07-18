@@ -1,5 +1,6 @@
 ﻿using GarageManager.Domain;
 using GarageManager.Services.DTO;
+using GarageManager.Services.DTO.Car;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace GarageManager.Services.Contracts
 {
     public interface ICarServices
     {
-        Task<IEnumerable<Car>> GetAllCarsByCustomerIdAsync(string id);
+        Task<IEnumerable<CustomerCarListDetails>> GetAllCarsByCustomerIdAsync(string id);
 
         Task<bool> CreateAsync<TEntity>
             (

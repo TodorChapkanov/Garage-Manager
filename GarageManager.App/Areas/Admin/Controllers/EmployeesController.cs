@@ -23,7 +23,7 @@ namespace GarageManager.App.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.View();
+                return this.View(model);
             }
             return null;
         }

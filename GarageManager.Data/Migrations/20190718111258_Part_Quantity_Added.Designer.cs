@@ -4,14 +4,16 @@ using GarageManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GarageManager.Data.Migrations
 {
     [DbContext(typeof(GMDbContext))]
-    partial class GMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190718111258_Part_Quantity_Added")]
+    partial class Part_Quantity_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,8 +47,6 @@ namespace GarageManager.Data.Migrations
                     b.Property<bool>("IsDeleted");
 
                     b.Property<bool>("IsFinished");
-
-                    b.Property<bool>("IsInService");
 
                     b.Property<string>("ManufactureId")
                         .IsRequired();
@@ -237,7 +237,7 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<decimal>("Price");
 
-                    b.Property<int>("Quantity");
+                    b.Property<int>("Quatity");
 
                     b.HasKey("Id");
 

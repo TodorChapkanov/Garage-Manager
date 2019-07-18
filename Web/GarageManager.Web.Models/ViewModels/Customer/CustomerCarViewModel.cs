@@ -11,6 +11,8 @@ namespace GarageManager.App.Models.ViewModels.Customer
         }
         public string CustomerId { get; set; }
 
+        public bool IsInService { get; set; }
+
         public ICollection<CustomerCarDetailsViewModel> CustomerCars { get; set; }
     }
 }

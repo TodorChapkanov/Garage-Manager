@@ -2,6 +2,7 @@
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO;
+using GarageManager.Services.DTO.Car;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,13 +27,21 @@ namespace GarageManager.Services
             this.departmentServices = departmentServices;
         }
 
-        public async Task<IEnumerable<Car>> GetAllCarsByCustomerIdAsync(string id)
+        public async Task<IEnumerable<CustomerCarListDetails>> GetAllCarsByCustomerIdAsync(string id)
         {
             var result = await this.carRepository
                 .All()
                 .Include(car => car.Manufacturer)
                 .Include(car => car.Model)
                 .Where(customer => customer.CustomerId == id)
+                .Select(car => new CustomerCarListDetails
+                {
+                    Id = car.Id,
+                    Make = car.Manufacturer.Name,
+                    Model = car.Model.Name,
+                    RegistrationPlate = car.RegistrationPlate,
+                    IsInService = car.IsInService
+                })
                 .ToListAsync();
             return result;
         }
@@ -120,7 +129,7 @@ namespace GarageManager.Services
             string engineModel,
             int engineHorsePower,
             string fuelTypeId,
-            string transmissionId )
+            string transmissionId)
         {
             try
             {
@@ -134,7 +143,7 @@ namespace GarageManager.Services
                 carFromDb.FuelTypeId = fuelTypeId;
                 carFromDb.TransmissionId = transmissionId;
 
-             await  this.carRepository.UpdateAsync(carFromDb);
+                await this.carRepository.UpdateAsync(carFromDb);
             }
 
             catch (Exception)
@@ -153,6 +162,7 @@ namespace GarageManager.Services
                 var departmentFromDb = await this.departmentServices.All().FirstOrDefaultAsync(department => department.Id == departmentId);
                 carFromDb.Description = carDescription;
                 carFromDb.DepartmentId = departmentFromDb.Id;
+                carFromDb.IsInService = true;
                 await this.carRepository.UpdateAsync(carFromDb);
 
                 return true;
@@ -185,7 +195,9 @@ namespace GarageManager.Services
                         Id = part.Part.Id,
                         Name = part.Part.Name,
                         Number = part.Part.Number,
-                        Price = part.Part.Price
+                        Price = part.Part.Price,
+                        Quantity = part.Part.Quantity,
+                        TotalCost = part.Part.TotalCost
                     }),
                     Repairs = car.Services.Repairs.Select(repair => new RepairDetails
                     {
@@ -206,18 +218,12 @@ namespace GarageManager.Services
         // За теста смени закоментираните редове с синхронните
         public async Task<int> DeleteAsync(string id)
         {
-            try
-            {
-               // var carFromDb = this.carRepository.All().FirstOrDefaultAsync(car => car.Id == id);
-                var carFromDb =  this.carRepository.All().FirstOrDefault(car => car.Id == id);
-                return  await this.carRepository.DeleteAsync(carFromDb);
-            }
-            catch (Exception ms)
-            {
-                var message = ms.InnerException;
-                throw new InvalidOperationException("Invalid delete comand");
-            }
-            
+            //TODO Resolve the problem with disposing DbContext
+            var carFromDb =await  this.carRepository.All().FirstOrDefaultAsync(car => car.Id == id);
+           // var carFromDb = this.carRepository.All().FirstOrDefault(car => car.Id == id);
+            return await this.carRepository.DeleteAsync(carFromDb);
+
+
         }
     }
 }

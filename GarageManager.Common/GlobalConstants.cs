@@ -54,10 +54,23 @@
         public const int PartNameMaxLength = 60;
         public const int PartNumberMinLength = 6;
         public const int PartNumberMaxLength = 25;
+        public const int PartQuantityMinRange = 1;
+        public const int PartQuantityMaxRange = int.MaxValue;
+        public const string PartQuantityErrorMessage = "{0} must be greater or equal to {1}";
         public const double PartPriceMinValue = 0.1;
         public const double PartPriceMaxValue = 50000;
 
         //Parts error messages
-        public const string PartPriceErrorMessage = "Price must be greater than {1}!";
+        public const string PartPriceErrorMessage = "{0} must be greater than {1}!";
+
+        //Repair
+        public  const double MinRepairTime = 0.10;
+        public  const double MaxRepairTime = 120;
+        public const string RepairTimeErrorMessage = "{0} must be greater or equal than {1} and less or equal {2}";
+        public const int RepairDescriptionMinLength = 10;
+        public  const int RepairDescriptionMaxLength = 500;
+        public  const double RepairMinPricePerHour = 1.00;
+        public  const double RepairMaxPricePerHour = double.MaxValue;
+        public const string RepairPricePerHourErrorMessage = "{0} must be greater or equal than {1} and less or equal {2}";
     }
 }
