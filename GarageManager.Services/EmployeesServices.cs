@@ -1,7 +1,9 @@
-﻿using GarageManager.Data.Repository;
+﻿using GarageManager.Common;
+using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO.Employee;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,51 +15,53 @@ namespace GarageManager.Services
     public class EmployeesServices : IEmployeesServices
     {
         private readonly IDeletableEntityRepository<GMUser> employeeRepository;
+        private readonly UserManager<GMUser> userManager;
+        private readonly SignInManager<GMUser> signInManager;
 
-        public EmployeesServices(IDeletableEntityRepository<GMUser> employeeRepository)
+        public EmployeesServices(IDeletableEntityRepository<GMUser> employeeRepository, UserManager<GMUser> userManager, SignInManager<GMUser> signInManager)
         {
             this.employeeRepository = employeeRepository;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
-        public async Task<bool> CreateNewAsync(
+        //TODO Add USERMANAGER
+        public async Task<string> CreateNewEmployeeAsync(
             string firstName,
             string lastName,
             string password,
             string email,
             string phoneNumber,
-            DateTime recruitedOn,
+            DateTime? recruitedOn,
             string departmentId)
         {
-            try
+            if (this.employeeRepository.All().Select(emp => emp.Email).Contains(email)) 
             {
-                var customer = new GMUser()
-                {
-                    PasswordHash = password,
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Email = email,
-                    PhoneNumber = phoneNumber,
-                    RecruitedOn = recruitedOn,
-                    DepartmentId = departmentId,
-                    CreatedOn = DateTime.UtcNow
-                };
-
-                await this.employeeRepository.CreateAsync(customer);
-
-                return true;
-            }
-            catch (Exception)
-            {
-                throw new InvalidOperationException("Invalid Employee parameters!");
+                return GlobalConstants.EmailExistResult;
             }
 
+            var employee = new GMUser()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                UserName = $"{firstName}{lastName}",
+                Email = email,
+                PhoneNumber = phoneNumber,
+                RecruitedOn = recruitedOn,
+                DepartmentId = departmentId,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            var result = await this.userManager.CreateAsync(employee, password);
            
+           
+            return employee.Id;
+
         }
 
         public Task<List<AllEmployees>> GetAllEmployeesAsync()
         {
-            var allEmployees =  this.employeeRepository
-                .All()
+            var allEmployees = this.employeeRepository.All()
                 .Include(employee => employee.Department)
                 .Select(employee => new AllEmployees
                 {
@@ -67,46 +71,66 @@ namespace GarageManager.Services
                     PhoneNumber = employee.PhoneNumber,
                     DepartmentName = employee.Department.Name
                 }).ToListAsync();
+
             return allEmployees;
         }
 
 
 
-        public async Task<EmployeeDetails> EditEmployeeDetailsByIdAsync(string id)
+        public async Task<EditEmployeeDetails> EditEmployeeDetailsByIdAsync(string id)
         {
-            var employeeFromDb = await this.employeeRepository
-                .All()
-                .Include(department => department.Department)
+            var employeeFromDb = await this.userManager.Users
+               .Select(employee => new EditEmployeeDetails
+               {
+                   Id = id,
+                   FirstName = employee.FirstName,
+                   LastName = employee.LastName,
+                   Email = employee.Email,
+                   PhoneNumber = employee.PhoneNumber,
+                   DepartmentId = employee.DepartmentId,
+                   RecruitedOn = employee.RecruitedOn,
+                   CreatedOn = employee.CreatedOn
+               })
                 .FirstOrDefaultAsync(employee => employee.Id == id);
-            var customerDetails = new EmployeeDetails
-            {
-                Id = id,
-                FirstName = employeeFromDb.FirstName,
-                LastName = employeeFromDb.LastName,
-                Email = employeeFromDb.Email,
-                PhoneNumber = employeeFromDb.PhoneNumber,
-                Department = employeeFromDb.Department.Name,
-                RecruitedOn = employeeFromDb.RecruitedOn,
-                CreatedOn = employeeFromDb.CreatedOn
-            };
 
-            return customerDetails;
+
+            return employeeFromDb;
         }
 
-        public async Task<bool> UpdateCustomerByIdAsync(
+        public async Task<EmployeeDetails> GetEmployeeDetailsByIdAsync(string id)
+        {
+            var employeeFromDb = await this.userManager.Users
+                .Include(department => department.Department).
+                Select(employee => new EmployeeDetails
+                {
+                    Id = id,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    Department = employee.Department.Name,
+                    RecruitedOn = employee.RecruitedOn,
+                    CreatedOn = employee.CreatedOn
+                })
+                .FirstOrDefaultAsync(employee => employee.Id == id);
+
+
+            return employeeFromDb;
+        }
+
+        public async Task<bool> UpdateEmployeeByIdAsync(
             string id,
             string firstName,
             string lastName,
             string email,
             string phonenumber,
             string departmentId,
-            DateTime recruitedOn )
+            string password,
+            DateTime? recruitedOn)
         {
             try
             {
-                var employeeFromDb = await this.employeeRepository
-                    .All()
-                    .FirstAsync(emp => emp.Id == id);
+                var employeeFromDb = await this.userManager.FindByIdAsync(id);
 
                 employeeFromDb.FirstName = firstName;
                 employeeFromDb.LastName = lastName;
@@ -117,7 +141,9 @@ namespace GarageManager.Services
 
 
 
-                await this.employeeRepository.UpdateAsync(employeeFromDb);
+                employeeFromDb.PasswordHash = this.userManager.PasswordHasher.HashPassword(employeeFromDb, password);
+                await this.userManager.UpdateAsync(employeeFromDb);
+
                 return true;
             }
             catch (Exception)
@@ -128,9 +154,17 @@ namespace GarageManager.Services
 
         }
 
+        public async Task<int> DeleteEmployeeAsync(string id)
+        {
+            var employeeFromDb = await this.userManager.FindByIdAsync(id);
+           var result = await this.employeeRepository.SoftDeleteAsync(employeeFromDb);
+
+            return result;
+        }
+
         public bool IsAnyEmployee()
         {
-            var result =  this.employeeRepository.All().Count();
+            var result = this.employeeRepository.All().Count();
 
             return result > 0;
         }

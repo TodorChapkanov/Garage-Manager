@@ -1,0 +1,37 @@
+﻿@model IEnumerable<GarageManager.Web.Models.ViewModels.Employee.AllEmployeesViewModel>
+
+@{
+    ViewData["Title"] = "AllEmployees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>All Employees</h1>
+
+<div class="container-fluid">
+    <table class="table table-hover w-75 mx-auto ">
+        <thead>
+            <tr class="row mx-auto">
+                <td class="col-sm-3">Name</td>
+                <td class="col-sm-3">Department Name</td>
+                <td class="col-sm-2">Phone Number</td>
+                <td class="col-sm-2">Email</td>
+                <td class="col-sm-2 text-center">Actions</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr class="row mx-auto ">
+                    <td class="col-sm-3">@employee.FullName</td>
+                    <td class="col-sm-3">@employee.DepartmentName</td>
+                    <td class="col-sm-2">@employee.PhoneNumber</td>
+                    <td class="col-sm-2">@employee.Email</td>
+                    <th class="col-md-2   d-flex justify-content-around">
+                        <a asp-action="Details" asp-controller="Employees" asp-area="Admin" asp-route-id="@employee.Id">Details</a>
+                        <a asp-action="Edit" asp-controller="Employees" asp-area="Admin" asp-route-id="@employee.Id">Edit</a>
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

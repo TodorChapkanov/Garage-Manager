@@ -10,16 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GarageManager.Areas.User.Controllers
+namespace GarageManager.Areas.Admin.Controllers
 {
     public class CarsController : BaseAdminController
     {
         private readonly ICarServices carService;
-        private readonly IManufacturerServices manufacturerService;
         private readonly IModelServices modelService;
         private readonly IFuelTypeServices fuelTypeService;
         private readonly ITransmissionTypesServices transmissionTypeService;
-        private readonly IDepartmentServices departmentService;
 
         
 
@@ -33,11 +31,9 @@ namespace GarageManager.Areas.User.Controllers
             )
         {
             this.carService = carService;
-            this.manufacturerService = manufacturerService;
             this.modelService = modelService;
             this.fuelTypeService = fuelTypeService;
             this.transmissionTypeService = transmissionTypeService;
-            this.departmentService = departmentService;
         }
 
         [HttpGet("/Admin/Cars/Create/{Id}")]
@@ -47,7 +43,7 @@ namespace GarageManager.Areas.User.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCarBindingViewModel carBVM)
+        public async Task<IActionResult> Create(CreateCarBindingModel carBVM)
         {
             if (carBVM.CustomerId == null)
             {
@@ -154,7 +150,7 @@ namespace GarageManager.Areas.User.Controllers
 
         public async Task<IActionResult> Delete(string carId, string customerId)
         {
-           await this.carService.DeleteAsync(carId);
+           await this.carService.HardDeleteAsync(carId);
 
             return this.Redirect($"/Admin/Cars/AllCarsById/{customerId}");
         }
@@ -189,7 +185,7 @@ namespace GarageManager.Areas.User.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Service(CarAddToServiceBindingViewModel model)
+        public async Task<IActionResult> Service(CarAddToServiceBindingModel model)
         {
             if (!ModelState.IsValid)
             {

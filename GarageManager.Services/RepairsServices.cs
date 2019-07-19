@@ -3,6 +3,7 @@ using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO.Repair;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,16 +13,13 @@ namespace GarageManager.Services
     {
         private readonly IDeletableEntityRepository<Car> carRepository;
         private readonly IDeletableEntityRepository<Repair> repairRepository;
-        private readonly IDeletableEntityRepository<ServiceRepair> serviceRepairRepository;
 
         public RepairsServices(
             IDeletableEntityRepository<Car> carRepository,
-            IDeletableEntityRepository<Repair> repairRepository,
-            IDeletableEntityRepository<ServiceRepair> serviceRepairRepository)
+            IDeletableEntityRepository<Repair> repairRepository)
         {
             this.carRepository = carRepository;
             this.repairRepository = repairRepository;
-            this.serviceRepairRepository = serviceRepairRepository;
         }
 
         public async Task<string> CreateRepairService(
@@ -37,6 +35,7 @@ namespace GarageManager.Services
                 .Select(car => new
                 {
                     Carid = car.Id,
+                    Service = car.Services,
                     ServiceId = car.Services.Id,
                     car.DepartmentId
                 })
@@ -47,15 +46,10 @@ namespace GarageManager.Services
                 Description = description,
                 Hours = hours,
                 PricePerHour = pricePerHour,
-                DepartmentId = carFromDb.DepartmentId
+                ServiceId = carFromDb.Service.Id
             };
             await this.repairRepository.CreateAsync(repairService);
-            await this.serviceRepairRepository
-                .CreateAsync(new ServiceRepair
-                {
-                    RepairId = repairService.Id,
-                    ServiceId = carFromDb.ServiceId
-                });
+            carFromDb.Service.Repairs.Add(repairService);
 
             return carFromDb.Carid;
         }
@@ -84,7 +78,7 @@ namespace GarageManager.Services
             bool isFinished)
         {
 
-            var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);    //All().FirstOrDefault(part => part.Id == id);
+            var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);   
             repairFromDb.Description = description;
             repairFromDb.Hours = hours;
             repairFromDb.PricePerHour = pricePerHour;
@@ -93,6 +87,22 @@ namespace GarageManager.Services
             await this.repairRepository.UpdateAsync(repairFromDb);
 
             return true;
+        }
+
+        public async Task<int> HardDeleteAsync(string id)
+        {
+            try
+            {
+                var partFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
+                this.repairRepository.HardDelete(partFromDb);
+                return int.MaxValue;
+            }
+            catch (System.Exception ex )
+            {
+
+                throw new InvalidOperationException(ex.Message);
+            }
+            
         }
     }
 }

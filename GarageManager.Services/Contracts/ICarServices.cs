@@ -42,6 +42,6 @@ namespace GarageManager.Services.Contracts
 
         Task<CarServicesDetails> GetCarServicesAsync(string id);
 
-        Task<int> DeleteAsync(string id);
+        Task<int> HardDeleteAsync(string id);
     }
 }

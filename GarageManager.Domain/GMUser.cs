@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GarageManager.Common;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,17 @@ namespace GarageManager.Domain
 
     public class GMUser :  IdentityUser, IEntity<string>, IDeletableEntity
     {
-        private const int MaxFirstNameLength = 30;
-        private const int MaxLastNameLength = 40;
+        public GMUser()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
 
         [Required]
-        [MaxLength(MaxFirstNameLength)]
+        [MaxLength(GlobalConstants.RegisterNameMaxLength)]
         public string FirstName { get; set; }
 
         [Required]
-        [MaxLength(MaxLastNameLength)]
+        [MaxLength(GlobalConstants.RegisterNameMaxLength)]
         public string LastName { get; set; }
 
         public string FullName => $"{this.FirstName} {this.FirstName}";

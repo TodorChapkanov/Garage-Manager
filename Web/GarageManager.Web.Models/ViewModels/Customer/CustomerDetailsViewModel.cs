@@ -10,17 +10,17 @@ namespace GarageManager.App.Models.ViewModels.Customer
         [Required]
         [Display(Name = GlobalConstants.DisplayFirstName)]
         [StringLength(
-            GlobalConstants.CustomerNameMaxLength,
-            ErrorMessage = GlobalConstants.CustomeNameLengthErrorMessage,
-            MinimumLength = GlobalConstants.CustomerNameMinLength)]
+            GlobalConstants.RegisterNameMaxLength,
+            ErrorMessage = GlobalConstants.RegisterNameLengthErrorMessage,
+            MinimumLength = GlobalConstants.RegisterNameMinLength)]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = GlobalConstants.DisplayLastName)]
         [StringLength(
-         GlobalConstants.CustomerNameMaxLength,
-         ErrorMessage = GlobalConstants.CustomeNameLengthErrorMessage,
-         MinimumLength = GlobalConstants.CustomerNameMinLength)]
+         GlobalConstants.RegisterNameMaxLength,
+         ErrorMessage = GlobalConstants.RegisterNameLengthErrorMessage,
+         MinimumLength = GlobalConstants.RegisterNameMinLength)]
         public string LastName { get; set; }
 
         [Required]

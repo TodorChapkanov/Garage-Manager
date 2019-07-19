@@ -15,5 +15,7 @@ namespace GarageManager.Services.Contracts
             bool isFinished);
 
         Task<RepairEditDetails> GetEditDetailsByIdAsync(string id);
+
+        Task<int> HardDeleteAsync(string id);
     }
 }

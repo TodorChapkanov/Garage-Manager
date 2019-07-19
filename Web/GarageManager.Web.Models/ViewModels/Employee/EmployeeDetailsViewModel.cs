@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GarageManager.Services.DTO.Employee
+namespace GarageManager.Web.Models.ViewModels.Employee
 {
-    public class EditEmployeeDetails
+    public class EmployeeDetailsViewModel
     {
         public string Id { get; set; }
         public string FirstName { get; set; }
 
-        public string  LastName { get; set; }
-
-        public string Password { get; set; }
+        public string LastName { get; set; }
 
         public string Email { get; set; }
 
@@ -21,6 +17,6 @@ namespace GarageManager.Services.DTO.Employee
 
         public DateTime? RecruitedOn { get; set; }
 
-        public string DepartmentId { get; set; }
+        public string DepartmentName { get; set; }
     }
 }

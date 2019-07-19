@@ -31,7 +31,7 @@ namespace GarageManager.App.Areas.Employees.Controllers
             }
 
             var carId = await this.partsService
-                .CreatePart(
+                .CreatePartAsync(
                 model.CarId,
                 model.Name,
                 model.Number,

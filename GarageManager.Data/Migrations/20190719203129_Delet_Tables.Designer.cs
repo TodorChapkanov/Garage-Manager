@@ -4,14 +4,16 @@ using GarageManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GarageManager.Data.Migrations
 {
     [DbContext(typeof(GMDbContext))]
-    partial class GMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190719203129_Delet_Tables")]
+    partial class Delet_Tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,7 +245,7 @@ namespace GarageManager.Data.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Parts");
+                    b.ToTable("Part");
                 });
 
             modelBuilder.Entity("GarageManager.Domain.Repair", b =>
@@ -469,7 +471,7 @@ namespace GarageManager.Data.Migrations
                     b.HasOne("GarageManager.Domain.Customer", "Customer")
                         .WithMany("Cars")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("GarageManager.Domain.Department", "Department")
                         .WithMany("Cars")
@@ -483,7 +485,7 @@ namespace GarageManager.Data.Migrations
                     b.HasOne("GarageManager.Domain.VehicleManufacturer", "Manufacturer")
                         .WithMany("Cars")
                         .HasForeignKey("ManufactureId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("GarageManager.Domain.VehicleModel", "Model")
                         .WithMany("Cars")
@@ -493,7 +495,7 @@ namespace GarageManager.Data.Migrations
                     b.HasOne("GarageManager.Domain.TransmissionType", "Transmission")
                         .WithMany()
                         .HasForeignKey("TransmissionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("GarageManager.Domain.GMUser", b =>
@@ -501,7 +503,7 @@ namespace GarageManager.Data.Migrations
                     b.HasOne("GarageManager.Domain.Department", "Department")
                         .WithMany("Employees")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("GarageManager.Domain.Part", b =>

@@ -14,10 +14,12 @@ namespace GarageManager.Services
     public class CustomerServices : ICustomerServices
     {
         private readonly IDeletableEntityRepository<Customer> customerRepository;
+        private readonly ICarServices carService;
 
-        public CustomerServices(IDeletableEntityRepository<Customer> customerRepository)
+        public CustomerServices(IDeletableEntityRepository<Customer> customerRepository, ICarServices carService)
         {
             this.customerRepository = customerRepository;
+            this.carService = carService;
         }
 
         public async Task CreateNewAsync(string firstName, string lastName, string email, string phoneNumber)
@@ -97,18 +99,20 @@ namespace GarageManager.Services
 
         }
 
-        public async Task<int> Delete(string id)
+        public async Task<int> DeleteAsync(string id)
         {
-            try
-            {
-                var cutomerFromDb =  this.customerRepository.All().FirstOrDefault(customer => customer.Id == id);
-                return await this.customerRepository.DeleteAsync(cutomerFromDb);
-            }
-            catch (Exception ms)
-            {
-                throw new InvalidOperationException("Invalid Delete Comand", ms.InnerException);
-            }
+            var customerFromDb = this.customerRepository.All()
+            .Include(customer => customer.Cars)
+            .FirstOrDefault(customer => customer.Id == id);
 
+            //Delete asinhonus all
+            customerFromDb
+                 .Cars
+                 .Select(async car => await carService.HardDeleteAsync(car.Id))
+                 .ToList()
+            .ForEach(task => task.GetAwaiter().GetResult());
+
+            return await this.customerRepository.SoftDeleteAsync(customerFromDb);
         }
     }
 }

@@ -8,28 +8,32 @@ namespace GarageManager.Services.Contracts
 {
     public interface IEmployeesServices
     {
-        Task<bool> CreateNewAsync(
+        Task<string> CreateNewEmployeeAsync(
             string firstName,
             string lastName,
             string password,
             string email,
             string phoneNumber,
-            DateTime recruitedOn,
+            DateTime? recruitedOn,
             string departmentId);
 
         Task<List<AllEmployees>> GetAllEmployeesAsync();
 
-        Task<EmployeeDetails> EditEmployeeDetailsByIdAsync(string id);
+        Task<EditEmployeeDetails> EditEmployeeDetailsByIdAsync(string id);
 
-        Task<bool> UpdateCustomerByIdAsync(
+        Task<EmployeeDetails> GetEmployeeDetailsByIdAsync(string id);
+
+        Task<bool> UpdateEmployeeByIdAsync(
             string id,
             string firstName,
             string lastName,
             string email,
             string phonenumber,
             string departmentId,
-            DateTime recruitedOn);
+            string password,
+            DateTime? recruitedOn);
 
+        Task<int> DeleteEmployeeAsync(string id);
         bool IsAnyEmployee();
     }
 }

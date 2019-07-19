@@ -22,7 +22,7 @@ namespace GarageManager.App.Views.Shared.Components.Departments
             var departments =  new DepartmentModel
             {
                 Departments = this.departmentService
-                .AllDepartments()
+                .AllDepartmentsAsync()
                 .Result
                 .OrderBy(department =>department.Name)
                 .Select(dep => new SelectListItem

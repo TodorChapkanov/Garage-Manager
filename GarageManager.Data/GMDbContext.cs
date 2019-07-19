@@ -20,13 +20,14 @@ namespace GarageManager.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<FuelType> FuelTypes { get; set; }
+
+        public DbSet<Part> Parts { get; set; }
+
         public DbSet<Repair> RepairTypes { get; set; }
         public DbSet<TransmissionType> TransmissionTypes { get; set; }
         public DbSet<VehicleManufacturer> VehicleManufacturers { get; set; }
         public DbSet<VehicleModel> VehicleModels { get; set; }
         public DbSet<ServiceIntervention> ServiceInterventions { get; set; }
-        public DbSet<ServicePart> ServiceParts { get; set; }
-        public DbSet<ServiceRepair> ServiceRepairs { get; set; }
 
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -39,8 +40,9 @@ namespace GarageManager.Data
             builder.ApplyConfiguration(new CarConfig());
             builder.ApplyConfiguration(new CustomerConfig());
             builder.ApplyConfiguration(new DepartmentConfig());
-            builder.ApplyConfiguration(new ServicePartConfig());
-            builder.ApplyConfiguration(new ServiceRepairConfig());
+            builder.ApplyConfiguration(new ServiceConfig());
+            builder.ApplyConfiguration(new PartConfig());
+            builder.ApplyConfiguration(new RepairConfig());
             builder.ApplyConfiguration(new VehicleManufacturerConfig());
             builder.ApplyConfiguration(new VehicleModelConfig());
 

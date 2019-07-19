@@ -4,11 +4,11 @@
     {
         public const string StringLengthErrorMessage = "{0} should be between {2} and {1} symbols!";
         // Customer Form 
-        public const int CustomerNameMinLength = 3;
-        public const int CustomerNameMaxLength = 20;
-        public const string CustomeNameLengthErrorMessage = "{0} should be between {2} and {1} symbols!";
+        public const int RegisterNameMinLength = 3;
+        public const int RegisterNameMaxLength = 30;
+        public const string RegisterNameLengthErrorMessage = "{0} should be between {2} and {1} symbols!";
         public const int PasswordMinLength = 4;
-        public const int PasswordMaxLength = 20;
+        public const int PasswordMaxLength = 30;
         public const string PasswordErrorMssage = "{0} should be between {2} and{1} symbold!";
         public const string ConfirmPasswordError = "Confirm Password and Password are not equal!";
         public const string InvalidPhoneNumber = "The Phone Number is not valid";
@@ -16,13 +16,13 @@
         public const int PhoneNumberMaxLength = 14;
 
         //Car 
-        public  const int CarVinNumberMaxLength = 17;
-        public  const int CarMinKilometers = 0;
-        public  const int CarMaxKilometers = 1000000;
-        public  const int CarMinYearOfManufactore = 1886;
-        public  const int CarMaxEngineHorsePower = 5000;
-        public  const int CarMinEngineHorsePower = 15;
-        public  const int CarMaxEngineModelLength = 20;
+        public const int CarVinNumberMaxLength = 17;
+        public const int CarMinKilometers = 0;
+        public const int CarMaxKilometers = 10000000;
+        public const int CarMinYearOfManufactore = 1886;
+        public const int CarMaxEngineHorsePower = 5000;
+        public const int CarMinEngineHorsePower = 15;
+        public const int CarMaxEngineModelLength = 20;
         public const int CarRegistrationPlateMaxLenth = 10;
         public const int CarRegistrationPlateMinLenth = 4;
         public const string CarRegistrationPlateErrorMassege = "Invalid Registration Plate";
@@ -64,13 +64,17 @@
         public const string PartPriceErrorMessage = "{0} must be greater than {1}!";
 
         //Repair
-        public  const double MinRepairTime = 0.10;
-        public  const double MaxRepairTime = 120;
+        public const double MinRepairTime = 0.10;
+        public const double MaxRepairTime = 120;
         public const string RepairTimeErrorMessage = "{0} must be greater or equal than {1} and less or equal {2}";
         public const int RepairDescriptionMinLength = 10;
-        public  const int RepairDescriptionMaxLength = 500;
-        public  const double RepairMinPricePerHour = 1.00;
-        public  const double RepairMaxPricePerHour = double.MaxValue;
+        public const int RepairDescriptionMaxLength = 500;
+        public const double RepairMinPricePerHour = 1.00;
+        public const double RepairMaxPricePerHour = double.MaxValue;
         public const string RepairPricePerHourErrorMessage = "{0} must be greater or equal than {1} and less or equal {2}";
+
+        //Error messages
+        public const string EmailExistResult = "EmailExist";
+        public const string EmailExistErrorMessage = "Invalid Email";
     }
 }

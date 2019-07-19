@@ -34,12 +34,14 @@ namespace GarageManager.Domain
 
         public bool IsFinished { get; set; }
 
-        public string DepartmentId { get; set; }
+        public string ServiceId { get; set; }
+
+        public ServiceIntervention Service { get; set; }
 
         public decimal TotalCosts => this.PricePerHour * (decimal)this.Hours;
 
-        public ICollection<ServiceRepair>  Services{ get; set; }
         public bool IsDeleted { get; set ; }
+
         public DateTime? DeletedOn { get ; set ; }
     }
 }

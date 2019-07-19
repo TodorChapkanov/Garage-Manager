@@ -32,15 +32,19 @@ namespace GarageManager.Data.Repository
             await this.dbContext.SaveChangesAsync();
         }
 
-        // При триене на обект и повикване SavachangesAsync хвърля грешка "контекста е затворен"
-        // За теста смени закоментираните редове с активните в момента
-        // Метода се извиква от CarsServices => DeleteAsync
-        public async/*void*/ Task<int> DeleteAsync(TEntity entity)
+        public async Task<int> SoftDeleteAsync(TEntity entity)
         {
             entity.IsDeleted = true;
             entity.DeletedOn = DateTime.UtcNow;
-          return await this.dbContext.SaveChangesAsync();
-            //return this.dbContext.Update(entity);
+             this.dbContext.Update(entity);
+            return await this.dbContext.SaveChangesAsync();
+            
+        }
+
+        public void HardDelete(TEntity entity)
+        {
+            dbContext.Remove(entity);
+            this.dbContext.SaveChanges();
         }
 
         public async Task<TEntity> GetEntityByKeyAsync(string key)

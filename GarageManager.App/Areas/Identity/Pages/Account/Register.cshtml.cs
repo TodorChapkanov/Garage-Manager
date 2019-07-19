@@ -84,7 +84,7 @@ namespace GarageManager.Areas.Identity.Pages.Account
                 
                 var user = new GMUser
                 {
-                    UserName = Input.Email,
+                    UserName = $"{Input.FirstName}{Input.LastName}",
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,

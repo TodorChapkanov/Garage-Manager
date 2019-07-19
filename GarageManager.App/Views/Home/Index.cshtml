@@ -34,17 +34,10 @@ else
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-4">
                     <div class="text-center">
-                        <span class="text-center">Cars Action</span>
-                    </div>
-                    <div class="border text-center">
-                        <a asp-area="Admin" asp-controller="Cars" asp-action="Create">Create New Car</a>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="text-center">
-                        <div >
+                        <div>
                             <span class="text-secondary">Department</span>
                         </div>
                         <div class="border bg-AliceBlue">
@@ -75,6 +68,8 @@ else
                         </div>
                     </div>
                 </div>
+                <a asp-action="Create" asp-controller="Employees" asp-area="Admin">Create New Employee</a>
+                <a asp-action="AllEmployees" asp-controller="Employees" asp-area="Admin">All Employees</a>
             </div>
         </div>
         <a class="nav-link  mr-2" href="/Identity/Account/Logout">Logout</a>

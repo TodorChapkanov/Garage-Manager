@@ -8,8 +8,8 @@ namespace GarageManager.Domain
     {
         public ServiceIntervention()
         {
-            this.Parts = new HashSet<ServicePart>();
-            this.Repairs = new HashSet<ServiceRepair>();
+            this.Parts = new HashSet<Part>();
+            this.Repairs = new HashSet<Repair>();
         }
 
 
@@ -20,16 +20,16 @@ namespace GarageManager.Domain
 
         public bool IsFinished { get; set; }
 
-        public IEnumerable<ServicePart> Parts { get; set; }
+        public ICollection<Part> Parts { get; set; }
 
-        public IEnumerable<ServiceRepair> Repairs { get; set; }
+        public ICollection<Repair> Repairs { get; set; }
 
 
         public decimal TotalCost => this.CalculateCosts();
 
         private decimal CalculateCosts()
         {
-            var result = this.Parts.Sum(part => part.Part.Price) + this.Repairs.Sum(repair => (repair.Repair.PricePerHour * (decimal)repair.Repair.Hours));
+            var result = this.Parts.Sum(part => part.Price * part.Quantity) + this.Repairs.Sum(repair => (repair.PricePerHour * (decimal)repair.Hours));
             return result;
         }
     }

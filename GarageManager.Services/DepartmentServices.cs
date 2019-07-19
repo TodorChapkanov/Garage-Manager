@@ -18,7 +18,7 @@ namespace GarageManager.Services
         {
             this.departmentRepository = departmentRepository;
         }
-        public async Task<IEnumerable<DepartmentAll>> AllDepartments()
+        public async Task<IEnumerable<DepartmentAll>> AllDepartmentsAsync()
         {
             var result = await this.departmentRepository
                 .All()
@@ -50,7 +50,7 @@ namespace GarageManager.Services
                 .Select(department => new DepartmentAllCars
                 {
                     Name = department.Name,
-                    Cars = department.Cars.Select(car => new DepartmentCarDetails
+                    Cars = department.Cars.Where(isDeleteed => !isDeleteed.IsDeleted).Select(car => new DepartmentCarDetails
                     {
                         Id = car.Id,
                         Make = car.Manufacturer.Name,

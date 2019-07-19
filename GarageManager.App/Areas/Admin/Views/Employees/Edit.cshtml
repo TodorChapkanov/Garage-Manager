@@ -1,31 +1,31 @@
-﻿@model GarageManager.Web.Models.BindingModels.Employee.EmployeeCreateBindingModel
+﻿@model GarageManager.Web.Models.ViewModels.Employee.EmployeeEditViewModel
 
 @{
-    ViewData["Title"] = "CreateEmployee";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string emailError = ViewData["Email"]?.ToString();
+    
+    var departmentName = Model.Departments.First(department => department.Value == Model.DepartmentId).Text;
 }
 
-<h1 class="text-center">Add New Employee</h1>
-@if (emailError == GarageManager.Common.GlobalConstants.EmailExistErrorMessage)
-{
-    <h3 class="text-center text-danger">@emailError</h3>
-}
+<h1 class="text-center">Employee Details</h1>
+
+
 <hr />
-<div class="container-fluid w-50">
-    <div class="mx-auto">
-        <form asp-action="CreateEmployee" method="post">
+<div class="container-fluid">
+    <div class="w-50 mx-auto">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FirsName" class="control-label"></label>
-                <input asp-for="FirsName" class="form-control" />
-                <span asp-validation-for="FirsName" class="text-danger"></span>
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
@@ -42,17 +42,33 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CreatedOn" class="control-label"></label>
+                <input asp-for="CreatedOn" class="form-control" />
+                <span asp-validation-for="CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="RecruitedOn" class="control-label"></label>
                 <input asp-for="RecruitedOn" class="form-control" />
                 <span asp-validation-for="RecruitedOn" class="text-danger"></span>
             </div>
-            @await Component.InvokeAsync("Departments")
-            <div class="form-group text-center mt-4">
-                <input  type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="form-group">
+                <label asp-for="Departments" class="control-label"></label>
+                <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control">
+                    <option disabled selected>@departmentName</option>
+                </select>
+            </div>
+            <div class="text-center">
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a class="btn btn-danger ml-5" asp-action="Delete" asp-controller="Employees" asp-route-Id="@Model.Id">Delete</a>
+
+                </div>
             </div>
         </form>
     </div>
 </div>
+
 
 
 @section Scripts {

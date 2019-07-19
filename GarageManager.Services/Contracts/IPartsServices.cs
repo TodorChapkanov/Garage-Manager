@@ -5,7 +5,7 @@ namespace GarageManager.Services.Contracts
 {
     public interface IPartsServices
     {
-        Task<string> CreatePart(
+        Task<string> CreatePartAsync(
             string carId, 
             string name, 
             string number, 
@@ -20,5 +20,7 @@ namespace GarageManager.Services.Contracts
             string number,
             decimal price,
             int quantity);
+
+        Task<int> HardDeleteAsync(string id);
     }
 }

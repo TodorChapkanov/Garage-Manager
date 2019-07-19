@@ -59,16 +59,17 @@ namespace GarageManager
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             services.AddTransient(typeof(IDeletableEntityRepository<>), typeof(DeletableEntityRepository<>));
-            services.AddTransient<ICustomerServices, CustomerServices>();
-            services.AddTransient<ICarServices, CarServices>();
-            services.AddTransient<IManufacturerServices, ManufacturerServices>();
-            services.AddTransient<IModelServices, ModelServices>();
-            services.AddTransient<IFuelTypeServices, FuelTypeServices>();
-            services.AddTransient<ITransmissionTypesServices, TransimissionTypesServices>();
-            services.AddTransient<IDepartmentServices, DepartmentServices>();
-            services.AddTransient<IEmployeesServices, EmployeesServices>();
-            services.AddTransient<IPartsServices, PartsServices>();
-            services.AddTransient<IRepairsServices, RepairsServices>();
+            services.AddScoped<ICustomerServices, CustomerServices>();
+            services.AddScoped<ICarServices, CarServices>();
+            services.AddScoped<IInterventionServices, InterventionServices>();
+            services.AddScoped<IManufacturerServices, ManufacturerServices>();
+            services.AddScoped<IModelServices, ModelServices>();
+            services.AddScoped<IFuelTypeServices, FuelTypeServices>();
+            services.AddScoped<ITransmissionTypesServices, TransimissionTypesServices>();
+            services.AddScoped<IDepartmentServices, DepartmentServices>();
+            services.AddScoped<IEmployeesServices, EmployeesServices>();
+            services.AddScoped<IPartsServices, PartsServices>();
+            services.AddScoped<IRepairsServices, RepairsServices>();
 
 
 

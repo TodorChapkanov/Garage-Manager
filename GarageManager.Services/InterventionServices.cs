@@ -1,40 +1,57 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
+using GarageManager.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class InterventionServices
+    public class InterventionServices : IInterventionServices
     {
-        private readonly IDeletableEntityRepository<Part> partRepository;
-        private readonly IDeletableEntityRepository<ServicePart> servicePartRepository;
+        private readonly IDeletableEntityRepository<ServiceIntervention> serviceRepository;
+        private readonly IPartsServices partService;
+        private readonly IRepairsServices repairsService;
 
-        public InterventionServices(IDeletableEntityRepository<Part> partRepository, IDeletableEntityRepository<ServicePart> servicePartRepository)
+        public InterventionServices(IDeletableEntityRepository<ServiceIntervention> serviceRepository,
+            IPartsServices partService,
+            IRepairsServices repairsService)
         {
-            this.partRepository = partRepository;
-            this.servicePartRepository = servicePartRepository;
-        }
-        public async Task<string> CreatePart(string name, string number, decimal price, string departmentId)
-        {
-            var part = new Part
-            {
-                Name = name,
-                Number = number,
-                Price = price,
-                DepartmentId = departmentId
-            };
-            await this.partRepository.CreateAsync(part);
-
-            return part.Id;
+            this.serviceRepository = serviceRepository;
+            this.partService = partService;
+            this.repairsService = repairsService;
         }
 
-        protected void AddPartToServiceParts(string partId, string serviceId)
+        public async Task<int> HardDeleteAllAsync (string carId)
         {
-            this.servicePartRepository.CreateAsync (new ServicePart
+            
+            try
             {
-                PartId = partId,
-                ServiceId = serviceId
-            });
+                var serviceFromDb = await this.serviceRepository.All()
+                   .Include(repair => repair.Repairs)
+                   .Include(part => part.Parts)
+                   .Where(service => service.CarId == carId).ToListAsync();
+
+                serviceFromDb.ForEach(service => service.Repairs
+                .Select(async repair => await this.repairsService.HardDeleteAsync(repair.Id))
+                .ToList()
+                .ForEach(task => task.GetAwaiter().GetResult()));
+
+                serviceFromDb.ForEach(service => service.Parts
+                      .Select(async part => await this.partService.HardDeleteAsync(part.Id))
+                      .ToList()
+                      .Select(task => task.GetAwaiter().GetResult()));
+
+                 serviceFromDb.ForEach(service => this.serviceRepository.HardDelete(service));
+                return int.MaxValue;
+                
+            }
+            catch (System.Exception ms)
+            {
+
+                throw new InvalidOperationException();
+            }
         }
     }
 }

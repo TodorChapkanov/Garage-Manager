@@ -16,15 +16,18 @@ namespace GarageManager.Services
         private readonly IDeletableEntityRepository<Car> carRepository;
         private readonly IDeletableEntityRepository<VehicleModel> modelServices;
         private readonly IDeletableEntityRepository<Department> departmentServices;
+        private readonly IInterventionServices interventionService;
 
         public CarServices(
             IDeletableEntityRepository<Car> carRepository,
             IDeletableEntityRepository<VehicleModel> modelServices,
-            IDeletableEntityRepository<Department> departmentServices)
+            IDeletableEntityRepository<Department> departmentServices,
+            IInterventionServices interventionService)
         {
             this.carRepository = carRepository;
             this.modelServices = modelServices;
             this.departmentServices = departmentServices;
+            this.interventionService = interventionService;
         }
 
         public async Task<IEnumerable<CustomerCarListDetails>> GetAllCarsByCustomerIdAsync(string id)
@@ -181,8 +184,9 @@ namespace GarageManager.Services
                 .Where(car => car.Id == id)
                 .Include(car => car.Manufacturer)
                 .Include(car => car.Model)
-                .Include(service => service.Services.Parts)
-                .Include(services => services.Services.Repairs)
+                .Include(car => car.Services)
+               // .ThenInclude(service => service.Parts)
+               // .Include(services => services.Services.Repairs)
                 .Select(car => new CarServicesDetails
                 {
                     Id = car.Id,
@@ -192,21 +196,21 @@ namespace GarageManager.Services
                     Description = car.Description,
                     Parts = car.Services.Parts.Select(part => new PartDetails
                     {
-                        Id = part.Part.Id,
-                        Name = part.Part.Name,
-                        Number = part.Part.Number,
-                        Price = part.Part.Price,
-                        Quantity = part.Part.Quantity,
-                        TotalCost = part.Part.TotalCost
+                        Id = part.Id,
+                        Name = part.Name,
+                        Number = part.Number,
+                        Price = part.Price,
+                        Quantity = part.Quantity,
+                        TotalCost = part.TotalCost
                     }),
                     Repairs = car.Services.Repairs.Select(repair => new RepairDetails
                     {
-                        Id = repair.Repair.Id,
-                        Description = repair.Repair.Description,
-                        Hours = repair.Repair.Hours,
-                        PricePerHour = repair.Repair.PricePerHour,
-                        TotalCosts = repair.Repair.TotalCosts,
-                        IsFinished = repair.Repair.IsFinished
+                        Id = repair.Id,
+                        Description = repair.Description,
+                        Hours = repair.Hours,
+                        PricePerHour = repair.PricePerHour,
+                        TotalCosts = repair.TotalCosts,
+                        IsFinished = repair.IsFinished
                     })
 
                 }).FirstOrDefaultAsync();
@@ -214,16 +218,18 @@ namespace GarageManager.Services
             return carServices;
         }
 
-        // Всички повиквания към базата съм ги направил синхронни за да не хвърлят грешка
-        // За теста смени закоментираните редове с синхронните
-        public async Task<int> DeleteAsync(string id)
+      
+        public async Task<int> HardDeleteAsync(string id)
         {
-            //TODO Resolve the problem with disposing DbContext
-            var carFromDb =await  this.carRepository.All().FirstOrDefaultAsync(car => car.Id == id);
-           // var carFromDb = this.carRepository.All().FirstOrDefault(car => car.Id == id);
-            return await this.carRepository.DeleteAsync(carFromDb);
+            var carFromDb = await this.carRepository.All()
+                .Include(service => service.Services)
+                .FirstOrDefaultAsync(car => car.Id == id);
 
+            await this.interventionService.HardDeleteAllAsync(carFromDb.Id);
 
+             this.carRepository.HardDelete(carFromDb);
+
+            return int.MaxValue;
         }
     }
 }

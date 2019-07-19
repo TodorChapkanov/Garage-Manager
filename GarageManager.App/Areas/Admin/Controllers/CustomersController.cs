@@ -24,7 +24,7 @@ namespace GarageManager.Areas.User.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CustomerCreateBindingViewModel model)
+        public async Task<IActionResult> Create(CustomerCreateBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -103,9 +103,9 @@ namespace GarageManager.Areas.User.Controllers
             return redirect;
         }
 
-        public IActionResult Delete(string id)
+        public async  Task<IActionResult> Delete(string id)
         {
-            this.customerService.Delete(id);
+           await this.customerService.DeleteAsync(id);
             return this.Redirect("/Admin/Customers/AllCustomers");
         }
     }

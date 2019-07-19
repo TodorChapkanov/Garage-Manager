@@ -1,6 +1,6 @@
 ﻿namespace GarageManager.App.Models.BindingModels
 {
-    public class CustomerCreateBindingViewModel
+    public class CustomerCreateBindingModel
     {
         public string FirstName { get; set; }
 

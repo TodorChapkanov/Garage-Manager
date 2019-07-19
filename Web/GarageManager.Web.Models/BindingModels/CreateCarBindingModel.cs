@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.App.Models.BindingModels
 {
-    public class CreateCarBindingViewModel
+    public class CreateCarBindingModel
     {
         [Required]
         [BindProperty(Name ="id")]

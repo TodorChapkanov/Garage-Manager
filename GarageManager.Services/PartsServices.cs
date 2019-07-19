@@ -12,20 +12,17 @@ namespace GarageManager.Services
     public class PartsServices : IPartsServices
     {
         private readonly IDeletableEntityRepository<Car> carRepository;
-        private readonly IDeletableEntityRepository<ServicePart> servicePartRepository;
         private readonly IDeletableEntityRepository<Part> partRepository;
 
         public PartsServices(
             IDeletableEntityRepository<Car> carRepository,
-            IDeletableEntityRepository<ServicePart> servicePartRepository,
             IDeletableEntityRepository<Part> partRepository)
         {
             this.carRepository = carRepository;
-            this.servicePartRepository = servicePartRepository;
             this.partRepository = partRepository;
         }
 
-        public async Task<string> CreatePart(
+        public async Task<string> CreatePartAsync(
             string carId,
             string name,
             string number,
@@ -44,16 +41,10 @@ namespace GarageManager.Services
                 Number = number,
                 Price = price,
                 Quantity = quantity,
-                DepartmentId = carFromDb.DepartmentId
+                ServiceId = carFromDb.Services.Id
             };
             await this.partRepository.CreateAsync(part);
-            await this.servicePartRepository
-                .CreateAsync(new ServicePart
-                {
-                    PartId = part.Id,
-                    ServiceId = carFromDb.Services.Id
-                });
-
+            carFromDb.Services.Parts.Add(part);
             return carFromDb.Id;
         }
 
@@ -96,6 +87,22 @@ namespace GarageManager.Services
             }*/
 
             return true;
+        }
+
+        public async Task<int> HardDeleteAsync(string id)
+        {
+            try
+            {
+                var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);
+               // this.servicePartRepository.HardDelete(this.servicePartRepository.All().FirstOrDefault(part => part.PartId == partFromDb.Id));
+                this.partRepository.HardDelete(partFromDb);
+                return int.MaxValue;
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException();
+            }
+            
         }
     }
 }

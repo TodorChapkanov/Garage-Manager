@@ -1,4 +1,5 @@
 ﻿using GarageManager.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,16 +9,17 @@ namespace GarageManager.Domain
     {
         public Customer()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.Cars = new HashSet<Car>();
         }
 
 
         [Required]
-        [StringLength(GlobalConstants.CustomerNameMaxLength)]
+        [StringLength(GlobalConstants.RegisterNameMaxLength)]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(GlobalConstants.CustomerNameMaxLength)]
+        [StringLength(GlobalConstants.RegisterNameMaxLength)]
         public string LastName { get; set; }
 
         //TODO Add property for  Full Name 

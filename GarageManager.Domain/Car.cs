@@ -9,6 +9,7 @@ namespace GarageManager.Domain
     {
         public Car()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.Services = new ServiceIntervention();
         }
 
