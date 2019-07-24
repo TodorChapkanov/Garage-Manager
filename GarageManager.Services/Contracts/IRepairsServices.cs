@@ -7,7 +7,7 @@ namespace GarageManager.Services.Contracts
     {
         Task<string> CreateRepairService(string carId, string description, double hours, decimal pricePerHour);
 
-        Task<bool> UpdatePartByIdAsync(
+        Task<int> UpdateRepairByIdAsync(
             string id,
             string description,
             double hours,
@@ -16,6 +16,6 @@ namespace GarageManager.Services.Contracts
 
         Task<RepairEditDetails> GetEditDetailsByIdAsync(string id);
 
-        Task<int> HardDeleteAsync(string id);
+        Task<string> HardDeleteAsync(string id);
     }
 }

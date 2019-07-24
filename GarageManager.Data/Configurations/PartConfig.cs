@@ -11,7 +11,7 @@ namespace GarageManager.Data.Configurations
             builder
                 .HasOne(part => part.Service)
                 .WithMany(service => service.Parts)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

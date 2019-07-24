@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace GarageManager.Domain
     {
         public ServiceIntervention()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.Parts = new HashSet<Part>();
             this.Repairs = new HashSet<Repair>();
         }

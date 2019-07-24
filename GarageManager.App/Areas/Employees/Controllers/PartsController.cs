@@ -74,5 +74,12 @@ namespace GarageManager.App.Areas.Employees.Controllers
 
             return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
         }
+
+        public async Task<IActionResult> Delete(string carId, string partId)
+        {
+          var serviceId = await this.partsService.HardDeleteAsync(partId);
+
+            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+        }
     }
 }

@@ -24,6 +24,12 @@ namespace GarageManager.Data.Configurations
                 .HasOne(car => car.Customer)
                 .WithMany(customer => customer.Cars)
                 .HasForeignKey(car => car.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(car => car.Services)
+                .WithOne(service => service.Car)
+                .HasForeignKey(car => car.CarId)
                 .OnDelete(DeleteBehavior.Restrict);
 
         }

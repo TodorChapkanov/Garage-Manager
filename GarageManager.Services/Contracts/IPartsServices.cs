@@ -14,13 +14,13 @@ namespace GarageManager.Services.Contracts
 
         Task<PartEditDetils> GetEditDetailsByIdAsync(string id);
 
-        Task<bool> UpdatePartByIdAsync(
+        Task<int> UpdatePartByIdAsync(
             string id,
             string name,
             string number,
             decimal price,
             int quantity);
 
-        Task<int> HardDeleteAsync(string id);
+        Task<string> HardDeleteAsync(string id);
     }
 }

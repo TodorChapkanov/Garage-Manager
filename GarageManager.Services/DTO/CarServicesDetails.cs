@@ -17,6 +17,8 @@ namespace GarageManager.Services.DTO
 
         public string Description { get; set; }
 
+        public string DepartmentId { get; set; }
+
         public IEnumerable<PartDetails> Parts { get; set; }
 
         public IEnumerable<RepairDetails> Repairs { get; set; }

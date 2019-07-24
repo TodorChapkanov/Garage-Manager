@@ -1,4 +1,5 @@
-﻿using GarageManager.App.Models.BindingModels.Part;
+﻿using GarageManager.App.Models.BindingModels;
+using GarageManager.App.Models.BindingModels.Part;
 using GarageManager.App.Models.BindingModels.RepairService;
 using GarageManager.App.Models.ViewModels.Car;
 using GarageManager.App.Models.ViewModels.Department;
@@ -59,6 +60,7 @@ namespace GarageManager.App.Areas.Employees.Controllers
                 Model = carModel.Model,
                 RegisterPlate = carModel.RegisterPlate,
                 Description = carModel.Description,
+                DepartmentId = carModel.DepartmentId,
                 Parts = carModel.Parts.Select(part => new PartDetailsViewModel
                 {
                     Id = part.Id,
@@ -81,8 +83,39 @@ namespace GarageManager.App.Areas.Employees.Controllers
             return this.View(model);
         }
 
-     
+        public async Task<IActionResult> Service(string id)
+        {
+            var model = new AddCarToServiceViewModel();
+            var carDetails = await  this.carService.GetServiceDescription(id);
+            model.DepartmentId = carDetails.DepartmentId;
+            model.Description = carDetails.Description == null ? string.Empty : carDetails.Description;
 
-       
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Service(AddCarToServiceBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.LocalRedirect($"/Admin/Cars/Service({model})");
+            }
+
+            await this.carService.AddToService(model.Id, model.Description, model.DepartmentId);
+
+            return this.Redirect($"/Employees/Departments/CarsInDepartment/{model.DepartmentId}");
+        }
+
+
+        public async Task<IActionResult> CarIsFinished(string carId, string departmentId)
+        {
+           var result =await this.carService.FinishCarServiceAsync(carId);
+            if (result == default)
+            {
+                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            }
+
+            return this.Redirect($"/Employees/Departments/CarsInDepartment/{departmentId}");
+        }
     }
 }

@@ -10,8 +10,8 @@ namespace GarageManager.Data.Configurations
         {
             builder
                 .HasOne(service => service.Car)
-                .WithOne(car => car.Services)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(car => car.Services)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasMany(service => service.Parts)

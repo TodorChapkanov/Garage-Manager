@@ -22,7 +22,7 @@ namespace GarageManager.Domain
         [StringLength(GlobalConstants.RegisterNameMaxLength)]
         public string LastName { get; set; }
 
-        //TODO Add property for  Full Name 
+        public string FullName => $"{this.FirstName} {this.LastName}";
 
         [Required]
         public string Email { get; set; }

@@ -24,6 +24,8 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CurrentServiceId");
+
                     b.Property<string>("CustomerId")
                         .IsRequired();
 
@@ -290,8 +292,7 @@ namespace GarageManager.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId")
-                        .IsUnique();
+                    b.HasIndex("CarId");
 
                     b.ToTable("ServiceInterventions");
                 });
@@ -509,7 +510,7 @@ namespace GarageManager.Data.Migrations
                     b.HasOne("GarageManager.Domain.ServiceIntervention", "Service")
                         .WithMany("Parts")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GarageManager.Domain.Repair", b =>
@@ -517,15 +518,15 @@ namespace GarageManager.Data.Migrations
                     b.HasOne("GarageManager.Domain.ServiceIntervention", "Service")
                         .WithMany("Repairs")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GarageManager.Domain.ServiceIntervention", b =>
                 {
                     b.HasOne("GarageManager.Domain.Car", "Car")
-                        .WithOne("Services")
-                        .HasForeignKey("GarageManager.Domain.ServiceIntervention", "CarId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany("Services")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GarageManager.Domain.VehicleModel", b =>

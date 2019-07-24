@@ -1,6 +1,6 @@
 ﻿namespace GarageManager.App.Models.BindingModels
 {
-    public class CarAddToServiceBindingModel
+    public class AddCarToServiceBindingModel
     {
         public string Id { get; set; }
 

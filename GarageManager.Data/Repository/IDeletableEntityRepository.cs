@@ -8,22 +8,22 @@ namespace GarageManager.Data.Repository
     public interface IDeletableEntityRepository<TEntity>
         where TEntity : class, IDeletableEntity
     {
-       // IQueryable<TEntity> AllWithDeleted();
+        // IQueryable<TEntity> AllWithDeleted();
 
-       // IQueryable<TEntity> AllAsNoTrackingWithDeleted();
+        // IQueryable<TEntity> AllAsNoTrackingWithDeleted();
 
+        Task<int> SavaChangesAsync();
 
         Task CreateAsync(TEntity entity);
 
-        Task<int> SoftDeleteAsync(TEntity entity);
+        void SoftDelete(TEntity entity);
 
-        void HardDelete(TEntity entity);
+        void HardDelete(params TEntity[] entity);
 
-        Task<TEntity> GetAsync(string key);
 
-        Task<int> Undelete(TEntity entity);
+        void Undelete(TEntity entity);
 
-        Task<int> UpdateAsync(TEntity entity);
+        void Update(TEntity entity);
 
         Task<TEntity> GetEntityByKeyAsync(string key);
 

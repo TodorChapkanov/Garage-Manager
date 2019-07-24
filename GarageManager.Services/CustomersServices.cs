@@ -33,6 +33,7 @@ namespace GarageManager.Services
             };
 
             await this.customerRepository.CreateAsync(customer);
+            await this.customerRepository.SavaChangesAsync();
         }
 
         public Task<List<CustomerDetail>> GetAllCustomersDetailsAsync()
@@ -70,7 +71,7 @@ namespace GarageManager.Services
             return customerDetails;
         }
 
-        public async Task<bool> UpdateCustomerByIdAsync(
+        public async Task<int> UpdateCustomerByIdAsync(
             string id,
             string firstName,
             string lastName,
@@ -88,13 +89,13 @@ namespace GarageManager.Services
                 customerFromDb.Email = email;
                 customerFromDb.PhoneNumber = phonenumber;
 
-                await this.customerRepository.UpdateAsync(customerFromDb);
-                return true;
+                this.customerRepository.Update(customerFromDb);
+                return await this.customerRepository.SavaChangesAsync();
             }
             catch (Exception)
             {
 
-                return false;
+                throw new InvalidOperationException();
             }
 
         }
@@ -105,14 +106,14 @@ namespace GarageManager.Services
             .Include(customer => customer.Cars)
             .FirstOrDefault(customer => customer.Id == id);
 
-            //Delete asinhonus all
             customerFromDb
                  .Cars
-                 .Select(async car => await carService.HardDeleteAsync(car.Id))
                  .ToList()
-            .ForEach(task => task.GetAwaiter().GetResult());
+                 .ForEach(car =>  carService.HardDeleteAsync(car.Id).GetAwaiter().GetResult());
 
-            return await this.customerRepository.SoftDeleteAsync(customerFromDb);
+            this.customerRepository.SoftDelete(customerFromDb);
+            return await this.customerRepository.SavaChangesAsync();
+
         }
     }
 }

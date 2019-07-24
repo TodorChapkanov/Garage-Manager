@@ -56,7 +56,7 @@ namespace GarageManager.App.Areas.Employees.Controllers
                 return this.Redirect("/Home/Index");
             }
 
-           await this.repairsService.UpdatePartByIdAsync(
+           await this.repairsService.UpdateRepairByIdAsync(
                 model.Id,
                 model.Description,
                 model.Hours,
@@ -64,6 +64,13 @@ namespace GarageManager.App.Areas.Employees.Controllers
                 model.IsFinished);
 
             return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
+        }
+
+        public async Task<IActionResult> Delete(string carId, string repairId)
+        {
+            var serviceId = await this.repairsService.HardDeleteAsync(repairId);
+
+            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
         }
     }
 }

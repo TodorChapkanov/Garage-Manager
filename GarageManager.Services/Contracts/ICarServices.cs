@@ -28,7 +28,7 @@ namespace GarageManager.Services.Contracts
 
         Task<CustomerCarDetails> GetDetailsByIdAsync(string id);
 
-        Task<bool> UpdateCarByIdAsync(
+        Task<int> UpdateCarByIdAsync(
            string id,
            string registrationPlate,
            int kilometers,
@@ -37,10 +37,17 @@ namespace GarageManager.Services.Contracts
            int engineHorsePower,
            string fuelTypeId,
            string transmissionId);
+        Task<CarServiceDetails> GetServiceDescription(string id);
 
-        Task<bool> AddToService(string carId, string carDescription, string departmentId);
+        Task<int> AddToService(string carId, string carDescription, string departmentId);
 
         Task<CarServicesDetails> GetCarServicesAsync(string id);
+
+        Task<int> FinishCarServiceAsync(string carId);
+
+        Task<List<CompletedCarList>> CompletedCarsList();
+
+        Task<string> CompleteTheOrderByCarId(string carId);
 
         Task<int> HardDeleteAsync(string id);
     }

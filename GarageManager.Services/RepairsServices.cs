@@ -32,31 +32,24 @@ namespace GarageManager.Services
                 .All()
                 .Where(car => car.Id == carId)
                 .Include(service => service.Services)
-                .Select(car => new
-                {
-                    Carid = car.Id,
-                    Service = car.Services,
-                    ServiceId = car.Services.Id,
-                    car.DepartmentId
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(car => car.Id == carId);
 
             var repairService = new Repair
             {
                 Description = description,
                 Hours = hours,
                 PricePerHour = pricePerHour,
-                ServiceId = carFromDb.Service.Id
+                ServiceId = carFromDb.CurrentServiceId
             };
             await this.repairRepository.CreateAsync(repairService);
-            carFromDb.Service.Repairs.Add(repairService);
-
-            return carFromDb.Carid;
+            carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Repairs.Add(repairService);
+            await this.repairRepository.SavaChangesAsync();
+            return carFromDb.Id;
         }
 
         public async Task<RepairEditDetails> GetEditDetailsByIdAsync(string id)
         {
-            var repairFromDb = (await this.repairRepository.GetAsync(id));
+            var repairFromDb = (await this.repairRepository.GetEntityByKeyAsync(id));
 
             var part = new RepairEditDetails
             {
@@ -70,7 +63,7 @@ namespace GarageManager.Services
             return part;
         }
         //TODO Resolve the problem with disposing DbContext
-        public async Task<bool> UpdatePartByIdAsync(
+        public async Task<int> UpdateRepairByIdAsync(
             string id,
             string description,
             double hours,
@@ -84,25 +77,18 @@ namespace GarageManager.Services
             repairFromDb.PricePerHour = pricePerHour;
             repairFromDb.IsFinished = isFinished;
 
-            await this.repairRepository.UpdateAsync(repairFromDb);
+            this.repairRepository.Update(repairFromDb);
 
-            return true;
+            return await this.repairRepository.SavaChangesAsync();
         }
 
-        public async Task<int> HardDeleteAsync(string id)
+        public async Task<string> HardDeleteAsync(string id)
         {
-            try
-            {
-                var partFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
-                this.repairRepository.HardDelete(partFromDb);
-                return int.MaxValue;
-            }
-            catch (System.Exception ex )
-            {
 
-                throw new InvalidOperationException(ex.Message);
-            }
-            
+                var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
+                this.repairRepository.HardDelete(repairFromDb);
+                 await this.repairRepository.SavaChangesAsync();
+            return repairFromDb.ServiceId;
         }
     }
 }

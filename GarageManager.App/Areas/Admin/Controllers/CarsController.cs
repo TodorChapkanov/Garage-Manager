@@ -1,7 +1,6 @@
 ﻿using GarageManager.App.Models.BindingModels;
 using GarageManager.App.Models.ViewModels.Car;
 using GarageManager.App.Models.ViewModels.Customer;
-using GarageManager.Areas.Admin.Controllers;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +68,7 @@ namespace GarageManager.Areas.Admin.Controllers
                 carBVM.TransmissionId
                 );
            
-            return this.Redirect($"/Admin/Cars/AllCarsById/{carBVM.CustomerId}");
+            return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{carBVM.CustomerId}");
 
         }
 
@@ -152,11 +151,11 @@ namespace GarageManager.Areas.Admin.Controllers
         {
            await this.carService.HardDeleteAsync(carId);
 
-            return this.Redirect($"/Admin/Cars/AllCarsById/{customerId}");
+            return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{customerId}");
         }
 
 
-        public async Task<IActionResult> AllCarsById(string id)
+        public async Task<IActionResult> AllCarsByCustomerId(string id)
         {
             var result = new CustomerCarViewModel()
             {
@@ -176,28 +175,21 @@ namespace GarageManager.Areas.Admin.Controllers
             return View(result);
         }
 
-        public IActionResult Service()
+        public async Task<IActionResult> CompletedCars()
         {
-            var model = new AddToServiceViewModel();
-            
+            var model = (await this.carService.CompletedCarsList())
+                .Select(car => new CompletedCarList
+                {
+                    Id = car.Id,
+                    Make = car.Make,
+                    Model = car.Model,
+                    RegiserPlate = car.RegisterPlate
+                }).ToList();
 
             return this.View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Service(CarAddToServiceBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                TempData["description"] = model.Description;
-                return this.LocalRedirect("/Admin/Cars/Service");
-            }
-            
-             await this.carService.AddToService(model.Id, model.Description, model.DepartmentId);
-
-            return this.Redirect($"/Employees/Cars/Details/{model.Id}");
-        }
-
+       
         public async Task<JsonResult> AllModels(string id)
         {
 
@@ -206,5 +198,7 @@ namespace GarageManager.Areas.Admin.Controllers
             var result = Json(new SelectList(models));
             return result;
         }
+
+       
     }
 }

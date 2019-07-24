@@ -22,36 +22,5 @@ namespace GarageManager.Services
             this.partService = partService;
             this.repairsService = repairsService;
         }
-
-        public async Task<int> HardDeleteAllAsync (string carId)
-        {
-            
-            try
-            {
-                var serviceFromDb = await this.serviceRepository.All()
-                   .Include(repair => repair.Repairs)
-                   .Include(part => part.Parts)
-                   .Where(service => service.CarId == carId).ToListAsync();
-
-                serviceFromDb.ForEach(service => service.Repairs
-                .Select(async repair => await this.repairsService.HardDeleteAsync(repair.Id))
-                .ToList()
-                .ForEach(task => task.GetAwaiter().GetResult()));
-
-                serviceFromDb.ForEach(service => service.Parts
-                      .Select(async part => await this.partService.HardDeleteAsync(part.Id))
-                      .ToList()
-                      .Select(task => task.GetAwaiter().GetResult()));
-
-                 serviceFromDb.ForEach(service => this.serviceRepository.HardDelete(service));
-                return int.MaxValue;
-                
-            }
-            catch (System.Exception ms)
-            {
-
-                throw new InvalidOperationException();
-            }
-        }
     }
 }

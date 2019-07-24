@@ -15,6 +15,8 @@ namespace GarageManager.App.Models.ViewModels.Department
 
         public string Description { get; set; }
 
+        public string DepartmentId { get; set; }
+
         public IEnumerable<PartDetailsViewModel> Parts { get; set; }
 
         public IEnumerable<RepairDetailsViewModel> Repairs { get; set; }

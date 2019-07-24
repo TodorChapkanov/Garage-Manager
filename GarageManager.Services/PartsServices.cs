@@ -41,16 +41,17 @@ namespace GarageManager.Services
                 Number = number,
                 Price = price,
                 Quantity = quantity,
-                ServiceId = carFromDb.Services.Id
+                ServiceId = carFromDb.CurrentServiceId
             };
             await this.partRepository.CreateAsync(part);
-            carFromDb.Services.Parts.Add(part);
+            carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Parts.Add(part);
+            await this.partRepository.SavaChangesAsync();
             return carFromDb.Id;
         }
 
         public async Task<PartEditDetils> GetEditDetailsByIdAsync(string id)
         {
-            var partFromDb = (await this.partRepository.GetAsync(id));
+            var partFromDb = (await this.partRepository.GetEntityByKeyAsync(id));
 
             var part = new PartEditDetils
             {
@@ -64,45 +65,33 @@ namespace GarageManager.Services
             return part;
         }
 
-        public async Task<bool> UpdatePartByIdAsync(
+        public async Task<int> UpdatePartByIdAsync(
             string id,
             string name,
             string number,
             decimal price,
             int quantity)
         {
-            //TODO Resolve the problem with disposing DbContext
 
-            var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);//.All().FirstOrDefault(part => part.Id == id);
+            var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);
                 partFromDb.Name = name;
                 partFromDb.Number = number;
                 partFromDb.Price = price;
                 partFromDb.Quantity = quantity;
 
-                await this.partRepository.UpdateAsync(partFromDb);
+                 this.partRepository.Update(partFromDb);
+            return await this.partRepository.SavaChangesAsync();
         
-           /* catch (Exception ms)
-            {
-                throw new InvalidOperationException("Invalid Part Details!");
-            }*/
 
-            return true;
         }
 
-        public async Task<int> HardDeleteAsync(string id)
+        public async Task<string> HardDeleteAsync(string id)
         {
-            try
-            {
                 var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);
-               // this.servicePartRepository.HardDelete(this.servicePartRepository.All().FirstOrDefault(part => part.PartId == partFromDb.Id));
                 this.partRepository.HardDelete(partFromDb);
-                return int.MaxValue;
-            }
-            catch (Exception)
-            {
-                throw new InvalidOperationException();
-            }
-            
+ await this.partRepository.SavaChangesAsync();
+
+            return partFromDb.ServiceId;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace GarageManager.Services.Contracts
 
         Task<int> DeleteAsync(string id);
 
-        Task<bool> UpdateCustomerByIdAsync(
+        Task<int> UpdateCustomerByIdAsync(
              string id,
             string firstName,
             string lastName,

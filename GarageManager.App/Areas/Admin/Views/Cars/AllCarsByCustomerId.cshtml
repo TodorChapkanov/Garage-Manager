@@ -39,11 +39,11 @@
                                 <a asp-action="Edit" asp-controller="Cars" asp-area="Admin" asp-route-Id="@car.Id">Edit</a>
                                 @if (car.IsInService)
                                 {
-                                    <a>In Service</a>
+                                    <a asp-action="ServiceDetails" asp-controller="Cars" asp-area="Employees" asp-route-Id="@car.Id">In Service</a>
                                 }
                                 else
                                 {
-                                    <a asp-action="Service" asp-controller="Cars" asp-area="Admin" asp-route-Id="@car.Id">Service</a>
+                                    <a asp-action="Service" asp-controller="Cars" asp-area="Employees" asp-route-Id="@car.Id">Service</a>
                                 }
                             </th>
                         </tr>

@@ -35,7 +35,7 @@ namespace GarageManager.Services
             DateTime? recruitedOn,
             string departmentId)
         {
-            if (this.employeeRepository.All().Select(emp => emp.Email).Contains(email)) 
+            if (this.employeeRepository.All().Select(emp => emp.Email).Contains(email))
             {
                 return GlobalConstants.EmailExistResult;
             }
@@ -53,8 +53,8 @@ namespace GarageManager.Services
             };
 
             var result = await this.userManager.CreateAsync(employee, password);
-           
-           
+
+
             return employee.Id;
 
         }
@@ -157,9 +157,9 @@ namespace GarageManager.Services
         public async Task<int> DeleteEmployeeAsync(string id)
         {
             var employeeFromDb = await this.userManager.FindByIdAsync(id);
-           var result = await this.employeeRepository.SoftDeleteAsync(employeeFromDb);
+            this.employeeRepository.SoftDelete(employeeFromDb);
 
-            return result;
+            return await this.employeeRepository.SavaChangesAsync();
         }
 
         public bool IsAnyEmployee()

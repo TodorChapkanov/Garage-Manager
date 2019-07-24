@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Data.Repository
 {
-    public class DeletableEntityRepository<TEntity> :  IDeletableEntityRepository<TEntity>
+    public class DeletableEntityRepository<TEntity> : IDeletableEntityRepository<TEntity>
         where TEntity : class, IDeletableEntity
     {
         protected readonly GMDbContext dbContext;
@@ -25,60 +25,37 @@ namespace GarageManager.Data.Repository
              int pageIndex = 1,
              int itemsPerPage = int.MaxValue);*/
 
-        public async Task CreateAsync(TEntity entity)
-        {
-            await this.dbContext.AddAsync(entity);
+        public Task<int> SavaChangesAsync() => this.dbContext.SaveChangesAsync();
 
-            await this.dbContext.SaveChangesAsync();
-        }
+        public  Task CreateAsync(TEntity entity) =>   this.dbContext.AddAsync(entity);
 
-        public async Task<int> SoftDeleteAsync(TEntity entity)
+        public void SoftDelete(TEntity entity)
         {
             entity.IsDeleted = true;
             entity.DeletedOn = DateTime.UtcNow;
              this.dbContext.Update(entity);
-            return await this.dbContext.SaveChangesAsync();
             
         }
 
-        public void HardDelete(TEntity entity)
-        {
-            dbContext.Remove(entity);
-            this.dbContext.SaveChanges();
-        }
+        public void HardDelete(params TEntity[] entity) => dbContext.RemoveRange(entity);
 
-        public async Task<TEntity> GetEntityByKeyAsync(string key)
-        {
-            return await this.dbContext.FindAsync<TEntity>(key);
-        }
+        public  Task<TEntity> GetEntityByKeyAsync(string key) =>   this.dbContext.FindAsync<TEntity>(key);
 
-        public async Task<TEntity> GetAsync(string key)
-        {
-            return await this.dbContext.FindAsync<TEntity>(key);
-        }
-
-        
-
-        public async Task<int> Undelete(TEntity entity)
+        public void Undelete(TEntity entity)
         {
             entity.IsDeleted = false;
             entity.DeletedOn = null;
              this.dbContext.Update(entity);
-           return await this.dbContext.SaveChangesAsync();
-            
+          
         }
 
-        public async Task<int> UpdateAsync(TEntity entity)
-        {
-            return await this.dbContext.SaveChangesAsync();
-        }
+        public void Update(TEntity entity) => this.dbContext.Update(entity);
 
-        public IQueryable<TEntity> All()
-        {
-            return this.dbContext.Set<TEntity>().Where(x => !x.IsDeleted);
-        }
+        public IQueryable<TEntity> All() => this.dbContext.Set<TEntity>().Where(x => !x.IsDeleted);
 
-       
+     
+
+
 
         /*  protected async Task<IEnumerable<TEntity>> PaginateEntitiesAsync(
               IQueryable<TEntity> entities,

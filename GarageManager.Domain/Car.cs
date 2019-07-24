@@ -10,7 +10,7 @@ namespace GarageManager.Domain
         public Car()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Services = new ServiceIntervention();
+            this.Services = new HashSet<ServiceIntervention>();
         }
 
         [Required]
@@ -68,7 +68,8 @@ namespace GarageManager.Domain
 
         public TransmissionType Transmission { get; set; }
 
-        public ServiceIntervention Services { get; set; }
+        public string CurrentServiceId { get; set; }
+        public ICollection<ServiceIntervention> Services { get; set; }
 
         public bool IsFinished { get; set; }
 

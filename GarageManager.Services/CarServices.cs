@@ -64,6 +64,7 @@ namespace GarageManager.Services
         {
 
             var modelId = (await this.modelServices.All().FirstOrDefaultAsync(model => model.Name == modelName)).Id;
+            var service = new ServiceIntervention();
             var carFromDb = new Car();
             try
             {
@@ -78,6 +79,8 @@ namespace GarageManager.Services
                 carFromDb.EngineHorsePower = enginePower;
                 carFromDb.FuelTypeId = fuelTypeId;
                 carFromDb.TransmissionId = transmissionId;
+                carFromDb.Services.Add(service);
+                carFromDb.CurrentServiceId = service.Id;
             }
             catch (Exception)
             {
@@ -88,6 +91,7 @@ namespace GarageManager.Services
 
 
             await this.carRepository.CreateAsync(carFromDb);
+            await this.carRepository.SavaChangesAsync();
             return true;
         }
 
@@ -124,7 +128,7 @@ namespace GarageManager.Services
             return result;
         }
 
-        public async Task<bool> UpdateCarByIdAsync(
+        public async Task<int> UpdateCarByIdAsync(
             string id,
             string registrationPlate,
             int kilometers,
@@ -146,7 +150,8 @@ namespace GarageManager.Services
                 carFromDb.FuelTypeId = fuelTypeId;
                 carFromDb.TransmissionId = transmissionId;
 
-                await this.carRepository.UpdateAsync(carFromDb);
+                this.carRepository.Update(carFromDb);
+                return await this.carRepository.SavaChangesAsync();
             }
 
             catch (Exception)
@@ -154,27 +159,25 @@ namespace GarageManager.Services
                 throw new InvalidOperationException("Invalid Car Details!");
             }
 
-            return true;
+
         }
 
-        public async Task<bool> AddToService(string carId, string carDescription, string departmentId)
+        public async Task<int> AddToService(string carId, string carDescription, string departmentId)
         {
             try
             {
                 var carFromDb = await this.carRepository.All().FirstOrDefaultAsync(car => car.Id == carId);
-                var departmentFromDb = await this.departmentServices.All().FirstOrDefaultAsync(department => department.Id == departmentId);
                 carFromDb.Description = carDescription;
-                carFromDb.DepartmentId = departmentFromDb.Id;
+                carFromDb.DepartmentId = departmentId;
                 carFromDb.IsInService = true;
-                await this.carRepository.UpdateAsync(carFromDb);
+                this.carRepository.Update(carFromDb);
 
-                return true;
+                return await this.carRepository.SavaChangesAsync();
 
             }
             catch (Exception)
             {
-
-                return false;
+                throw new InvalidOperationException();
             }
         }
         public async Task<CarServicesDetails> GetCarServicesAsync(string id)
@@ -185,8 +188,8 @@ namespace GarageManager.Services
                 .Include(car => car.Manufacturer)
                 .Include(car => car.Model)
                 .Include(car => car.Services)
-               // .ThenInclude(service => service.Parts)
-               // .Include(services => services.Services.Repairs)
+                // .ThenInclude(service => service.Parts)
+                // .Include(services => services.Services.Repairs)
                 .Select(car => new CarServicesDetails
                 {
                     Id = car.Id,
@@ -194,7 +197,8 @@ namespace GarageManager.Services
                     Model = car.Model.Name,
                     RegisterPlate = car.RegistrationPlate,
                     Description = car.Description,
-                    Parts = car.Services.Parts.Select(part => new PartDetails
+                    DepartmentId = car.DepartmentId,
+                    Parts = car.Services.First(service => service.Id == car.CurrentServiceId).Parts.Select(part => new PartDetails
                     {
                         Id = part.Id,
                         Name = part.Name,
@@ -202,8 +206,8 @@ namespace GarageManager.Services
                         Price = part.Price,
                         Quantity = part.Quantity,
                         TotalCost = part.TotalCost
-                    }),
-                    Repairs = car.Services.Repairs.Select(repair => new RepairDetails
+                    }).ToList(),
+                    Repairs = car.Services.First(service => service.Id == car.CurrentServiceId).Repairs.Select(repair => new RepairDetails
                     {
                         Id = repair.Id,
                         Description = repair.Description,
@@ -211,25 +215,76 @@ namespace GarageManager.Services
                         PricePerHour = repair.PricePerHour,
                         TotalCosts = repair.TotalCosts,
                         IsFinished = repair.IsFinished
-                    })
+                    }).ToList()
 
                 }).FirstOrDefaultAsync();
 
             return carServices;
         }
 
-      
+
         public async Task<int> HardDeleteAsync(string id)
         {
             var carFromDb = await this.carRepository.All()
                 .Include(service => service.Services)
-                .FirstOrDefaultAsync(car => car.Id == id);
+                .Include(car => car.Services.Select(service => service.Parts))
+                .Include(car => car.Services.Select(service => service.Repairs))
+               .FirstOrDefaultAsync(car => car.Id == id);
 
-            await this.interventionService.HardDeleteAllAsync(carFromDb.Id);
+            this.carRepository.HardDelete(carFromDb);
 
-             this.carRepository.HardDelete(carFromDb);
+            return await this.carRepository.SavaChangesAsync();
+        }
 
-            return int.MaxValue;
+        public async Task<CarServiceDetails> GetServiceDescription(string id)
+        {
+            var carFromDb = await this.carRepository.GetEntityByKeyAsync(id);
+            var result = new CarServiceDetails
+            {
+                Description = carFromDb.Description,
+                DepartmentId = carFromDb.DepartmentId
+            };
+
+            return result;
+        }
+
+        public async Task<int> FinishCarServiceAsync(string carId)
+        {
+            var carFromDb = await this.carRepository.GetEntityByKeyAsync(carId);
+            carFromDb.IsFinished = true;
+            carFromDb.IsInService = false;
+            carFromDb.DepartmentId = null;
+
+            this.carRepository.Update(carFromDb);
+            return await this.carRepository.SavaChangesAsync();
+        }
+
+        public async Task<List<CompletedCarList>> CompletedCarsList()
+        {
+           var result =await this.carRepository
+            .All()
+            .Include(car => car.Manufacturer)
+            .Include(car => car.Model)
+            .Where(car => car.IsFinished)
+            .Select(car => new CompletedCarList
+            {
+                Id = car.Id,
+                Make = car.Manufacturer.Name,
+                Model = car.Model.Name,
+                RegisterPlate = car.RegistrationPlate
+            })
+            .ToListAsync();
+
+        return result;
+        }
+
+        public async Task<string> CompleteTheOrderByCarId(string carId)
+        {
+            var carFromDb =await this.carRepository.GetEntityByKeyAsync(carId);
+            carFromDb.IsFinished = false;
+            carFromDb.Services.Add(new ServiceIntervention());
+            await this.carRepository.SavaChangesAsync();
+            return carFromDb.CustomerId;
         }
     }
 }

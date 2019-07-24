@@ -9,7 +9,7 @@ namespace GarageManager.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles ="Admin")]
-    public class BaseAdminController : Controller
+    public abstract class BaseAdminController : Controller
     {
     }
 }

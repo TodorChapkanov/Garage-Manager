@@ -2,6 +2,8 @@
 using GarageManager.Data;
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
+using GarageManager.Extensions.PDFConverter.HtmlToPDF;
+using GarageManager.Extensions.PDFConverter.ViewRender;
 using GarageManager.Services;
 using GarageManager.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -60,6 +62,8 @@ namespace GarageManager
             
             services.AddTransient(typeof(IDeletableEntityRepository<>), typeof(DeletableEntityRepository<>));
             services.AddScoped<ICustomerServices, CustomerServices>();
+            services.AddScoped<IHtmlToPdfConverter, HtmlToPdfConverter>();
+            services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<ICarServices, CarServices>();
             services.AddScoped<IInterventionServices, InterventionServices>();
             services.AddScoped<IManufacturerServices, ManufacturerServices>();
@@ -70,6 +74,7 @@ namespace GarageManager
             services.AddScoped<IEmployeesServices, EmployeesServices>();
             services.AddScoped<IPartsServices, PartsServices>();
             services.AddScoped<IRepairsServices, RepairsServices>();
+            services.AddScoped<IInvoiceServices, InvoiceServices>();
 
 
 
