@@ -3,7 +3,6 @@ using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO.Repair;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,30 +25,34 @@ namespace GarageManager.Services
             string carId,
             string description,
             double hours,
-            decimal pricePerHour)
+            decimal pricePerHour,
+            string employeeId)
         {
             var carFromDb = await this.carRepository
                 .All()
                 .Where(car => car.Id == carId)
                 .Include(service => service.Services)
                 .FirstOrDefaultAsync(car => car.Id == carId);
-
             var repairService = new Repair
             {
                 Description = description,
                 Hours = hours,
                 PricePerHour = pricePerHour,
-                ServiceId = carFromDb.CurrentServiceId
+                ServiceId = carFromDb.CurrentServiceId,
+                EmployeeId = employeeId
             };
             await this.repairRepository.CreateAsync(repairService);
             carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Repairs.Add(repairService);
             await this.repairRepository.SavaChangesAsync();
+
             return carFromDb.Id;
         }
 
         public async Task<RepairEditDetails> GetEditDetailsByIdAsync(string id)
         {
-            var repairFromDb = (await this.repairRepository.GetEntityByKeyAsync(id));
+            var repairFromDb = await this.repairRepository
+                .All().Include(repair => repair.Employee)
+                .FirstOrDefaultAsync(repair => repair.Id == id);
 
             var part = new RepairEditDetails
             {
@@ -62,7 +65,7 @@ namespace GarageManager.Services
 
             return part;
         }
-        //TODO Resolve the problem with disposing DbContext
+
         public async Task<int> UpdateRepairByIdAsync(
             string id,
             string description,

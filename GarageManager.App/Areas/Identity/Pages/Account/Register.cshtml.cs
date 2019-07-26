@@ -1,5 +1,7 @@
 ﻿using GarageManager.Common;
 using GarageManager.Domain;
+using GarageManager.Extensions.DateTimeProviders;
+using GarageManager.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,20 +21,27 @@ namespace GarageManager.Areas.Identity.Pages.Account
         private readonly UserManager<GMUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IDepartmentServices _departmentService;
+
         //private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<GMUser> userManager,
             SignInManager<GMUser> signInManager,
             RoleManager<IdentityRole> roleManager,
-            ILogger<RegisterModel> logger)
+            ILogger<RegisterModel> logger,
+            IDateTimeProvider dateTimeProvider,
+            IDepartmentServices departmentService)
            // IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _logger = logger;
-           // _emailSender = emailSender;
+            _dateTimeProvider = dateTimeProvider;
+            _departmentService = departmentService;
+            // _emailSender = emailSender;
         }
 
         [BindProperty]
@@ -77,19 +86,19 @@ namespace GarageManager.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = "/Admin/Employees/AllEmployees";
 
             if (ModelState.IsValid)
             {
                 
                 var user = new GMUser
                 {
-                    UserName = $"{Input.FirstName}{Input.LastName}",
+                    UserName = Input.Email,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     PhoneNumber = Input.PhoneNumber,
-                    CreatedOn = DateTime.UtcNow
+                    CreatedOn = _dateTimeProvider.GetDateTime()
                 };
 
                 if (!_roleManager.Roles.Any())
@@ -109,36 +118,48 @@ namespace GarageManager.Areas.Identity.Pages.Account
 
 
                 }
-
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
-                if (_userManager.Users.Count() == 1)
+               IdentityResult result = null;
+                if (_userManager.Users.Count() == 0)
                 {
+                    
+                    
+                    user.CreatedOn = _dateTimeProvider.GetDateTime();
+                    user.RecruitedOn = _dateTimeProvider.GetDateTime();
+                    user.DepartmentId = (await _departmentService
+                        .AllDepartmentsAsync())
+                        .FirstOrDefault(department => department.Name == GlobalConstants.FacilitiesManagement)
+                        .Id;
+                    result = await _userManager.CreateAsync(user, Input.Password);
                     await _userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
-                    user.CreatedOn = DateTime.UtcNow;
-                    user.RecruitedOn = DateTime.UtcNow;
-                    //TODO Create Datime Provider
                 }
                 else
                 {
                     await _userManager.AddToRoleAsync(user, GlobalConstants.EmployeeRoleName);
+                    result = await _userManager.CreateAsync(user, Input.Password);
                 }
+
+               
+
+                
 
                 if (result.Succeeded)
                 {
+                    
                     _logger.LogInformation("User created a new account with password.");
 
-                  //  var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                  /*  var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);*/
+                    //  var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    /*  var callbackUrl = Url.Page(
+                          "/Account/ConfirmEmail",
+                          pageHandler: null,
+                          values: new { userId = user.Id, code = code },
+                          protocol: Request.Scheme);*/
 
-                 //   await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                      //  $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //   await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //  $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //
+                   
+                   // await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

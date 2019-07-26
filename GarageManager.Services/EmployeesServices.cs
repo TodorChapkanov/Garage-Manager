@@ -1,6 +1,7 @@
 ﻿using GarageManager.Common;
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
+using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO.Employee;
 using Microsoft.AspNetCore.Identity;
@@ -17,15 +18,24 @@ namespace GarageManager.Services
         private readonly IDeletableEntityRepository<GMUser> employeeRepository;
         private readonly UserManager<GMUser> userManager;
         private readonly SignInManager<GMUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IDateTimeProvider dateTimeProvider;
 
-        public EmployeesServices(IDeletableEntityRepository<GMUser> employeeRepository, UserManager<GMUser> userManager, SignInManager<GMUser> signInManager)
+        public EmployeesServices(
+            IDeletableEntityRepository<GMUser> employeeRepository,
+            UserManager<GMUser> userManager, 
+            SignInManager<GMUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
+            IDateTimeProvider dateTimeProvider)
         {
             this.employeeRepository = employeeRepository;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
-        //TODO Add USERMANAGER
+        
         public async Task<string> CreateNewEmployeeAsync(
             string firstName,
             string lastName,
@@ -49,14 +59,29 @@ namespace GarageManager.Services
                 PhoneNumber = phoneNumber,
                 RecruitedOn = recruitedOn,
                 DepartmentId = departmentId,
-                CreatedOn = DateTime.UtcNow
+                CreatedOn = this.dateTimeProvider.GetDateTime()
             };
-
+            
             var result = await this.userManager.CreateAsync(employee, password);
+            var departmentName = this.userManager.Users
+                .Include(department => department.Department)
+                .Where(user => user.Id == employee.Id)
+                .Select(department => department.Department.Name)
+                .First();
+                
+                
 
+            if (result.Succeeded)
+            { 
+                var role = departmentName == GlobalConstants.FacilitiesManagement
+                    ? GlobalConstants.AdministratorRoleName 
+                    : GlobalConstants.EmployeeRoleName;
+
+                await this.userManager.AddToRoleAsync(employee,role);
+                
+            }
 
             return employee.Id;
-
         }
 
         public Task<List<AllEmployees>> GetAllEmployeesAsync()

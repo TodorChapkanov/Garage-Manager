@@ -3,6 +3,7 @@ using GarageManager.Services.Contracts;
 using GarageManager.Web.Models.BindingModels.RepairService;
 using GarageManager.Web.Models.ViewModels.Repair;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GarageManager.App.Areas.Employees.Controllers
@@ -27,8 +28,15 @@ namespace GarageManager.App.Areas.Employees.Controllers
             {
                 return this.View(model);
             }
-
-            var carId = await this.repairsService.CreateRepairService(model.CarId, model.Description, model.Hours, model.PricePerHour);
+            var employeeId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var carId = await this.repairsService
+                .CreateRepairService(
+                model.CarId,
+                model.Description,
+                model.Hours,
+                model.PricePerHour,
+                employeeId);
+            
             return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
         }
 

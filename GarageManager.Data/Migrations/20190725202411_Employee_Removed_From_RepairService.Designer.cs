@@ -4,14 +4,16 @@ using GarageManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GarageManager.Data.Migrations
 {
     [DbContext(typeof(GMDbContext))]
-    partial class GMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190725202411_Employee_Removed_From_RepairService")]
+    partial class Employee_Removed_From_RepairService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,8 +261,6 @@ namespace GarageManager.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<string>("EmployeeId");
-
                     b.Property<double>("Hours");
 
                     b.Property<bool>("IsDeleted");
@@ -272,8 +272,6 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("ServiceId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("ServiceId");
 
@@ -289,8 +287,6 @@ namespace GarageManager.Data.Migrations
                         .IsRequired();
 
                     b.Property<DateTime?>("DeletedOn");
-
-                    b.Property<DateTime>("FinishedOn");
 
                     b.Property<bool>("IsDeleted");
 
@@ -521,10 +517,6 @@ namespace GarageManager.Data.Migrations
 
             modelBuilder.Entity("GarageManager.Domain.Repair", b =>
                 {
-                    b.HasOne("GarageManager.Domain.GMUser", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
                     b.HasOne("GarageManager.Domain.ServiceIntervention", "Service")
                         .WithMany("Repairs")
                         .HasForeignKey("ServiceId")

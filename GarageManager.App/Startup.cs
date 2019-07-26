@@ -2,6 +2,7 @@
 using GarageManager.Data;
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
+using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Extensions.PDFConverter.HtmlToPDF;
 using GarageManager.Extensions.PDFConverter.ViewRender;
 using GarageManager.Services;
@@ -75,6 +76,7 @@ namespace GarageManager
             services.AddScoped<IPartsServices, PartsServices>();
             services.AddScoped<IRepairsServices, RepairsServices>();
             services.AddScoped<IInvoiceServices, InvoiceServices>();
+            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
 
 

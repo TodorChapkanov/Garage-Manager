@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
+using GarageManager.Common;
 using System.Threading.Tasks;
 
 namespace GarageManager.App.Views.Shared.Components.Departments
@@ -17,13 +18,18 @@ namespace GarageManager.App.Views.Shared.Components.Departments
             this.departmentService = departmentService;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(bool IsAll)
         {
+            var departmentsList = this.departmentService
+               .AllDepartmentsAsync().Result.ToList();
+            if (!IsAll)
+            {
+                var departmentToRemove = departmentsList.First(department => department.Name == GlobalConstants.FacilitiesManagement);
+                departmentsList.Remove(departmentToRemove);
+            }
             var departments =  new DepartmentModel
             {
-                Departments = this.departmentService
-                .AllDepartmentsAsync()
-                .Result
+                Departments = departmentsList
                 .OrderBy(department =>department.Name)
                 .Select(dep => new SelectListItem
                 {

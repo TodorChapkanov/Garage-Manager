@@ -63,6 +63,8 @@ namespace GarageManager.App.Areas.Admin.Controllers
                 ViewData["Email"] = GlobalConstants.EmailExistErrorMessage;
                 return this.View(model);
             }
+
+            
             return this.Redirect($"/Admin/Employees/Details/{employeeId}");
         }
 

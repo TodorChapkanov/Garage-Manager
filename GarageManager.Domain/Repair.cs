@@ -32,13 +32,17 @@ namespace GarageManager.Domain
             ErrorMessage = GlobalConstants.RepairPricePerHourErrorMessage)]
         public decimal PricePerHour { get; set; }
 
-        public bool IsFinished { get; set; }
+        public string EmployeeId { get; set; }
+
+        public GMUser Employee { get; set; }
 
         public string ServiceId { get; set; }
 
         public ServiceIntervention Service { get; set; }
 
         public decimal TotalCosts => this.PricePerHour * (decimal)this.Hours;
+
+        public bool IsFinished { get; set; }
 
         public bool IsDeleted { get; set ; }
 

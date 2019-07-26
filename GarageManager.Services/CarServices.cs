@@ -1,5 +1,6 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
+using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO;
 using GarageManager.Services.DTO.Car;
@@ -15,19 +16,19 @@ namespace GarageManager.Services
     {
         private readonly IDeletableEntityRepository<Car> carRepository;
         private readonly IDeletableEntityRepository<VehicleModel> modelServices;
-        private readonly IDeletableEntityRepository<Department> departmentServices;
-        private readonly IInterventionServices interventionService;
+        private readonly IInterventionServices serviceIntervention;
+        private readonly IDateTimeProvider dateTimeProvider;
 
         public CarServices(
             IDeletableEntityRepository<Car> carRepository,
             IDeletableEntityRepository<VehicleModel> modelServices,
-            IDeletableEntityRepository<Department> departmentServices,
-            IInterventionServices interventionService)
+            IInterventionServices serviceIntervention,
+            IDateTimeProvider dateTimeProvider)
         {
             this.carRepository = carRepository;
             this.modelServices = modelServices;
-            this.departmentServices = departmentServices;
-            this.interventionService = interventionService;
+            this.serviceIntervention = serviceIntervention;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         public async Task<IEnumerable<CustomerCarListDetails>> GetAllCarsByCustomerIdAsync(string id)
@@ -188,8 +189,6 @@ namespace GarageManager.Services
                 .Include(car => car.Manufacturer)
                 .Include(car => car.Model)
                 .Include(car => car.Services)
-                // .ThenInclude(service => service.Parts)
-                // .Include(services => services.Services.Repairs)
                 .Select(car => new CarServicesDetails
                 {
                     Id = car.Id,
@@ -280,9 +279,19 @@ namespace GarageManager.Services
 
         public async Task<string> CompleteTheOrderByCarId(string carId)
         {
-            var carFromDb =await this.carRepository.GetEntityByKeyAsync(carId);
+            var carFromDb =await this.carRepository
+                .All()
+                .Include(car => car.Services)
+                .FirstOrDefaultAsync(car  => car.Id == carId);
+            var carService = carFromDb
+                .Services
+                .FirstOrDefault(service => service.Id == carFromDb.CurrentServiceId);
+            await this.serviceIntervention.FinishServiceAsync(carService);
+            var newService = new ServiceIntervention();
             carFromDb.IsFinished = false;
-            carFromDb.Services.Add(new ServiceIntervention());
+            carFromDb.Description = default;
+            carFromDb.CurrentServiceId = newService.Id;
+            carFromDb.Services.Add(newService);
             await this.carRepository.SavaChangesAsync();
             return carFromDb.CustomerId;
         }

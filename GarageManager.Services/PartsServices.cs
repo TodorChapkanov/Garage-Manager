@@ -41,7 +41,8 @@ namespace GarageManager.Services
                 Number = number,
                 Price = price,
                 Quantity = quantity,
-                ServiceId = carFromDb.CurrentServiceId
+                ServiceId = carFromDb.CurrentServiceId,
+                
             };
             await this.partRepository.CreateAsync(part);
             carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Parts.Add(part);

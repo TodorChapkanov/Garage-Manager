@@ -2,6 +2,12 @@
 {
     public class GlobalConstants
     {
+        //Departments
+        public const string FacilitiesManagement = "Facilities Management";
+        public const string MechanicalRepair = "Mechanical Repair";
+        public const string Painting = "Painting";
+        public const string BodyRepair = "Body Repair";
+
         public const string StringLengthErrorMessage = "{0} should be between {2} and {1} symbols!";
         // Customer Form 
         public const int RegisterNameMinLength = 3;

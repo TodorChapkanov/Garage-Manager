@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GarageManager.Data\GarageManager.Data.csproj" />
+    <ProjectReference Include="..\GarageManager.Extensions\GarageManager.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

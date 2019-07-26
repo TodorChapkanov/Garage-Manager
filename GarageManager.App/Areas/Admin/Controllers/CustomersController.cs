@@ -12,6 +12,7 @@ using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
 using System;
+using GarageManager.Extensions.DateTimeProviders;
 
 namespace GarageManager.Areas.User.Controllers
 {
@@ -23,6 +24,7 @@ namespace GarageManager.Areas.User.Controllers
         private readonly IViewRenderService viewRenderService;
         private readonly IHtmlToPdfConverter htmlToPdfConverter;
         private readonly IHostingEnvironment environment;
+        private readonly IDateTimeProvider dateTimeProvider;
 
         public IViewRenderService ViewRenderService { get; }
 
@@ -31,7 +33,8 @@ namespace GarageManager.Areas.User.Controllers
             IInvoiceServices invoiseService,
             IViewRenderService viewRenderService,
     IHtmlToPdfConverter htmlToPdfConverter,
-    IHostingEnvironment environment)
+    IHostingEnvironment environment,
+    IDateTimeProvider dateTimeProvider)
         {
             this.customerService = customerService;
             this.carService = carService;
@@ -39,6 +42,7 @@ namespace GarageManager.Areas.User.Controllers
             this.viewRenderService = viewRenderService;
             this.htmlToPdfConverter = htmlToPdfConverter;
             this.environment = environment;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         [HttpGet]
@@ -142,7 +146,7 @@ namespace GarageManager.Areas.User.Controllers
                 Email = invoiceFromDb.Email,
                 PhoneNumber = invoiceFromDb.PhoneNumber,
                 TotalCost = invoiceFromDb.TotalCost,
-                Date = DateTime.UtcNow
+                Date = this.dateTimeProvider.GetDateTime()
             };
 
             invoiceFromDb.Parts.ToList().ForEach(part => invoiceModel.Services.Add(new InvoiceServiceViewModel

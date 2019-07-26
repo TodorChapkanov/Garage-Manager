@@ -46,7 +46,7 @@
                 <input asp-for="RecruitedOn" class="form-control" />
                 <span asp-validation-for="RecruitedOn" class="text-danger"></span>
             </div>
-            @await Component.InvokeAsync("Departments")
+            @await Component.InvokeAsync("Departments", true)
             <div class="form-group text-center mt-4">
                 <input  type="submit" value="Create" class="btn btn-primary" />
             </div>

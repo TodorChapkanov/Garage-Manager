@@ -5,7 +5,12 @@ namespace GarageManager.Services.Contracts
 {
     public interface IRepairsServices
     {
-        Task<string> CreateRepairService(string carId, string description, double hours, decimal pricePerHour);
+        Task<string> CreateRepairService(
+            string carId,
+            string description,
+            double hours,
+            decimal pricePerHour,
+            string emplyeeId);
 
         Task<int> UpdateRepairByIdAsync(
             string id,

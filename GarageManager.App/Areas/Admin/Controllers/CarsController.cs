@@ -189,7 +189,8 @@ namespace GarageManager.Areas.Admin.Controllers
             return this.View(model);
         }
 
-       
+        
+
         public async Task<JsonResult> AllModels(string id)
         {
 
@@ -199,6 +200,6 @@ namespace GarageManager.Areas.Admin.Controllers
             return result;
         }
 
-       
+      
     }
 }

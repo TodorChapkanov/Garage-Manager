@@ -28,6 +28,8 @@ namespace GarageManager.Web.Models.ViewModels.Repair
             ErrorMessage = GlobalConstants.RepairPricePerHourErrorMessage)]
         public decimal PricePerHour { get; set; }
 
+        public string EmployeeName { get; set; }
+
         public bool IsFinished { get; set; }
     }
 }

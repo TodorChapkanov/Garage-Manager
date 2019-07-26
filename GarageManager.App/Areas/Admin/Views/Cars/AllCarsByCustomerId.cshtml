@@ -45,6 +45,7 @@
                                 {
                                     <a asp-action="Service" asp-controller="Cars" asp-area="Employees" asp-route-Id="@car.Id">Service</a>
                                 }
+                                <a asp-action="ServiceHistoryByCarId" asp-controller="Services" asp-area="Admin" asp-route-Id="@car.Id">History</a>
                             </th>
                         </tr>
                     }

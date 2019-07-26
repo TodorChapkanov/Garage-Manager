@@ -20,6 +20,8 @@ namespace GarageManager.Domain
 
         public Car Car { get; set; }
 
+        public DateTime FinishedOn { get; set; }
+
         public bool IsFinished { get; set; }
 
         public ICollection<Part> Parts { get; set; }
@@ -27,12 +29,9 @@ namespace GarageManager.Domain
         public ICollection<Repair> Repairs { get; set; }
 
 
-        public decimal TotalCost => this.CalculateCosts();
+        public decimal TotalCost => this.Parts.Sum(part => part.Price* part.Quantity)
+            + this.Repairs.Sum(repair => (repair.PricePerHour* (decimal) repair.Hours));
 
-        private decimal CalculateCosts()
-        {
-            var result = this.Parts.Sum(part => part.Price * part.Quantity) + this.Repairs.Sum(repair => (repair.PricePerHour * (decimal)repair.Hours));
-            return result;
-        }
+       
     }
 }

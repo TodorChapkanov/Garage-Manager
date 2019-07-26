@@ -10,6 +10,8 @@
 
         public double  Hours { get; set; }
 
+        public string EmployeeName { get; set; }
+
         public bool IsFinished { get; set; }
     }
 }
