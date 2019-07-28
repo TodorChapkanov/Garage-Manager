@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GarageManager.App.Models.BindingModels.RepairService
+namespace GarageManager.Web.Models.BindingModels.RepairService
 {
     public class RepairCreateBindingModel
     {

@@ -2,6 +2,9 @@
 {
     public class GlobalConstants
     {
+        //Admin
+        public const string AdminEmail = "admin@garagemanager.com";
+        public const string AdminUserName = "Administrator";
         //Departments
         public const string FacilitiesManagement = "Facilities Management";
         public const string MechanicalRepair = "Mechanical Repair";

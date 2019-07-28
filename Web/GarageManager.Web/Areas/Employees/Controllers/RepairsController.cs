@@ -1,0 +1,83 @@
+﻿using GarageManager.Services.Contracts;
+using GarageManager.Web.Models.BindingModels.RepairService;
+using GarageManager.Web.Models.ViewModels.Repair;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace GarageManager.Web.Areas.Employees.Controllers
+{
+    public class RepairsController : BaseController
+    {
+        private readonly IRepairsService repairsService;
+
+        public RepairsController(IRepairsService repairsService)
+        {
+            this.repairsService = repairsService;
+        }
+        public IActionResult AddRepairService()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRepairService(RepairCreateBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+            var employeeId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var carId = await this.repairsService
+                .CreateRepairService(
+                model.CarId,
+                model.Description,
+                model.Hours,
+                model.PricePerHour,
+                employeeId);
+            
+            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+        }
+
+        public async Task<IActionResult> Edit(string id, string carId)
+        {
+            var partFromDb = await this.repairsService.GetEditDetailsByIdAsync(id);
+            var partModel = new RepairEditViewModel
+            {
+                Id = partFromDb.Id,
+                CarId = carId,
+                Description = partFromDb.Description,
+                PricePerHour = partFromDb.PricePerHour,
+                Hours = partFromDb.Hours,
+                IsFinished = partFromDb.IsFinished
+            };
+
+            return this.View(partModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(RepairEditBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.Redirect("/Home/Index");
+            }
+
+           await this.repairsService.UpdateRepairByIdAsync(
+                model.Id,
+                model.Description,
+                model.Hours,
+                model.PricePerHour,
+                model.IsFinished);
+
+            return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
+        }
+
+        public async Task<IActionResult> Delete(string carId, string repairId)
+        {
+            var serviceId = await this.repairsService.HardDeleteAsync(repairId);
+
+            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+        }
+    }
+}

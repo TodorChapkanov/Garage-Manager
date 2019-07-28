@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GarageManager.App.Models.ViewModels.Customer
+namespace GarageManager.Web.Models.ViewModels.Customer
 {
     public class AllCustomerViewModel
     {

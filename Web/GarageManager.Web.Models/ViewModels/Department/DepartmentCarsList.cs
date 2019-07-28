@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GarageManager.App.Models.ViewModels.Department
+namespace GarageManager.Web.Models.ViewModels.Department
 { 
     public class DepartmentCarsList
     {

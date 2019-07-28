@@ -1,7 +1,7 @@
-﻿using GarageManager.App.Models.ViewModels.Car;
+﻿using GarageManager.Web.Models.ViewModels.Car;
 using System.Collections.Generic;
 
-namespace GarageManager.App.Models.ViewModels.Customer
+namespace GarageManager.Web.Models.ViewModels.Customer
 {
     public class CustomerCarViewModel
     {

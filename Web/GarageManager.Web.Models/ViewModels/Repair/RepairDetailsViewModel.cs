@@ -1,4 +1,4 @@
-﻿namespace GarageManager.App.Models.ViewModels.Repair
+﻿namespace GarageManager.Web.Models.ViewModels.Repair
 {
     public class RepairDetailsViewModel
     {

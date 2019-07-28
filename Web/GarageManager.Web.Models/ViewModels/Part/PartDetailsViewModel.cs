@@ -1,4 +1,4 @@
-﻿namespace GarageManager.App.Models.ViewModels.Part
+﻿namespace GarageManager.Web.Models.ViewModels.Part
 {
     public class PartDetailsViewModel
     {

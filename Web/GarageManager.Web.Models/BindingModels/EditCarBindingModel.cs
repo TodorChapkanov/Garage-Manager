@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GarageManager.App.Models.BindingModels
+namespace GarageManager.Web.Models.BindingModels
 {
     public class EditCarBindingModel
     {

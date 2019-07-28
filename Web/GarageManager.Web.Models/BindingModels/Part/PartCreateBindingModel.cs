@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace GarageManager.App.Models.BindingModels.Part
+namespace GarageManager.Web.Models.BindingModels.Part
 {
     public class PartCreateBindingModel
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GarageManager.App.Models.ViewModels.Car
+namespace GarageManager.Web.Models.ViewModels.Car
 {
     public class CarDetailsViewModel
     {

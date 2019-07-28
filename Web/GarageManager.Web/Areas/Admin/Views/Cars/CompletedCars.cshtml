@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GarageManager.Web.Models.ViewModels.Car.CompletedCarList>
+@{
+    ViewData["Title"] = "CompletedCars";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    @if (Model.Count() != 0)
+    {
+      
+        <table class="table w-75 mx-auto">
+            <thead>
+                <tr class="row mx-auto">
+                    <th class="col-md-3">Make</th>
+                    <th class="col-md-3">Model</th>
+                    <th class="col-md-3">Registration Plate</th>
+                    <th class="col-md-3 text-center">Details</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                @foreach (var car in Model)
+                {
+                    <tr class="row mx-auto">
+                        <td class="col-md-3">@car.Make</td>
+                        <td class="col-md-3">@car.Model</td>
+                        <td class="col-md-3 ">@car.RegiserPlate</td>
+                        <th class="col-md-3 d-flex justify-content-around">
+                            <a asp-action="CompleteTheOrder" asp-controller="Customers" asp-area="Admin" asp-route-Id="@car.Id">Finish Order</a>
+                            <a asp-action="Invoice" asp-controller="Customers" asp-area="Admin" asp-route-Id="@car.Id">Invoice </a>
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <h2 class="text-center">Not have Competed Cars yet.</h2>
+    }
+
+</div>
+
+

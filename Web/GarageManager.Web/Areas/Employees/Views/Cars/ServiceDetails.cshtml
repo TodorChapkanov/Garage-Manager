@@ -1,0 +1,107 @@
+﻿@model GarageManager.Web.Models.ViewModels.Department.CarServicesDetailsViewModel
+
+@{
+    ViewData["Title"] = "ServiceDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1 class="text-center">Service Details</h1>
+
+<hr />
+<div class="container-fluid">
+    <div class=" mx-auto">
+        <div class="row mx-auto">
+            <div class="col-1"></div>
+            <div class="col-sm-3 ml-3">
+                <div class="row mx-auto">
+                    <ul class="list-group-flush ml-5">
+                        <li class="list-group-item">
+                            <h6 class="text-bold">Make: @Model.Make</h6>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="text-bold ">Model: @Model.Model</h6>
+                        </li>
+                        <li class="list-group-item">
+                            <h6 class="text-bold">Registration Plate: @Model.RegisterPlate</h6>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="w-100 h-75 mt-2 ml-lg-5" style="border: 2px solid #DCDCDC;">
+                    <h6 class="text-bold">@Model.Description</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid justify-content-center w-75 mx-auto ">
+        <table class="table fixed_header table-hovermx-auto table-bordered ">
+            <thead>
+                <tr class="row mx-auto">
+                    <th class="col-sm-4 bg-secondary text-white">Description</th>
+                    <th class="col-sm-2 bg-secondary text-white">Quantity</th>
+                    <th class="col-sm-2 bg-secondary text-white">Price</th>
+                    <th class="col-sm-2 bg-secondary text-white">Total Cost</th>
+                    <th class="col-sm-2 text-center bg-secondary text-white">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var part in Model.Parts)
+                {
+                    <tr class="row mx-auto">
+                        <td class="col-sm-4">@part.Name</td>
+                        <td class="col-sm-2">@part.Quantity</td>
+                        <td class="col-sm-2">@part.Price</td>
+                        <td class="col-sm-2">@part.TotalCost</td>
+                        <th class="col-sm-2   d-flex justify-content-around">
+                            <a class="text-dark" asp-action="Edit" asp-controller="Parts" asp-area="Employees" asp-route-id="@part.Id" asp-route-carId="@Model.Id">Edit</a>
+                            <a class="text-danger" asp-action="Delete" asp-controller="Parts" asp-area="Employees" asp-route-partId="@part.Id" asp-route-carId="@Model.Id">Delete</a>
+                        </th>
+                    </tr>
+
+                }
+
+                @foreach (var repair in Model.Repairs)
+                {
+                    if (repair.IsFinished)
+                    {
+                        <tr class="row mx-auto bg-success">
+                            <td class="col-sm-4">@repair.Description</td>
+                            <td class="col-sm-2">@repair.Hours</td>
+                            <td class="col-sm-2">@repair.PricePerHour</td>
+                            <td class="col-sm-2">@repair.TotalCost</td>
+                            <th class="col-sm-2   d-flex justify-content-around">
+                                <a class="text-dark" asp-action="Edit" asp-controller="Repairs" asp-area="Employees" asp-route-id="@repair.Id" asp-route-carId="@Model.Id">Edit</a>
+                                <a class="text-danger" asp-action="Delete" asp-controller="Repairs" asp-area="Employees" asp-route-repairId="@repair.Id" asp-route-carId="@Model.Id">Delete</a>
+                            </th>
+                        </tr>
+
+                    }
+                    else
+                    {
+                        <tr class="row mx-auto bg-warning">
+                            <td class="col-sm-4">@repair.Description</td>
+                            <td class="col-sm-2">@repair.Hours</td>
+                            <td class="col-sm-2">@repair.PricePerHour</td>
+                            <td class="col-sm-2">@repair.TotalCost</td>
+                            <th class="col-sm-2   d-flex justify-content-around">
+                                <a class="text-dark" asp-action="Edit" asp-controller="Repairs" asp-area="Employees" asp-route-id="@repair.Id" asp-route-carId="@Model.Id">Edit</a>
+                                <a class="text-danger" asp-action="Delete" asp-controller="Repairs" asp-area="Employees" asp-route-repairId="@repair.Id" asp-route-carId="@Model.Id">Delete</a>
+                            </th>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="mx-auto text-center">
+        <a class="btn active btn-light text-center" asp-action="AddPart" asp-controller="Parts" asp-area="Employees" asp-route-id="@Model.Id">Add Part</a>
+        <a class="btn active btn-light text-center ml-3" asp-action="AddRepairService" asp-controller="Repairs" asp-area="Employees" asp-route-id="@Model.Id">Add Repair Service</a>
+    </div>
+    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" asp-action="CarIsFinished" asp-controller="Cars" asp-area="Employees" asp-route-carId="@Model.Id" asp-route-departmentId="@Model.DepartmentId">Finish Service</a>
+    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" asp-action="Service" asp-controller="Cars" asp-area="Employees" asp-route-id="@Model.Id">Change Department</a>
+</div>
+
+
+

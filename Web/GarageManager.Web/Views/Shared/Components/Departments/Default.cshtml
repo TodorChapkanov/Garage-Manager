@@ -1,0 +1,7 @@
+﻿@model GarageManager.Web.Views.Shared.Components.Models.DepartmentModel
+
+
+<label asp-for="Departments" class="control-label"></label>
+<select asp-for="@Model.DepartmentId" asp-items="@Model.Departments" class="form-control">
+    <option disabled selected>--- Department ---</option>
+</select>

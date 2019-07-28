@@ -1,8 +1,8 @@
-﻿using GarageManager.App.Models.ViewModels.Part;
-using GarageManager.App.Models.ViewModels.Repair;
+﻿using GarageManager.Web.Models.ViewModels.Part;
+using GarageManager.Web.Models.ViewModels.Repair;
 using System.Collections.Generic;
 
-namespace GarageManager.App.Models.ViewModels.Department
+namespace GarageManager.Web.Models.ViewModels.Department
 {
     public class CarServicesDetailsViewModel
     {
