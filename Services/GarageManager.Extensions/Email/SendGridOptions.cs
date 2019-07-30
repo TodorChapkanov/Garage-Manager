@@ -1,4 +1,4 @@
-﻿namespace GarageManager.Web.Areas.Identity.Services.Email
+﻿namespace GarageManager.Extensions.Email
 {
     public class SendGridOptions
     {

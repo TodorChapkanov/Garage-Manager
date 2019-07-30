@@ -3,7 +3,6 @@ using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.DTO.Part;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,7 +41,7 @@ namespace GarageManager.Services
                 Price = price,
                 Quantity = quantity,
                 ServiceId = carFromDb.CurrentServiceId,
-                
+
             };
             await this.partRepository.CreateAsync(part);
             carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Parts.Add(part);
@@ -75,24 +74,24 @@ namespace GarageManager.Services
         {
 
             var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);
-                partFromDb.Name = name;
-                partFromDb.Number = number;
-                partFromDb.Price = price;
-                partFromDb.Quantity = quantity;
+            partFromDb.Name = name;
+            partFromDb.Number = number;
+            partFromDb.Price = price;
+            partFromDb.Quantity = quantity;
 
-                 this.partRepository.Update(partFromDb);
+            this.partRepository.Update(partFromDb);
             return await this.partRepository.SavaChangesAsync();
-        
+
 
         }
 
-        public async Task<string> HardDeleteAsync(string id)
+        public async Task<int> HardDeleteAsync(string id)
         {
-                var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);
-                this.partRepository.HardDelete(partFromDb);
- await this.partRepository.SavaChangesAsync();
+            var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);
+            this.partRepository.HardDelete(partFromDb);
+            return await this.partRepository.SavaChangesAsync();
 
-            return partFromDb.ServiceId;
+
         }
     }
 }

@@ -35,17 +35,34 @@
                             <td class="col-md-3">@car.Model</td>
                             <td class="col-md-3 ">@car.RegistrationPlate</td>
                             <th class="col-md-3 d-flex justify-content-around">
-                                <a asp-action="Details" asp-controller="Cars" asp-area="Employees" asp-route-Id="@car.Id">Details</a>
-                                <a asp-action="Edit" asp-controller="Cars" asp-area="Admin" asp-route-Id="@car.Id">Edit</a>
+                                <a asp-action="Details" 
+                                   asp-controller="Cars"
+                                   asp-area="Employees"
+                                   asp-route-Id="@car.Id">Details</a>
+
+                                <a asp-action="Edit"
+                                   asp-controller="Cars"
+                                   asp-area="Admin"
+                                   asp-route-Id="@car.Id">Edit</a>
+
                                 @if (car.IsInService)
                                 {
-                                    <a asp-action="ServiceDetails" asp-controller="Cars" asp-area="Employees" asp-route-Id="@car.Id">In Service</a>
+                                    <a asp-action="ServiceDetails" 
+                                       asp-controller="Cars" 
+                                       asp-area="Employees"
+                                       asp-route-Id="@car.Id">In Service</a>
                                 }
                                 else
                                 {
-                                    <a asp-action="Service" asp-controller="Cars" asp-area="Employees" asp-route-Id="@car.Id">Service</a>
+                                    <a asp-action="Service" 
+                                       asp-controller="Cars"
+                                       asp-area="Employees" 
+                                       asp-route-Id="@car.Id">Service</a>
                                 }
-                                <a asp-action="ServiceHistoryByCarId" asp-controller="Services" asp-area="Admin" asp-route-Id="@car.Id">History</a>
+                                <a asp-action="ServiceHistoryByCarId"
+                                   asp-controller="Services" 
+                                   asp-area="Admin" 
+                                   asp-route-Id="@car.Id">History</a>
                             </th>
                         </tr>
                     }

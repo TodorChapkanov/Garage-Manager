@@ -38,7 +38,6 @@ namespace GarageManager.Services
 
         public Task<List<CustomerDetail>> GetAllCustomersDetailsAsync()
         {
-
             var allCustomersDetails = this.customerRepository.All()
                  .Select(details => new CustomerDetail
                  {

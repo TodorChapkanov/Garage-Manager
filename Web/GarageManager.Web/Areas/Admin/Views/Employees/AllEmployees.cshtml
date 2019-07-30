@@ -30,8 +30,15 @@
                                 <td class="col-md-2">@employee.PhoneNumber</td>
                                 <td class="col-md-2">@employee.Email</td>
                                 <th class="col-md-2   d-flex justify-content-around">
-                                    <a asp-action="Details" asp-controller="Employees" asp-area="Admin" asp-route-id="@employee.Id">Details</a>
-                                    <a asp-action="Edit" asp-controller="Employees" asp-area="Admin" asp-route-id="@employee.Id">Edit</a>
+                                    <a asp-action="Details"
+                                       asp-controller="Employees"
+                                       asp-area="Admin" 
+                                       asp-route-id="@employee.Id">Details</a>
+
+                                    <a asp-action="Edit"
+                                       asp-controller="Employees"
+                                       asp-area="Admin"
+                                       asp-route-id="@employee.Id">Edit</a>
                                 </th>
                             </tr>
                             }

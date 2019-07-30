@@ -96,7 +96,7 @@ namespace GarageManager.Services
             return true;
         }
 
-        public async Task<CustomerCarDetails> GetDetailsByIdAsync(string id)
+        public async Task<CustomerCarDetails> GetCarDetailsByIdAsync(string id)
         {
             var carFromDb = this.carRepository.All()
                 .Include(car => car.Manufacturer)

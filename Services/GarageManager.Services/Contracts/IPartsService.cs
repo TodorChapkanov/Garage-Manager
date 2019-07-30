@@ -21,6 +21,6 @@ namespace GarageManager.Services.Contracts
             decimal price,
             int quantity);
 
-        Task<string> HardDeleteAsync(string id);
+        Task<int> HardDeleteAsync(string id);
     }
 }

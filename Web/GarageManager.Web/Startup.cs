@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using GarageManager.Web.Areas.Identity.Services.Email;
 using GarageManager.Data;
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
+using GarageManager.Extensions.Email;
 using GarageManager.Extensions.PDFConverter.HtmlToPDF;
 using GarageManager.Extensions.PDFConverter.ViewRender;
 using GarageManager.Services;
 using GarageManager.Services.Contracts;
+using GarageManager.Web.Infrastructure.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace GarageManager
 {
@@ -25,6 +27,7 @@ namespace GarageManager
     {
         public Startup(IConfiguration configuration)
         {
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
             Configuration = configuration;
             
         }
@@ -60,7 +63,11 @@ namespace GarageManager
             });
 
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                    options.Filters.Add<LogExceptionFilter>();
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             services.AddTransient(typeof(IDeletableEntityRepository<>), typeof(DeletableEntityRepository<>));
@@ -88,7 +95,7 @@ namespace GarageManager
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -102,12 +109,13 @@ namespace GarageManager
                 app.UseHsts();
             }
 
+
+            loggerFactory.AddSerilog();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

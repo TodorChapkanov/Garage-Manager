@@ -20,6 +20,10 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> ServiceHistoryByCarId(string id)
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/Admin/Customers/AllCustomers");
+            }
           var model = (await this.interventionService.CarServicesHistoryAsync(id))
                 .Select(service => new CarServiceHistoryViewModel
                 {
@@ -34,8 +38,12 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             return this.View(model);
         }
 
-        public async Task<IActionResult> ServiceDetails(string id)
+       /* public async Task<IActionResult> ServiceDetails(string id)
         {
+            if (!this.ValidateId(id))
+            {
+                return this.Redirect("/Admin/)
+            }
             var serviceDetails = await this.interventionService.ServiceHistoryDetailsAsync(id);
             var model = new CarServiceHistoryDetailsViewModel
             {
@@ -57,6 +65,6 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             };
 
             return this.View(model);
-        }
+        }*/
     }
 }

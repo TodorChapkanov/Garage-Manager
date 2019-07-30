@@ -55,8 +55,19 @@
                         <td class="col-sm-2">@part.Price</td>
                         <td class="col-sm-2">@part.TotalCost</td>
                         <th class="col-sm-2   d-flex justify-content-around">
-                            <a class="text-dark" asp-action="Edit" asp-controller="Parts" asp-area="Employees" asp-route-id="@part.Id" asp-route-carId="@Model.Id">Edit</a>
-                            <a class="text-danger" asp-action="Delete" asp-controller="Parts" asp-area="Employees" asp-route-partId="@part.Id" asp-route-carId="@Model.Id">Delete</a>
+                            <a class="text-dark" 
+                               asp-action="Edit" 
+                               asp-controller="Parts" 
+                               asp-area="Employees" 
+                               asp-route-id="@part.Id"
+                               asp-route-carId="@Model.Id">Edit</a>
+
+                            <a class="text-danger" 
+                               asp-action="Delete" 
+                               asp-controller="Parts"
+                               asp-area="Employees" 
+                               asp-route-partId="@part.Id"
+                               asp-route-carId="@Model.Id">Delete</a>
                         </th>
                     </tr>
 
@@ -72,8 +83,19 @@
                             <td class="col-sm-2">@repair.PricePerHour</td>
                             <td class="col-sm-2">@repair.TotalCost</td>
                             <th class="col-sm-2   d-flex justify-content-around">
-                                <a class="text-dark" asp-action="Edit" asp-controller="Repairs" asp-area="Employees" asp-route-id="@repair.Id" asp-route-carId="@Model.Id">Edit</a>
-                                <a class="text-danger" asp-action="Delete" asp-controller="Repairs" asp-area="Employees" asp-route-repairId="@repair.Id" asp-route-carId="@Model.Id">Delete</a>
+                                <a class="text-dark" 
+                                   asp-action="Edit" 
+                                   asp-controller="Repairs" 
+                                   asp-area="Employees" 
+                                   asp-route-id="@repair.Id" 
+                                   asp-route-carId="@Model.Id">Edit</a>
+
+                                <a class="text-danger" 
+                                   asp-action="Delete" 
+                                   asp-controller="Repairs" 
+                                   asp-area="Employees"
+                                   asp-route-repairId="@repair.Id" 
+                                   asp-route-carId="@Model.Id">Delete</a>
                             </th>
                         </tr>
 
@@ -86,8 +108,19 @@
                             <td class="col-sm-2">@repair.PricePerHour</td>
                             <td class="col-sm-2">@repair.TotalCost</td>
                             <th class="col-sm-2   d-flex justify-content-around">
-                                <a class="text-dark" asp-action="Edit" asp-controller="Repairs" asp-area="Employees" asp-route-id="@repair.Id" asp-route-carId="@Model.Id">Edit</a>
-                                <a class="text-danger" asp-action="Delete" asp-controller="Repairs" asp-area="Employees" asp-route-repairId="@repair.Id" asp-route-carId="@Model.Id">Delete</a>
+                                <a class="text-dark"
+                                   asp-action="Edit" 
+                                   asp-controller="Repairs"
+                                   asp-area="Employees" 
+                                   asp-route-id="@repair.Id"
+                                   asp-route-carId="@Model.Id">Edit</a>
+
+                                <a class="text-danger"
+                                   asp-action="Delete" 
+                                   asp-controller="Repairs" 
+                                   asp-area="Employees" 
+                                   asp-route-repairId="@repair.Id"
+                                   asp-route-carId="@Model.Id">Delete</a>
                             </th>
                         </tr>
                     }
@@ -96,11 +129,34 @@
         </table>
     </div>
     <div class="mx-auto text-center">
-        <a class="btn active btn-light text-center" asp-action="AddPart" asp-controller="Parts" asp-area="Employees" asp-route-id="@Model.Id">Add Part</a>
-        <a class="btn active btn-light text-center ml-3" asp-action="AddRepairService" asp-controller="Repairs" asp-area="Employees" asp-route-id="@Model.Id">Add Repair Service</a>
+        <a class="btn active btn-light text-center" 
+           asp-action="AddPart" 
+           asp-controller="Parts"
+           asp-area="Employees" 
+           asp-route-id="@Model.Id">Add Part</a>
+
+        <a class="btn active btn-light text-center ml-3"
+           asp-action="AddRepairService" 
+           asp-controller="Repairs" 
+           asp-area="Employees" 
+           asp-route-id="@Model.Id">Add Repair Service</a>
     </div>
-    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" asp-action="CarIsFinished" asp-controller="Cars" asp-area="Employees" asp-route-carId="@Model.Id" asp-route-departmentId="@Model.DepartmentId">Finish Service</a>
-    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" asp-action="Service" asp-controller="Cars" asp-area="Employees" asp-route-id="@Model.Id">Change Department</a>
+    <a class="btn btn-primary btn-lg active"
+       role="button" 
+       aria-pressed="true" 
+       asp-action="CarIsFinished"
+       asp-controller="Cars" 
+       asp-area="Employees" 
+       asp-route-carId="@Model.Id" 
+       asp-route-departmentId="@Model.DepartmentId">Finish Service</a>
+
+    <a class="btn btn-primary btn-lg active"
+       role="button" 
+       aria-pressed="true" 
+       asp-action="AddToService" 
+       asp-controller="Cars" 
+       asp-area="Employees"
+       asp-route-id="@Model.Id">Change Department</a>
 </div>
 
 

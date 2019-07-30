@@ -26,9 +26,20 @@
                     <td class="col-sm-5">@Model[i].FullName</td>
                     <td class="col-sm-4">@Model[i].Email</td>
                     <th class="col-md-2   d-flex justify-content-around">
-                        <a asp-action="Details" asp-controller="Customers" asp-area="Admin" asp-route-id="@Model[i].Id">Details</a>
-                        <a asp-action="Edit" asp-controller="Customers" asp-area="Admin" asp-route-id="@Model[i].Id">Edit</a>
-                        <a asp-action="AllCarsByCustomerId" asp-controller="Cars" asp-area="Admin" asp-route-id="@Model[i].Id">Cars</a>
+                        <a asp-action="Details"
+                           asp-controller="Customers"
+                           asp-area="Admin" 
+                           asp-route-id="@Model[i].Id">Details</a>
+
+                        <a asp-action="Edit"
+                           asp-controller="Customers"
+                           asp-area="Admin"
+                           asp-route-id="@Model[i].Id">Edit</a>
+
+                        <a asp-action="AllCarsByCustomerId"
+                           asp-controller="Cars" 
+                           asp-area="Admin" 
+                           asp-route-id="@Model[i].Id">Cars</a>
                     </th>
                 </tr>
             }

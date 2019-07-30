@@ -1,4 +1,5 @@
-﻿using GarageManager.Services.Contracts;
+﻿using GarageManager.Common.Notification;
+using GarageManager.Services.Contracts;
 using GarageManager.Web.Models.BindingModels.RepairService;
 using GarageManager.Web.Models.ViewModels.Repair;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Web.Areas.Employees.Controllers
 {
-    public class RepairsController : BaseController
+    public class RepairsController : BaseEmployeeController
     {
         private readonly IRepairsService repairsService;
 
@@ -23,6 +24,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRepairService(RepairCreateBindingModel model)
         {
+            //TODO Add View Component for Employees in Department
             if (!ModelState.IsValid)
             {
                 return this.View(model);
@@ -35,12 +37,26 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 model.Hours,
                 model.PricePerHour,
                 employeeId);
-            
-            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+
+            if (carId != default(string))
+            {
+                this.ShowNotification(NotificationMessages.RepairServiceCreateSuccessfull,
+                    NotificationType.Success);
+                    return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            }
+
+            this.ShowNotification(NotificationMessages.InvalidOperation,
+                NotificationType.Warning);
+            return this.Redirect("/");
         }
 
         public async Task<IActionResult> Edit(string id, string carId)
         {
+            if (!this.IsValidId(id) || !this.IsValidId(carId))
+            {
+                return this.Redirect("/");
+            }
+
             var partFromDb = await this.repairsService.GetEditDetailsByIdAsync(id);
             var partModel = new RepairEditViewModel
             {
@@ -63,21 +79,39 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 return this.Redirect("/Home/Index");
             }
 
-           await this.repairsService.UpdateRepairByIdAsync(
+         var result =  await this.repairsService.UpdateRepairByIdAsync(
                 model.Id,
                 model.Description,
                 model.Hours,
                 model.PricePerHour,
                 model.IsFinished);
+            if (result != default(int))
+            {
+                ShowNotification(NotificationMessages.RepairServiceEditSuccessfull,
+                    NotificationType.Success);
+                return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
+            }
 
-            return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
+            return this.Redirect("/");
         }
 
         public async Task<IActionResult> Delete(string carId, string repairId)
         {
-            var serviceId = await this.repairsService.HardDeleteAsync(repairId);
+            if (!this.IsValidId(carId) || !this.IsValidId(repairId))
+            {
+                return this.Redirect("/");
+            }
 
-            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            var result = await this.repairsService.HardDeleteAsync(repairId);
+
+            if (result != default(int))
+            {
+                this.ShowNotification(NotificationMessages.RepairServiceDeleteSuccessfull,
+                    NotificationType.Warning);
+                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            }
+
+            return this.Redirect("/");
         }
     }
 }

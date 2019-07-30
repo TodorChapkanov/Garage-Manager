@@ -5,7 +5,7 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
 
-namespace GarageManager.Web.Areas.Identity.Services.Email
+namespace GarageManager.Extensions.Email
 {
     public class EmailSender : IEmailSender
     {

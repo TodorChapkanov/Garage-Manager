@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Common", "Gar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Web.Models", "Web\GarageManager.Web.Models\GarageManager.Web.Models.csproj", "{7F05F2FE-61A7-4B2A-86B2-303DBEC4DE2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Web", "Web\GarageManager.Web\GarageManager.Web.csproj", "{60BFAC88-ACC7-4548-88D1-70F3E798B35F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Services", "Services\GarageManager.Services\GarageManager.Services.csproj", "{3559C215-32E6-467C-881D-A25FAE4E10DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Extensions", "Services\GarageManager.Extensions\GarageManager.Extensions.csproj", "{B8A25F13-E301-47B2-9ED2-85D206658966}"
@@ -16,6 +14,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Data", "Data\GarageManager.Data\GarageManager.Data.csproj", "{8EBE56A5-0A0E-4F39-A588-1406E3693A53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Domain", "Data\GarageManager.Domain\GarageManager.Domain.csproj", "{858589D8-0434-4A10-A716-D2E1AE271204}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Web", "Web\GarageManager.Web\GarageManager.Web.csproj", "{D156AD31-FA4E-43C0-A06B-A324E94277D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +31,6 @@ Global
 		{7F05F2FE-61A7-4B2A-86B2-303DBEC4DE2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F05F2FE-61A7-4B2A-86B2-303DBEC4DE2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F05F2FE-61A7-4B2A-86B2-303DBEC4DE2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60BFAC88-ACC7-4548-88D1-70F3E798B35F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60BFAC88-ACC7-4548-88D1-70F3E798B35F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60BFAC88-ACC7-4548-88D1-70F3E798B35F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60BFAC88-ACC7-4548-88D1-70F3E798B35F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3559C215-32E6-467C-881D-A25FAE4E10DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3559C215-32E6-467C-881D-A25FAE4E10DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3559C215-32E6-467C-881D-A25FAE4E10DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +47,10 @@ Global
 		{858589D8-0434-4A10-A716-D2E1AE271204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{858589D8-0434-4A10-A716-D2E1AE271204}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{858589D8-0434-4A10-A716-D2E1AE271204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D156AD31-FA4E-43C0-A06B-A324E94277D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D156AD31-FA4E-43C0-A06B-A324E94277D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D156AD31-FA4E-43C0-A06B-A324E94277D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D156AD31-FA4E-43C0-A06B-A324E94277D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,8 +8,9 @@
     <environment include="Development">
         <link rel="stylesheet" type="text/css" href="~/css/reset-css.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-       @* <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"*@
+        @* <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"*@
         <link rel="stylesheet" type="text/css" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/toastr.min.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/reset-css.css" />
@@ -19,10 +20,11 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
         <link rel="stylesheet" type="text/css" href="~/css/site.css" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
     </environment>
  
 </head>
-<body class="w-100 h-100" >
+<body class="w-100 h-100">
     <div>
         <header>
             <div>
@@ -53,8 +55,7 @@
                                                asp-area="Employees"
                                                asp-controller="Departments"
                                                asp-action="CarsInDepartment"
-                                               asp-route-id="fe109693-c5fe-46c4-ba1c-a42666c6a822"
-                                               >Body Repair</a>
+                                               asp-route-id="fe109693-c5fe-46c4-ba1c-a42666c6a822">Body Repair</a>
                                             <a class="dropdown-item text-black-50"
                                                asp-area="Employees"
                                                asp-controller="Departments"
@@ -132,7 +133,13 @@
         </script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <script src="~/js/notifier.js"></script>
 
     @RenderSection("Scripts", required: false)
+    @{
+        <partial name="_ValidationScriptsPartial" />
+        <partial name="_NotificationPartial" />
+    }
 </body>
 </html>

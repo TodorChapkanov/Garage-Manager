@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Threading.Tasks;
+using GarageManager.Common.Notification;
 
 namespace GarageManager.Web.Areas.Admin.Controllers
 {
@@ -46,7 +47,6 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-               
                 return this.View(model);
             }
 
@@ -60,16 +60,25 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 model.DepartmentId);
             if (employeeId == GlobalConstants.EmailExistResult)
             {
-                ViewData["Email"] = GlobalConstants.EmailExistErrorMessage;
+                this.ShowNotification(NotificationMessages.EmailExist,
+                    NotificationType.Warning);
+
                 return this.View(model);
             }
 
+            this.ShowNotification(string.Format(NotificationMessages.EmployeeCreateSuccessfull,
+                model.FirsName, model.LastName,
+                NotificationType.Success));
             
             return this.Redirect($"/Admin/Employees/Details/{employeeId}");
         }
 
         public async Task<IActionResult> Edit(string id)
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/Admin/Employees/AllEmployees");
+            }
           var employeeFromDb = await this.employeesService.EditEmployeeDetailsByIdAsync(id);
 
             var employeeModel = new EmployeeEditViewModel
@@ -106,11 +115,18 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 model.Password,
                 model.RecruitedOn);
 
+            this.ShowNotification(NotificationMessages.EmployeeEditSuccessfull,
+                NotificationType.Success);
+
             return this.Redirect($"/Admin/Employees/Details/{model.Id}");
         }
 
         public async Task<IActionResult> Details(string id )
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/Admin/Employees/AllEmployees");
+            }
             var employeeFromDb = await this.employeesService.GetEmployeeDetailsByIdAsync(id);
             var employeeModel = new EmployeeDetailsViewModel
             {
@@ -129,7 +145,20 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
         public async  Task<IActionResult> Delete(string id)
         {
+            if (!this.IsValidId(id)) 
+            {
+                return this.Redirect("/Admin/Employees/AllEmployees");
+            }
             var result = await this.employeesService.DeleteEmployeeAsync(id);
+
+            if (result != default(int))
+            {
+
+                this.ShowNotification(NotificationMessages.EmployeeDeleteSuccessfull,
+                   NotificationType.Warning);
+              return this.Redirect("/Admin/Employees/AllEmployees");
+            }
+
             return this.Redirect("/Admin/Employees/AllEmployees");
         }
     }

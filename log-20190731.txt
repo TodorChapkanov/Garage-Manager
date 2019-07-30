@@ -1,0 +1,70 @@
+2019-07-31 00:34:58.082 +03:00 - [EventId: 80000032-0007-fc00-b63f-84710c7967bb]  
+[controller, Cars]/[action, Create]/[area, Admin]/[id, 772450d8-4d68-4d86-a7f7-adc93209dd71]  
+Source : System.Text.StringBuilder  
+ Method: AppendFormatHelper 
+System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at GarageManager.Web.Areas.Admin.Controllers.CarsController.Create(CreateCarBindingModel carBVM) in C:\Users\User\Desktop\GarageManager\Garage-Manager\Web\GarageManager.Web\Areas\Admin\Controllers\CarsController.cs:line 70
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextExceptionFilterAsync()  
+ 
+------------------------------------------------------------
+2019-07-31 00:34:58.132 +03:00 - An unhandled exception has occurred while executing the request.
+2019-07-31 00:39:24.832 +03:00 - [EventId: 80000040-0002-fd00-b63f-84710c7967bb]  
+[controller, Customers]/[action, AllCustomers]/[area, Admin]  
+Source : GarageManager.Web.Areas.User.Controllers.CustomersController+<AllCustomers>d__13  
+ Method: MoveNext 
+System.ArgumentOutOfRangeException: Specified argument was out of the range of valid values.
+   at GarageManager.Web.Areas.User.Controllers.CustomersController.AllCustomers() in C:\Users\User\Desktop\GarageManager\Garage-Manager\Web\GarageManager.Web\Areas\Admin\Controllers\CustomersController.cs:line 76
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextExceptionFilterAsync()  
+ 
+------------------------------------------------------------
+2019-07-31 00:42:18.947 +03:00 - [EventId: 80000058-0004-fd00-b63f-84710c7967bb]  
+[controller, Cars]/[action, AllCarsByCustomerId]/[area, Admin]/[id, 772450d8-4d68-4d86-a7f7-adc93209dd71]  
+Source : GarageManager.Web.Areas.Admin.Controllers.CarsController+<AllCarsByCustomerId>d__10  
+ Method: MoveNext 
+System.InvalidOperationException: Operation is not valid due to the current state of the object.
+   at GarageManager.Web.Areas.Admin.Controllers.CarsController.AllCarsByCustomerId(String id) in C:\Users\User\Desktop\GarageManager\Garage-Manager\Web\GarageManager.Web\Areas\Admin\Controllers\CarsController.cs:line 183
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextExceptionFilterAsync()  
+ 
+------------------------------------------------------------
+2019-07-31 00:42:18.976 +03:00 - An unhandled exception has occurred while executing the request.
+2019-07-31 00:42:19.731 +03:00 - [EventId: 80000050-0002-fd00-b63f-84710c7967bb]  
+[controller, Cars]/[action, AllCarsByCustomerId]/[area, Admin]/[id, 772450d8-4d68-4d86-a7f7-adc93209dd71]  
+Source : GarageManager.Web.Areas.Admin.Controllers.CarsController+<AllCarsByCustomerId>d__10  
+ Method: MoveNext 
+System.InvalidOperationException: Operation is not valid due to the current state of the object.
+   at GarageManager.Web.Areas.Admin.Controllers.CarsController.AllCarsByCustomerId(String id) in C:\Users\User\Desktop\GarageManager\Garage-Manager\Web\GarageManager.Web\Areas\Admin\Controllers\CarsController.cs:line 183
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextExceptionFilterAsync()  
+ 
+------------------------------------------------------------
+2019-07-31 00:42:19.732 +03:00 - An unhandled exception has occurred while executing the request.

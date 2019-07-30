@@ -26,8 +26,15 @@
                         <td class="col-md-3">@car.Model</td>
                         <td class="col-md-3 ">@car.RegiserPlate</td>
                         <th class="col-md-3 d-flex justify-content-around">
-                            <a asp-action="CompleteTheOrder" asp-controller="Customers" asp-area="Admin" asp-route-Id="@car.Id">Finish Order</a>
-                            <a asp-action="Invoice" asp-controller="Customers" asp-area="Admin" asp-route-Id="@car.Id">Invoice </a>
+                            <a asp-action="CompleteTheOrder"
+                               asp-controller="Customers" 
+                               asp-area="Admin" 
+                               asp-route-Id="@car.Id">Finish Order</a>
+
+                            <a asp-action="Invoice" 
+                               asp-controller="Customers"
+                               asp-area="Admin"
+                               asp-route-Id="@car.Id">Invoice </a>
                         </th>
                     </tr>
                 }

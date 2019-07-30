@@ -25,7 +25,10 @@
                     <td>@car.Model</td>
                     <td>@car.RegistrationPlate</td>
                     <th class="d-flex justify-content-around">
-                        <a asp-action="ServiceDetails" asp-controller="Cars" asp-area="Employees" asp-route-id="@car.Id">Edit</a>
+                        <a asp-action="ServiceDetails" 
+                           asp-controller="Cars" 
+                           asp-area="Employees"
+                           asp-route-id="@car.Id">Edit</a>
                     </th>
                 </tr>
             }

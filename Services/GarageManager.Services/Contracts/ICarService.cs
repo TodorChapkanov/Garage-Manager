@@ -26,7 +26,7 @@ namespace GarageManager.Services.Contracts
               string transmissionId
             );
 
-        Task<CustomerCarDetails> GetDetailsByIdAsync(string id);
+        Task<CustomerCarDetails> GetCarDetailsByIdAsync(string id);
 
         Task<int> UpdateCarByIdAsync(
            string id,

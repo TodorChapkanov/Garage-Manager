@@ -74,7 +74,7 @@ namespace GarageManager.Services
             bool isFinished)
         {
 
-            var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);   
+            var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
             repairFromDb.Description = description;
             repairFromDb.Hours = hours;
             repairFromDb.PricePerHour = pricePerHour;
@@ -85,13 +85,13 @@ namespace GarageManager.Services
             return await this.repairRepository.SavaChangesAsync();
         }
 
-        public async Task<string> HardDeleteAsync(string id)
+        public async Task<int> HardDeleteAsync(string id)
         {
 
-                var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
-                this.repairRepository.HardDelete(repairFromDb);
-                 await this.repairRepository.SavaChangesAsync();
-            return repairFromDb.ServiceId;
+            var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
+            this.repairRepository.HardDelete(repairFromDb);
+
+            return await this.repairRepository.SavaChangesAsync();
         }
     }
 }

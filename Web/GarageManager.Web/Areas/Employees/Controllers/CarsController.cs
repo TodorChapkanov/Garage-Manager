@@ -10,25 +10,28 @@ using GarageManager.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using GarageManager.Common.Notification;
 
 namespace GarageManager.Web.Areas.Employees.Controllers
 {
-    public class CarsController : BaseController
+    public class CarsController : BaseEmployeeController
     {
         private readonly ICarService carService;
-        private readonly IPartsService partsService;
-        private readonly IRepairsService repairsService;
 
-        public CarsController(ICarService carService, IPartsService partsService, IRepairsService repairsService)
+        public CarsController(ICarService carService)
         {
             this.carService = carService;
-            this.partsService = partsService;
-            this.repairsService = repairsService;
         }
+
+        
 
         public async Task<IActionResult> Details(string id)
         {
-            var result = await this.carService.GetDetailsByIdAsync(id);
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/");
+            }
+            var result = await this.carService.GetCarDetailsByIdAsync(id);
 
             var model = new CarDetailsViewModel
             {
@@ -50,6 +53,10 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 
         public async Task<IActionResult> ServiceDetails(string id)
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/");
+            }
 
             var carModel = await this.carService.GetCarServicesAsync(id);
 
@@ -85,6 +92,11 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 
         public async Task<IActionResult> Service(string id)
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/");
+            }
+
             var model = new AddCarToServiceViewModel();
             var carDetails = await  this.carService.GetServiceDescription(id);
             model.DepartmentId = carDetails.DepartmentId;
@@ -94,7 +106,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Service(AddCarToServiceBindingModel model)
+        public async Task<IActionResult> AddForService(AddCarToServiceBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -103,17 +115,32 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 
             await this.carService.AddToService(model.Id, model.Description, model.DepartmentId);
 
+            this.ShowNotification(NotificationMessages.CarServiceAdded,
+                NotificationType.Success);
+
             return this.Redirect($"/Employees/Departments/CarsInDepartment/{model.DepartmentId}");
         }
 
 
         public async Task<IActionResult> CarIsFinished(string carId, string departmentId)
         {
-           var result =await this.carService.FinishCarServiceAsync(carId);
-            if (result == default)
+           var result = await this.carService.FinishCarServiceAsync(carId);
+
+            if (!this.IsValidId(carId) || !this.IsValidId(departmentId))
             {
+                return this.Redirect("/");
+            }
+
+            if (result == default(int))
+            {
+                this.ShowNotification(NotificationMessages.CarServiceNotCompleted,
+                NotificationType.Warning);
+
                 return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
             }
+
+            this.ShowNotification(NotificationMessages.CarServiceCmpletedSuccessfull,
+                NotificationType.Success);
 
             return this.Redirect($"/Employees/Departments/CarsInDepartment/{departmentId}");
         }

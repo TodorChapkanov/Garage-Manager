@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GarageManager.Common.Notification;
+using GarageManager.Web.Infrastructure.Filters;
+using System;
 
 namespace GarageManager.Web.Areas.Admin.Controllers
 {
@@ -42,18 +45,15 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateModelState]
         public async Task<IActionResult> Create(CreateCarBindingModel carBVM)
         {
-            if (carBVM.CustomerId == null)
-            {
-                return this.View(carBVM);
-            }
             if (!ModelState.IsValid)
             {
-                return RedirectToAction($"/Admin/Cars/Create/{carBVM.CustomerId}");
+               return RedirectToAction($"/Admin/Cars/Create/{carBVM.CustomerId}");
             }
 
-            var result = await this.carService.CreateAsync<Car>
+            var model = await this.carService.CreateAsync<Car>
                 (
                 carBVM.CustomerId,
                 carBVM.Vin,
@@ -67,7 +67,11 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 carBVM.FuelTypeId,
                 carBVM.TransmissionId
                 );
-           
+
+            this.ShowNotification(string.Format(
+                    NotificationMessages.CarCreatedSuccessfull, carBVM.RegistrationPlate),
+                    NotificationType.Success);
+
             return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{carBVM.CustomerId}");
 
         }
@@ -76,6 +80,8 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
+           
+
             var allFuelTypes = default(IEnumerable<FuelType>);
             var allTransmissionTypes = default(IEnumerable<TransmissionType>);
             var allTasks = new List<Task>();
@@ -94,7 +100,15 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
             await Task.WhenAll(allTasks);
 
-            var carData = await this.carService.GetDetailsByIdAsync(id);
+            //TODO Test method with NULL
+            var carData = await this.carService.GetCarDetailsByIdAsync(id);
+            if (carData == null)
+            {
+                this.ShowNotification(string.Format(
+                    NotificationMessages.InvalidOperation),
+                    NotificationType.Error);
+                this.Redirect("/Admin/Customers/AllCustomers");
+            }
             var model = new EditCarViewModel
             {
                 Id = carData.Id,
@@ -111,8 +125,6 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 FuelTypes = allFuelTypes.Select(ft => new SelectListItem(ft.Type, ft.Id)),
                 TransmissionId = allTransmissionTypes.First(tr => tr.Type == carData.Transmission).Id,
                 Transmissions = allTransmissionTypes.Select(tr => new SelectListItem(tr.Type, tr.Id))
-
-
             };
 
             return this.View(model);
@@ -126,8 +138,6 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 return this.Redirect($"/Admin/Cars/Edit/{model.Id}");
             }
 
-            try
-            {
                 await this.carService.UpdateCarByIdAsync(
                  model.Id,
                  model.RegistrationPlate,
@@ -138,18 +148,31 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                  model.FuelTypeId,
                  model.TransmissionId
                  );
-            }
-            catch (System.Exception)
-            {
-                return this.Redirect($"/Admin/Cars/Edit/{model.Id}");
-            }
+
+            this.ShowNotification(string.Format(
+                    NotificationMessages.CarUpdatedSuccessfull),
+                    NotificationType.Success);
 
             return this.Redirect($"/Employees/Cars/Details/{model.Id}");
         }
 
         public async Task<IActionResult> Delete(string carId, string customerId)
         {
-           await this.carService.HardDeleteAsync(carId);
+            try
+            {
+                await this.carService.HardDeleteAsync(carId);
+            }
+            catch (System.Exception)
+            {
+
+                this.ShowNotification(string.Format(
+                    NotificationMessages.InvalidCarId),
+                    NotificationType.Error);
+            }
+
+            this.ShowNotification(string.Format(
+                    NotificationMessages.CarDeletedSuccessfull),
+                    NotificationType.Warning);
 
             return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{customerId}");
         }
@@ -157,12 +180,17 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllCarsByCustomerId(string id)
         {
-            var result = new CustomerCarViewModel()
+            throw new InvalidOperationException();
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/Admin/Customers/AllCustomers");
+            }
+            var model = new CustomerCarViewModel()
             {
                 CustomerId = id
             };
-
-            result.CustomerCars = (await this.carService.GetAllCarsByCustomerIdAsync(result.CustomerId))
+           
+            model.CustomerCars = (await this.carService.GetAllCarsByCustomerIdAsync(model.CustomerId))
                 .Select(car => new CustomerCarDetailsViewModel
                 {
                     Id = car.Id,
@@ -172,7 +200,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                     IsInService = car.IsInService
                 }).ToList();
 
-            return View(result);
+            return View(model);
         }
 
         public async Task<IActionResult> CompletedCars()
@@ -199,7 +227,5 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             var result = Json(new SelectList(models));
             return result;
         }
-
-      
     }
 }

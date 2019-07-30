@@ -29,7 +29,10 @@
                                 <td class="col-sm-2">@service.FinishedOn</td>
                                 <td class="col-sm-2">@service.Price.ToString("F2")</td>
                                 <th class="col-sm-2 d-flex justify-content-center">
-                                    <a asp-action="ServiceDetails" asp-controller="Services" asp-area="Admin" asp-route-id="@service.Id">Details</a>
+                                    <a asp-action="ServiceDetails" 
+                                       asp-controller="Services"
+                                       asp-area="Admin" 
+                                       asp-route-id="@service.Id">Details</a>
                                 </th>
                             </tr>
                         }

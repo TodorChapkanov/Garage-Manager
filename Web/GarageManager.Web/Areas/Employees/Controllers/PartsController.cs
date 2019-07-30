@@ -3,10 +3,11 @@ using GarageManager.Services.Contracts;
 using GarageManager.Web.Models.ViewModels.Part;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using GarageManager.Common.Notification;
 
 namespace GarageManager.Web.Areas.Employees.Controllers
 {
-    public class PartsController : BaseController
+    public class PartsController : BaseEmployeeController
     {
         private readonly IPartsService partsService;
 
@@ -37,11 +38,21 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 model.Price,
                 model.Quantity);
 
+            if (!this.IsValidId(carId))
+            {
+                return this.Redirect("/");
+            }
+
             return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
         }
 
         public async Task<IActionResult> Edit(string id, string carId)
         {
+            if (!this.IsValidId(id) || !this.IsValidId(carId))
+            {
+                return this.Redirect("/");
+            }
+
             var partFromDb = await this.partsService.GetEditDetailsByIdAsync(id);
             var partModel = new PartEditViewModel
             {
@@ -64,21 +75,37 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 return this.Redirect("/Home/Index");
             }
 
-          await  this.partsService.UpdatePartByIdAsync(
-                model.Id,
-                model.Name, 
-                model.Number,
-                model.Price,
-                model.Quantity);
-
-            return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
+            var result = await this.partsService.UpdatePartByIdAsync(
+                    model.Id,
+                    model.Name,
+                    model.Number,
+                    model.Price,
+                    model.Quantity);
+            if (result != default(int))
+            {
+                this.ShowNotification(string.Format(NotificationMessages.PartCreateSuccessfull, model.Number),
+                    NotificationType.Success);
+                return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
+            }
+            return this.Redirect("/");
         }
 
         public async Task<IActionResult> Delete(string carId, string partId)
         {
-          var serviceId = await this.partsService.HardDeleteAsync(partId);
+            if (!this.IsValidId(carId) || !this.IsValidId(partId))
+            {
+                return this.Redirect("/");
+            }
+            var result = await this.partsService.HardDeleteAsync(partId);
 
-            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            if (result != default(int))
+            {
+                this.ShowNotification(NotificationMessages.PartDeleteSuccessfull,
+                    NotificationType.Warning);
+                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            }
+
+            return this.Redirect("/");
         }
     }
 }

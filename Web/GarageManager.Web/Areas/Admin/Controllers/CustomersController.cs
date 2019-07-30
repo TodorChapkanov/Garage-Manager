@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System;
 using GarageManager.Extensions.DateTimeProviders;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using GarageManager.Common.Notification;
 
 namespace GarageManager.Web.Areas.User.Controllers
 {
@@ -26,7 +27,6 @@ namespace GarageManager.Web.Areas.User.Controllers
         private readonly IHtmlToPdfConverter htmlToPdfConverter;
         private readonly IHostingEnvironment environment;
         private readonly IDateTimeProvider dateTimeProvider;
-        private readonly IEmailSender emailSender;
 
         public IViewRenderService ViewRenderService { get; }
 
@@ -34,10 +34,9 @@ namespace GarageManager.Web.Areas.User.Controllers
             ICarService carService,
             IInvoiceService invoiseService,
             IViewRenderService viewRenderService,
-    IHtmlToPdfConverter htmlToPdfConverter,
-    IHostingEnvironment environment,
-    IDateTimeProvider dateTimeProvider,
-    IEmailSender emailSender)
+            IHtmlToPdfConverter htmlToPdfConverter,
+            IHostingEnvironment environment,
+            IDateTimeProvider dateTimeProvider)
         {
             this.customerService = customerService;
             this.carService = carService;
@@ -46,7 +45,6 @@ namespace GarageManager.Web.Areas.User.Controllers
             this.htmlToPdfConverter = htmlToPdfConverter;
             this.environment = environment;
             this.dateTimeProvider = dateTimeProvider;
-            this.emailSender = emailSender;
         }
 
         [HttpGet]
@@ -62,12 +60,13 @@ namespace GarageManager.Web.Areas.User.Controllers
             {
                 return this.View(model);
             }
+            this.ShowNotification(string.Format(
+                    NotificationMessages.CustomerCreateSuccessfull, model.FirstName, model.LastName),
+                    NotificationType.Success);
 
             await this.customerService
                 .CreateNewAsync(model.FirstName, model.LastName, model.Email, model.PhoneNumber);
-            await this.emailSender.SendEmailAsync(model.Email, "Garage Manager Login information", "Hello, dear customer." +
- "We are sending you this email, to tell you, that we keep in safe your date." +
- "We have personally information, such as your name, email address, telephone number, and informatio about your Cars, such as model, make and registration" + "plate.If you are not agre to share this information with as, please contact with administrator.");
+
             return this.Redirect("/Admin/Customers/AllCustomers");
         }
 
@@ -87,7 +86,14 @@ namespace GarageManager.Web.Areas.User.Controllers
 
         public async Task<IActionResult> Details(string id)
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/Admin/Customers/AllCustomers");
+            }
+
             var customer = await this.customerService.EditCustomerDetailsByIdAsync(id);
+
+            
             var result = new CustomerDetailsViewModel()
             {
                 Email = customer.Email,
@@ -102,6 +108,11 @@ namespace GarageManager.Web.Areas.User.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/Admin/Customers/AllCustomers");
+            }
+
             var customerFromDb = await this.customerService.EditCustomerDetailsByIdAsync(id);
             var model = new CustomerDetailsViewModel
             {
@@ -127,10 +138,17 @@ namespace GarageManager.Web.Areas.User.Controllers
                 model.Email,
                 model.PhoneNumber);
 
-            if (result == default)
+            if (result == default(int))
             {
+                this.ShowNotification(string.Format(
+                    NotificationMessages.InvalidOperation),
+                    NotificationType.Error);
                 return this.Redirect($"/Admin/Customers/Edit/{model.Id}");
             }
+
+            this.ShowNotification(string.Format(
+                    NotificationMessages.CustomerEditSuccessfull),
+                    NotificationType.Success);
 
             var redirect = this.Redirect($"/Admin/Customers/Details/{model.Id}");
 
@@ -139,7 +157,14 @@ namespace GarageManager.Web.Areas.User.Controllers
 
         public async Task<IActionResult> Delete(string id)
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/Admin/Customers/AllCustomers");
+            }
             await this.customerService.DeleteAsync(id);
+
+            this.ShowNotification(NotificationMessages.CustomerDeleteSuccessfull,
+                NotificationType.Warning);
             return this.Redirect("/Admin/Customers/AllCustomers");
         }
 
@@ -171,13 +196,12 @@ namespace GarageManager.Web.Areas.User.Controllers
                 TotalCost = repair.TotalCost
             }));
 
-         return await this.GetPdf(invoiceModel);
+            return await this.GetPdf(invoiceModel);
 
-            return this.View(invoiceModel);
         }
-        public async Task<IActionResult> GetPdf( InvoiceViewModel model)
+        public async Task<IActionResult> GetPdf(InvoiceViewModel model)
         {
-            
+
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Invoice.cshtml", model);
             var fileContents = this.htmlToPdfConverter.Convert(this.environment.ContentRootPath, htmlData, Extensions.PDFConverter.Enums.FormatType.a4, Extensions.PDFConverter.Enums.OrientationType.landscape);
             return this.File(fileContents, "application/pdf");
@@ -185,7 +209,16 @@ namespace GarageManager.Web.Areas.User.Controllers
 
         public async Task<IActionResult> CompleteTheOrder(string id)
         {
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/Admin/Customers/AllCustomers");
+            }
+
             var customerId = await this.carService.CompleteTheOrderByCarId(id);
+
+            this.ShowNotification(NotificationMessages.CustomerOrderCompletedSuccessfully,
+                NotificationType.Success);
+
             return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{customerId}");
         }
     }

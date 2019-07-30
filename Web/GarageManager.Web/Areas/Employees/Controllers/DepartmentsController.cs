@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Web.Areas.Employees.Controllers
 {
-    public class DepartmentsController : BaseController
+    public class DepartmentsController : BaseEmployeeController
     {
         private readonly IDepartmentService departmentService;
 
@@ -18,7 +18,11 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         }
         public async Task<IActionResult> CarsInDepartment(string id)
         {
-            var result = (await this.departmentService.GetDepartmentCars(id));
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect("/");
+            }
+            var result = await this.departmentService.GetDepartmentCars(id);
             var viewModel = new DepartmentCarsList
             {
                 Name = result.Name,
