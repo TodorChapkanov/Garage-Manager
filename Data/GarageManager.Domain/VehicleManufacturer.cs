@@ -1,4 +1,4 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,7 +13,7 @@ namespace GarageManager.Domain
         }
 
         [Required]
-        [StringLength(GlobalConstants.RegisterNameMaxLength)]
+        [StringLength(CustomerCnstants.RegisterNameMaxLength)]
         public string Name { get; set; }
 
         public ICollection<Car> Cars { get; set; }

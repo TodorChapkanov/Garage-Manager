@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
+﻿using GarageManager.Common.GlobalConstant;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Web.Models.ViewModels.Car
 {
     public class AddCarToServiceViewModel
     {
-        //TODO Constant
         [Required]
-        [StringLength(500, ErrorMessage = "The {0} must be between {2} and {1} symbols!",MinimumLength =10)]
+        [StringLength(CarConstants.CarDescriptionMaxLength,
+            ErrorMessage = CarConstants.CarDescriptionErrorMessage,
+            MinimumLength = CarConstants.CarDescriptionMinLength)]
         public string  Description { get; set; }
 
         [Required]

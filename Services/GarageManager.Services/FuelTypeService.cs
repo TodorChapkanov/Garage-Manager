@@ -1,8 +1,10 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
+using GarageManager.Services.DTO.FuelType;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services
@@ -16,9 +18,16 @@ namespace GarageManager.Services
             this.fuelTypeRepository = fuelTypeRepository;
         }
 
-        public async Task<IEnumerable<FuelType>> GetAllTypesAsync()
+        public async Task<IEnumerable<FuelTypeDetails>> GetAllTypesAsync()
         {
-            var result = await fuelTypeRepository.All().ToListAsync();
+            var result = await fuelTypeRepository
+                .All()
+                .Select(ft => new FuelTypeDetails
+                {
+                    Id = ft.Id,
+                    Type = ft.Type
+                })
+                .ToListAsync();
 
             return result;
         }

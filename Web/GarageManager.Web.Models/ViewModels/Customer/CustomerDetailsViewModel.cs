@@ -1,4 +1,5 @@
 ﻿using GarageManager.Common;
+using GarageManager.Common.GlobalConstant;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Web.Models.ViewModels.Customer
@@ -8,27 +9,27 @@ namespace GarageManager.Web.Models.ViewModels.Customer
         public string Id { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.DisplayFirstName)]
+        [Display(Name = DisplayNameConstants.DisplayFirstName)]
         [StringLength(
-            GlobalConstants.RegisterNameMaxLength,
-            ErrorMessage = GlobalConstants.RegisterNameLengthErrorMessage,
-            MinimumLength = GlobalConstants.RegisterNameMinLength)]
+            CustomerCnstants.RegisterNameMaxLength,
+            ErrorMessage = CustomerCnstants.RegisterNameLengthErrorMessage,
+            MinimumLength = CustomerCnstants.RegisterNameMinLength)]
         public string FirstName { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.DisplayLastName)]
+        [Display(Name = DisplayNameConstants.DisplayLastName)]
         [StringLength(
-         GlobalConstants.RegisterNameMaxLength,
-         ErrorMessage = GlobalConstants.RegisterNameLengthErrorMessage,
-         MinimumLength = GlobalConstants.RegisterNameMinLength)]
+         CustomerCnstants.RegisterNameMaxLength,
+         ErrorMessage = CustomerCnstants.RegisterNameLengthErrorMessage,
+         MinimumLength = CustomerCnstants.RegisterNameMinLength)]
         public string LastName { get; set; }
 
         [Required]
-        [Display(Name =GlobalConstants.PhoneNumberDisplayName)]
+        [Display(Name = DisplayNameConstants.PhoneNumberDisplayName)]
         [StringLength(
-            GlobalConstants.PhoneNumberMaxLength,
-            ErrorMessage =GlobalConstants.InvalidPhoneNumber,
-            MinimumLength =GlobalConstants.PhoneNumberMinLength)]
+            CustomerCnstants.PhoneNumberMaxLength,
+            ErrorMessage = CustomerCnstants.InvalidPhoneNumber,
+            MinimumLength = CustomerCnstants.PhoneNumberMinLength)]
         public string PhoneNumber { get; set; }
 
         [Required]

@@ -9,15 +9,17 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class DepartmentService : IDepartmentService
+    public class DepartmentService : BaseService, IDepartmentService
     {
         private readonly IDeletableEntityRepository<Department> departmentRepository;
 
         public DepartmentService(
-            IDeletableEntityRepository<Department> departmentRepository)
+            IDeletableEntityRepository<Department> departmentRepository
+            )
         {
             this.departmentRepository = departmentRepository;
         }
+
         public async Task<IEnumerable<DepartmentAll>> AllDepartmentsAsync()
         {
             var result = await this.departmentRepository
@@ -32,18 +34,13 @@ namespace GarageManager.Services
             return result;
         }
 
-        public async Task<Department> GetByIdAsync(string departmentId)
-        {
-            var departmentFromDb = await this.departmentRepository
-                .All().FirstOrDefaultAsync(department => department.Id == departmentId);
-
-            return departmentFromDb;
-
-        }
-
         public async Task<DepartmentAllCars> GetDepartmentCars(string id)
         {
-            var departmentFromDb = await this.departmentRepository
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+
+                var departmentFromDb = await this.departmentRepository
                 .All()
                 .Where(department => department.Id == id)
                 .Include(department => department.Cars)
@@ -59,7 +56,13 @@ namespace GarageManager.Services
                     }).ToList()
                 }).FirstOrDefaultAsync();
 
-            return departmentFromDb;
+                return departmentFromDb;
+            }
+            catch 
+            {
+                return null;
+            }
+            
         }
     }
 }

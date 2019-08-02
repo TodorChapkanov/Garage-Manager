@@ -1,4 +1,4 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,11 +14,11 @@ namespace GarageManager.Domain
         }
 
         [Required]
-        [StringLength(GlobalConstants.CarRegistrationPlateMaxLenth)]
+        [StringLength(CarConstants.CarRegistrationPlateMaxLenth)]
         public string RegistrationPlate { get; set; }
 
         [Required]
-        [MaxLength(GlobalConstants.CarVinNumberMaxLength)]
+        [MaxLength(CarConstants.CarVinNumberMaxLength)]
         public string Vin { get; set; }
 
         [Required]
@@ -41,26 +41,26 @@ namespace GarageManager.Domain
         public Department Department { get; set; }
 
         [Required]
-        [Range(GlobalConstants.CarMinKilometers, GlobalConstants.CarMaxKilometers)]
+        [Range(CarConstants.CarMinKilometers, CarConstants.CarMaxKilometers)]
         public int Кilometers { get; set; }
 
         [Required]
-        [Range(GlobalConstants.CarMinYearOfManufactore, int.MaxValue)]
+        [Range(CarConstants.CarMinYearOfManufactore, int.MaxValue)]
         public DateTime? YearOfManufacture { get; set; }
 
         [Required]
-        [StringLength(GlobalConstants.CarMaxEngineModelLength)]
+        [StringLength(CarConstants.CarMaxEngineModelLength)]
         public string EngineModel { get; set; }
 
         [Required]
-        [Range(GlobalConstants.CarMinEngineHorsePower, GlobalConstants.CarMaxEngineHorsePower)]
+        [Range(CarConstants.CarMinEngineHorsePower, CarConstants.CarMaxEngineHorsePower)]
         public int EngineHorsePower { get; set; }
 
         public string FuelTypeId { get; set; }
 
         public FuelType FuelType { get; set; }
 
-        [StringLength(GlobalConstants.CarDescriptionMaxLength)]
+        [StringLength(CarConstants.CarDescriptionMaxLength)]
         public string  Description { get; set; }
 
         [Required]

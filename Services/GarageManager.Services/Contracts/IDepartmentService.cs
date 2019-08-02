@@ -13,6 +13,5 @@ namespace GarageManager.Services.Contracts
 
         Task<DepartmentAllCars> GetDepartmentCars(string id);
    
-        Task<Department> GetByIdAsync(string departmentId);
     }
 }

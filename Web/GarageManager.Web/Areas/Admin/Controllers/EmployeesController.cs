@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Threading.Tasks;
 using GarageManager.Common.Notification;
+using GarageManager.Common.GlobalConstant;
 
 namespace GarageManager.Web.Areas.Admin.Controllers
 {
@@ -58,12 +59,20 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 model.PhoneNumber,
                 model.RecruitedOn,
                 model.DepartmentId);
-            if (employeeId == GlobalConstants.EmailExistResult)
+            if (employeeId == NotificationMessages.EmailExistResult)
             {
                 this.ShowNotification(NotificationMessages.EmailExist,
                     NotificationType.Warning);
 
                 return this.View(model);
+            }
+
+            if (employeeId == null)
+            {
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Error);
+
+                return this.Redirect(RedirectUrl_s.HomeIndex);
             }
 
             this.ShowNotification(string.Format(NotificationMessages.EmployeeCreateSuccessfull,
@@ -81,6 +90,13 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             }
           var employeeFromDb = await this.employeesService.EditEmployeeDetailsByIdAsync(id);
 
+            if (employeeFromDb == null)
+            {
+                this.ShowNotification(NotificationMessages.EmployeeNotExist,
+                    NotificationType.Warning);
+
+                return this.Redirect(RedirectUrl_s.HomeIndex);
+            }
             var employeeModel = new EmployeeEditViewModel
             {
                 Id = employeeFromDb.Id,
@@ -88,7 +104,8 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 LastName = employeeFromDb.LastName,
                 Password = string.Empty,
                 DepartmentId = employeeFromDb.DepartmentId,
-                Departments = (await this.departmentService.AllDepartmentsAsync()).Select(department => new SelectListItem(department.Name, department.Id)),
+                Departments = (await this.departmentService.AllDepartmentsAsync())
+                                .Select(department => new SelectListItem(department.Name, department.Id)),
                 Email = employeeFromDb.Email,
                 PhoneNumber = employeeFromDb.PhoneNumber,
                 RecruitedOn = employeeFromDb.RecruitedOn
@@ -105,7 +122,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 return this.Redirect($"/Admin/Employees/Edit/{model.Id}");
             }
 
-           await this.employeesService.UpdateEmployeeByIdAsync(
+          var result = await this.employeesService.UpdateEmployeeByIdAsync(
                 model.Id,
                 model.FirstName,
                 model.LastName,
@@ -114,6 +131,13 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 model.DepartmentId,
                 model.Password,
                 model.RecruitedOn);
+
+            if (!result)
+            {
+                this.ShowNotification(NotificationMessages.InvalidOperation
+                    , NotificationType.Error);
+                return this.Redirect(RedirectUrl_s.HomeIndex);
+            }
 
             this.ShowNotification(NotificationMessages.EmployeeEditSuccessfull,
                 NotificationType.Success);
@@ -128,6 +152,13 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 return this.Redirect("/Admin/Employees/AllEmployees");
             }
             var employeeFromDb = await this.employeesService.GetEmployeeDetailsByIdAsync(id);
+
+            if (employeeFromDb == null)
+            {
+                this.ShowNotification(NotificationMessages.EmployeeNotExist,
+                    NotificationType.Warning);
+                return this.Redirect(RedirectUrl_s.HomeIndex);
+            }
             var employeeModel = new EmployeeDetailsViewModel
             {
                 Id = employeeFromDb.Id,
@@ -147,19 +178,22 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!this.IsValidId(id)) 
             {
-                return this.Redirect("/Admin/Employees/AllEmployees");
+                return this.Redirect(RedirectUrl_s.AdminAllEmnployees);
             }
             var result = await this.employeesService.DeleteEmployeeAsync(id);
 
-            if (result != default(int))
+            if (result == default(int))
             {
-
-                this.ShowNotification(NotificationMessages.EmployeeDeleteSuccessfull,
-                   NotificationType.Warning);
-              return this.Redirect("/Admin/Employees/AllEmployees");
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Error);
+                //TODO Chek  the action redirect
+                return this.RedirectToAction(nameof(Edit), id);
             }
 
-            return this.Redirect("/Admin/Employees/AllEmployees");
+            this.ShowNotification(NotificationMessages.EmployeeDeleteSuccessfull,
+                   NotificationType.Warning);
+            
+            return this.Redirect(RedirectUrl_s.AdminAllEmnployees);
         }
     }
 }

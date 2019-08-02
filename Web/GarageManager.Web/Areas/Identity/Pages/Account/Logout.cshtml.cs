@@ -1,4 +1,5 @@
 ﻿using GarageManager.Common;
+using GarageManager.Common.GlobalConstant;
 using GarageManager.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +24,7 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGet()
         {
-            var returnUrl = GlobalConstants.DefaultLogoutUrl;
+            var returnUrl = RedirectUrl_s.HomeIndex;
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             

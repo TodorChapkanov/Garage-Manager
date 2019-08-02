@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace GarageManager.Domain
 {
-   public class Part : IDeletableEntity
+    public class Part : IDeletableEntity
     {
+        //TODO Add Anotations
         public Part()
         {
             this.Id = Guid.NewGuid().ToString();

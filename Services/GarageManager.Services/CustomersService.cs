@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace GarageManager.Services
 {
 
-    public class CustomerService : ICustomerService
+    public class CustomerService : BaseService, ICustomerService
     {
         private readonly IDeletableEntityRepository<Customer> customerRepository;
         private readonly ICarService carService;
@@ -22,18 +22,29 @@ namespace GarageManager.Services
             this.carService = carService;
         }
 
-        public async Task CreateNewAsync(string firstName, string lastName, string email, string phoneNumber)
+        public async Task<int> CreateAsync(string firstName, string lastName, string email, string phoneNumber)
         {
-            var customer = new Customer()
+            try
             {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                PhoneNumber = phoneNumber
-            };
+                var customer = new Customer()
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email,
+                    PhoneNumber = phoneNumber
+                };
 
-            await this.customerRepository.CreateAsync(customer);
-            await this.customerRepository.SavaChangesAsync();
+                this.ValidateEntityState(customer);
+                await this.customerRepository.CreateAsync(customer);
+                return await this.customerRepository.SavaChangesAsync();
+            }
+            catch 
+            {
+                return default(int);
+            }
+            
+
+          
         }
 
         public Task<List<CustomerDetail>> GetAllCustomersDetailsAsync()
@@ -52,22 +63,30 @@ namespace GarageManager.Services
         }
 
 
-        public async Task<CustomerEditDetails> EditCustomerDetailsByIdAsync(string id)
+        public async Task<CustomerEditDetails> GetCustomerDetailsByIdAsync(string id)
         {
-            var customerFromDb = await this.customerRepository
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+                var customerFromDb = await this.customerRepository
                 .All()
                 .FirstOrDefaultAsync(customer => customer.Id == id);
 
-            var customerDetails = new CustomerEditDetails
-            {
-                Id = customerFromDb.Id,
-                FirstName = customerFromDb.FirstName,
-                LastName = customerFromDb.LastName,
-                Email = customerFromDb.Email,
-                PhoneNumber = customerFromDb.PhoneNumber
-            };
+                var customerDetails = new CustomerEditDetails
+                {
+                    Id = customerFromDb.Id,
+                    FirstName = customerFromDb.FirstName,
+                    LastName = customerFromDb.LastName,
+                    Email = customerFromDb.Email,
+                    PhoneNumber = customerFromDb.PhoneNumber
+                };
 
-            return customerDetails;
+                return customerDetails;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<int> UpdateCustomerByIdAsync(
@@ -79,6 +98,8 @@ namespace GarageManager.Services
         {
             try
             {
+                this.ValidateNullOrEmptyString(id, firstName, lastName, email, phonenumber);
+
                 var customerFromDb = await this.customerRepository
                     .All()
                     .FirstOrDefaultAsync(customer => customer.Id == id);
@@ -91,27 +112,36 @@ namespace GarageManager.Services
                 this.customerRepository.Update(customerFromDb);
                 return await this.customerRepository.SavaChangesAsync();
             }
-            catch (Exception)
+            catch 
             {
-
-                throw new InvalidOperationException();
+                return default(int);
             }
 
         }
 
         public async Task<int> DeleteAsync(string id)
         {
-            var customerFromDb = this.customerRepository.All()
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+
+                var customerFromDb = this.customerRepository.All()
             .Include(customer => customer.Cars)
             .FirstOrDefault(customer => customer.Id == id);
 
-            customerFromDb
-                 .Cars
-                 .ToList()
-                 .ForEach(car =>  carService.HardDeleteAsync(car.Id).GetAwaiter().GetResult());
+                customerFromDb
+                     .Cars
+                     .ToList()
+                     .ForEach(car => carService.HardDeleteAsync(car.Id).GetAwaiter().GetResult());
 
-            this.customerRepository.SoftDelete(customerFromDb);
-            return await this.customerRepository.SavaChangesAsync();
+                this.customerRepository.SoftDelete(customerFromDb);
+                return await this.customerRepository.SavaChangesAsync();
+            }
+            catch 
+            {
+                return default(int);
+            }
+            
 
         }
     }

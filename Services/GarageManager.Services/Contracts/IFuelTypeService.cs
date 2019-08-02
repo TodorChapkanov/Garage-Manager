@@ -1,4 +1,5 @@
 ﻿using GarageManager.Domain;
+using GarageManager.Services.DTO.FuelType;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,6 @@ namespace GarageManager.Services.Contracts
 {
    public interface IFuelTypeService 
     {
-        Task<IEnumerable<FuelType>> GetAllTypesAsync();
+        Task<IEnumerable<FuelTypeDetails>> GetAllTypesAsync();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GarageManager.Common;
+using GarageManager.Common.GlobalConstant;
 using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Services.Contracts;
@@ -110,15 +111,15 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
                     user.RecruitedOn = _dateTimeProvider.GetDateTime();
                     user.DepartmentId = (await _departmentService
                         .AllDepartmentsAsync())
-                        .FirstOrDefault(department => department.Name == GlobalConstants.FacilitiesManagement)
+                        .FirstOrDefault(department => department.Name == DepartmentConstants.FacilitiesManagement)
                         .Id;
                     result = await _userManager.CreateAsync(user, Input.Password);
-                    await _userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
+                    await _userManager.AddToRoleAsync(user, RoleConstants.AdministratorRoleName);
                 }
                 else
                 {
                     result = await _userManager.CreateAsync(user, Input.Password);
-                    await _userManager.AddToRoleAsync(user, GlobalConstants.EmployeeRoleName);
+                    await _userManager.AddToRoleAsync(user, RoleConstants.EmployeeRoleName);
                     
                 }
 
@@ -139,7 +140,6 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
 
                     
                    
-                   // await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
@@ -148,7 +148,6 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

@@ -8,7 +8,6 @@ namespace GarageManager.Services.Contracts
     {
         Task<IEnumerable<string>> GetAllByMakeIdAsync(string id);
 
-        Task<VehicleModel> GetByNameAsync(string name);
 
     }
 }

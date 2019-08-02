@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class ModelService : IModelService
+    public class ModelService : BaseService, IModelService
     {
         private readonly IDeletableEntityRepository<VehicleModel> modelRepositoty;
 
@@ -19,18 +19,18 @@ namespace GarageManager.Services
 
         public async Task<IEnumerable<string>> GetAllByMakeIdAsync(string id)
         {
-            var result = await this.modelRepositoty.All().Where(make => make.ManufactirerId == id)
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+                var result = await this.modelRepositoty.All().Where(make => make.ManufactirerId == id)
                  .Select(model => model.Name)
                  .ToListAsync();
-
-            return result;
-        }
-
-        public async Task<VehicleModel> GetByNameAsync(string name)
-        {
-            var result = await this.modelRepositoty.All().FirstOrDefaultAsync(model => model.Name == name);
-
-            return result;
+                return result;
+            }
+            catch 
+            {
+                return null;
+            }
         }
     }
 }

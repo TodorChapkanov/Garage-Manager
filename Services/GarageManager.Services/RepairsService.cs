@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class RepairsService : IRepairsService
+    public class RepairsService : BaseService, IRepairsService
     {
         private readonly IDeletableEntityRepository<Car> carRepository;
         private readonly IDeletableEntityRepository<Repair> repairRepository;
@@ -28,42 +28,63 @@ namespace GarageManager.Services
             decimal pricePerHour,
             string employeeId)
         {
+
             var carFromDb = await this.carRepository
                 .All()
                 .Where(car => car.Id == carId)
                 .Include(service => service.Services)
                 .FirstOrDefaultAsync(car => car.Id == carId);
-            var repairService = new Repair
-            {
-                Description = description,
-                Hours = hours,
-                PricePerHour = pricePerHour,
-                ServiceId = carFromDb.CurrentServiceId,
-                EmployeeId = employeeId
-            };
-            await this.repairRepository.CreateAsync(repairService);
-            carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Repairs.Add(repairService);
-            await this.repairRepository.SavaChangesAsync();
 
-            return carFromDb.Id;
+            try
+            {
+                var repairService = new Repair
+                {
+                    Description = description,
+                    Hours = hours,
+                    PricePerHour = pricePerHour,
+                    ServiceId = carFromDb.CurrentServiceId,
+                    EmployeeId = employeeId
+                };
+
+                this.ValidateEntityState(repairService);
+                await this.repairRepository.CreateAsync(repairService);
+                carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Repairs.Add(repairService);
+                await this.repairRepository.SavaChangesAsync();
+
+                return carFromDb.Id;
+            }
+            catch 
+            {
+                return null;
+            }
+            
         }
 
         public async Task<RepairEditDetails> GetEditDetailsByIdAsync(string id)
         {
-            var repairFromDb = await this.repairRepository
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+                var repairFromDb = await this.repairRepository
                 .All().Include(repair => repair.Employee)
                 .FirstOrDefaultAsync(repair => repair.Id == id);
 
-            var part = new RepairEditDetails
-            {
-                Id = repairFromDb.Id,
-                Description = repairFromDb.Description,
-                Hours = repairFromDb.Hours,
-                PricePerHour = repairFromDb.PricePerHour,
-                IsFinished = repairFromDb.IsFinished
-            };
+                var part = new RepairEditDetails
+                {
+                    Id = repairFromDb.Id,
+                    Description = repairFromDb.Description,
+                    Hours = repairFromDb.Hours,
+                    PricePerHour = repairFromDb.PricePerHour,
+                    IsFinished = repairFromDb.IsFinished
+                };
 
-            return part;
+                return part;
+            }
+            catch 
+            {
+                return null;
+            }
+            
         }
 
         public async Task<int> UpdateRepairByIdAsync(
@@ -73,25 +94,41 @@ namespace GarageManager.Services
             decimal pricePerHour,
             bool isFinished)
         {
+            try
+            {
+                var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
+                repairFromDb.Description = description;
+                repairFromDb.Hours = hours;
+                repairFromDb.PricePerHour = pricePerHour;
+                repairFromDb.IsFinished = isFinished;
 
-            var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
-            repairFromDb.Description = description;
-            repairFromDb.Hours = hours;
-            repairFromDb.PricePerHour = pricePerHour;
-            repairFromDb.IsFinished = isFinished;
+                this.ValidateEntityState(repairFromDb);
+                this.repairRepository.Update(repairFromDb);
 
-            this.repairRepository.Update(repairFromDb);
-
-            return await this.repairRepository.SavaChangesAsync();
+                return await this.repairRepository.SavaChangesAsync();
+            }
+            catch 
+            {
+                return default(int);
+            }
+           
         }
 
         public async Task<int> HardDeleteAsync(string id)
         {
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+                var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
+                this.repairRepository.HardDelete(repairFromDb);
 
-            var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
-            this.repairRepository.HardDelete(repairFromDb);
-
-            return await this.repairRepository.SavaChangesAsync();
+                return await this.repairRepository.SavaChangesAsync();
+            }
+            catch 
+            {
+                return default(int);
+            }
+            
         }
     }
 }

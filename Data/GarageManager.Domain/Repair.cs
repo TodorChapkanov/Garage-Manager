@@ -1,6 +1,5 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Domain
@@ -15,21 +14,21 @@ namespace GarageManager.Domain
 
         [Required]
         [StringLength(
-            GlobalConstants.RepairDescriptionMaxLength,
-            ErrorMessage = GlobalConstants.StringLengthErrorMessage,
-            MinimumLength = GlobalConstants.RepairDescriptionMinLength)]
+            RepairConstants.RepairDescriptionMaxLength,
+            ErrorMessage = AdminContants.StringLengthErrorMessage,
+            MinimumLength = RepairConstants.RepairDescriptionMinLength)]
         public string Description { get; set; }
         
         [Required]
-        [Range(GlobalConstants.MinRepairTime, 
-            GlobalConstants.MaxRepairTime, 
-            ErrorMessage = GlobalConstants.RepairTimeErrorMessage)]
+        [Range(RepairConstants.MinRepairTime,
+            RepairConstants.MaxRepairTime, 
+            ErrorMessage = RepairConstants.RepairTimeErrorMessage)]
         public double Hours { get; set; }
 
         [Required]
-        [Range(GlobalConstants.RepairMinPricePerHour, 
-            GlobalConstants.RepairMaxPricePerHour, 
-            ErrorMessage = GlobalConstants.RepairPricePerHourErrorMessage)]
+        [Range(RepairConstants.RepairMinPricePerHour,
+            RepairConstants.RepairMaxPricePerHour, 
+            ErrorMessage = RepairConstants.RepairPricePerHourErrorMessage)]
         public decimal PricePerHour { get; set; }
 
         public string EmployeeId { get; set; }

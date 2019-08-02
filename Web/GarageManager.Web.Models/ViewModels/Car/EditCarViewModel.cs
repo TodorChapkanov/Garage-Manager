@@ -1,4 +1,4 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -12,40 +12,40 @@ namespace GarageManager.Web.Models.ViewModels.Car
         public string CustomerId { get; set; }
         public string Make { get; set; }
 
-        [Display(Name = GlobalConstants.ModelDisplayName)]
+        [Display(Name = DisplayNameConstants.ModelDisplayName)]
         public string Model { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.RegistrationPlateDisplayName)]
-        [StringLength(GlobalConstants.CarRegistrationPlateMaxLenth, ErrorMessage = GlobalConstants.CarRegistrationPlateErrorMassege,
-          MinimumLength = GlobalConstants.CarRegistrationPlateMinLenth)]
+        [Display(Name = DisplayNameConstants.RegistrationPlateDisplayName)]
+        [StringLength(CarConstants.CarRegistrationPlateMaxLenth, ErrorMessage = CarConstants.CarRegistrationPlateErrorMassege,
+          MinimumLength = CarConstants.CarRegistrationPlateMinLenth)]
         public string RegistrationPlate { get; set; }
 
 
         [Required]
-        [MaxLength(GlobalConstants.CarVinNumberMaxLength)]
+        [MaxLength(CarConstants.CarVinNumberMaxLength)]
         public string Vin { get; set; }
 
         [Required]
-        [Range(GlobalConstants.CarMinKilometers, GlobalConstants.CarMaxKilometers)]
+        [Range(CarConstants.CarMinKilometers, CarConstants.CarMaxKilometers)]
         public int Кilometers { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.YearOfManufacturingDisplayName)]
+        [Display(Name = DisplayNameConstants.YearOfManufacturingDisplayName)]
         [DataType(DataType.Date)]
         public DateTime? YearOfManufacturing { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.EngineModelDisplayName)]
-        [StringLength(GlobalConstants.CarMaxEngineModelLength)]
+        [Display(Name = DisplayNameConstants.EngineModelDisplayName)]
+        [StringLength(CarConstants.CarMaxEngineModelLength)]
         public string EngineModel { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.EngineHorsePowerDisplayName)]
-        [Range(GlobalConstants.CarMinEngineHorsePower, GlobalConstants.CarMaxEngineHorsePower)]
+        [Display(Name = DisplayNameConstants.EngineHorsePowerDisplayName)]
+        [Range(CarConstants.CarMinEngineHorsePower, CarConstants.CarMaxEngineHorsePower)]
         public int EngineHorsePower { get; set; }
 
-        [Display(Name = GlobalConstants.FuelTypeDisplayName)]
+        [Display(Name = DisplayNameConstants.FuelTypeDisplayName)]
         public string FuelTypeId { get; set; }
 
         public IEnumerable<SelectListItem> FuelTypes { get; set; }

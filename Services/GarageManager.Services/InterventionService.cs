@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class InterventionService : IInterventionService
+    public class InterventionService : BaseService, IInterventionService
     {
         private readonly IDeletableEntityRepository<ServiceIntervention> serviceRepository;
         private readonly IDateTimeProvider dateTimeProvider;
@@ -25,14 +25,17 @@ namespace GarageManager.Services
             this.serviceRepository = serviceRepository;
             this.dateTimeProvider = dateTimeProvider;
         }
-        public async Task<List<CarServiceHistory>> CarServicesHistoryAsync(string id)
+        public async Task<IEnumerable<CarServiceHistory>> CarServicesHistoryAsync(string id)
         {
-            var services = await this.serviceRepository.All()
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+                var services = await this.serviceRepository.All()
+                    .Where(service => service.CarId == id && service.IsFinished == true)
                 .Include(service => service.Car)
                 .ThenInclude(car => car.Manufacturer)
                 .Include(service => service.Parts)
                 .Include(service => service.Repairs)
-                .Where(service => service.CarId == id && service.IsFinished == true)
                 .Select(service => new CarServiceHistory
                 {
                     Id = service.Id,
@@ -47,19 +50,25 @@ namespace GarageManager.Services
                 })
                 .ToListAsync();
 
-            return services;
-                
+                return services;
+            }
+            catch
+            {
+                return null;
+            }
+
+
         }
 
         public async Task<CarServiceHistoryDetails> ServiceHistoryDetailsAsync(string serviceId)
         {
-            //TODO Change Repair Hours to decimal
-            var result = await this.serviceRepository
+            //TODO Add Service history
+            try
+            {
+                this.ValidateNullOrEmptyString(serviceId);
+                var result = await this.serviceRepository
                 .All()
                 .Where(service => service.Id == serviceId)
-                .Include(service => service.Parts)
-                .Include(service => service.Repairs)
-                .ThenInclude(repair => repair.Employee)
                 .Select(service => new CarServiceHistoryDetails
                 {
                     CarId = service.CarId,
@@ -80,11 +89,22 @@ namespace GarageManager.Services
                 })
                 .FirstOrDefaultAsync();
 
-            return result;
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+            //TODO Change Repair Hours to decimal
+
         }
 
         public async Task<int> FinishServiceAsync(ServiceIntervention serviceIntervention)
         {
+            if (serviceIntervention == null)
+            {
+                return default(int);
+            }
             serviceIntervention.FinishedOn = this.dateTimeProvider.GetDateTime();
             serviceIntervention.IsFinished = true;
             this.serviceRepository.Update(serviceIntervention);

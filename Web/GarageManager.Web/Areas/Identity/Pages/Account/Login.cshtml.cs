@@ -1,4 +1,5 @@
 ﻿using GarageManager.Common;
+using GarageManager.Common.GlobalConstant;
 using GarageManager.Domain;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -81,7 +82,7 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
                 {
                   
                     var user = await _userManager.FindByEmailAsync(Input.Email);
-                    var role = await _userManager.IsInRoleAsync(user, GlobalConstants.EmployeeRoleName.ToUpper());
+                    var role = await _userManager.IsInRoleAsync(user, RoleConstants.EmployeeRoleName.ToUpper());
 
                     if (role)
                     {

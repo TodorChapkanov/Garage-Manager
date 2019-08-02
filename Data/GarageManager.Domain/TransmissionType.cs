@@ -1,4 +1,4 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Domain
@@ -6,7 +6,11 @@ namespace GarageManager.Domain
     public class TransmissionType : BaseEntity
     {
         [Required]
-        [StringLength(GlobalConstants.MaxTransmissionTypeNameLength)]
+        [StringLength(
+            TransmissionConstants.MaxTransmissionTypeNameLength,
+            ErrorMessage =AdminContants.StringLengthErrorMessage,
+            MinimumLength = TransmissionConstants.MinTransmissionTypeNameLength
+            )]
         public string  Type { get; set; }
 
     }

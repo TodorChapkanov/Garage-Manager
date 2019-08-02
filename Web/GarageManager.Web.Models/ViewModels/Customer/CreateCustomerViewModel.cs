@@ -1,4 +1,4 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Web.Models.ViewModels.Customer
@@ -6,11 +6,17 @@ namespace GarageManager.Web.Models.ViewModels.Customer
     public class CreateViewModel
     {
         [Required]
-        [StringLength(GlobalConstants.RegisterNameMaxLength, ErrorMessage = GlobalConstants.RegisterNameLengthErrorMessage, MinimumLength = GlobalConstants.RegisterNameMinLength)]
+        [StringLength(
+            CustomerCnstants.RegisterNameMaxLength,
+            ErrorMessage = CustomerCnstants.RegisterNameLengthErrorMessage,
+            MinimumLength = CustomerCnstants.RegisterNameMinLength)]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(GlobalConstants.RegisterNameMaxLength, ErrorMessage = GlobalConstants.RegisterNameLengthErrorMessage, MinimumLength = GlobalConstants.RegisterNameMinLength)]
+        [StringLength(
+            CustomerCnstants.RegisterNameMaxLength,
+            ErrorMessage = CustomerCnstants.RegisterNameLengthErrorMessage, 
+            MinimumLength = CustomerCnstants.RegisterNameMinLength)]
         public string LastName { get; set; }
 
 

@@ -1,0 +1,12 @@
+2019-08-02 22:01:19.224 +03:00 - Failed executing DbCommand ("16"ms) [Parameters=["@_outer_Id='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [part].[Id], [part].[DeletedOn], [part].[IsDeleted], [part].[Name], [part].[Number], [part].[Price], [part].[Quantity], [part].[ServiceId]
+FROM [Parts] AS [part]
+WHERE @_outer_Id = [part].[ServiceId]"
+2019-08-02 22:02:02.079 +03:00 - Failed executing DbCommand ("8,602"ms) [Parameters=["@_outer_Id='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [part].[Id], [part].[DeletedOn], [part].[IsDeleted], [part].[Name], [part].[Number], [part].[Price], [part].[Quantity], [part].[ServiceId]
+FROM [Parts] AS [part]
+WHERE @_outer_Id = [part].[ServiceId]"
+2019-08-02 22:06:16.911 +03:00 - Failed executing DbCommand ("19"ms) [Parameters=["@_outer_Id='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [part].[Id], [part].[DeletedOn], [part].[IsDeleted], [part].[Name], [part].[Number], [part].[Price], [part].[Quantity], [part].[ServiceId]
+FROM [Parts] AS [part]
+WHERE @_outer_Id = [part].[ServiceId]"

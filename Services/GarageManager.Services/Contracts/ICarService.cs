@@ -12,7 +12,7 @@ namespace GarageManager.Services.Contracts
     {
         Task<IEnumerable<CustomerCarListDetails>> GetAllCarsByCustomerIdAsync(string id);
 
-        Task<bool> CreateAsync<TEntity>
+        Task<bool> CreateAsync
             (
             string customerIs,
             string vin,

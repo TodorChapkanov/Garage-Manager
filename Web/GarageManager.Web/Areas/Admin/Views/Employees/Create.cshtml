@@ -7,14 +7,14 @@
 }
 
 <h1 class="text-center">Add New Employee</h1>
-@if (emailError == GarageManager.Common.GlobalConstants.EmailExistErrorMessage)
+@if (emailError == GarageManager.Common.Notification.NotificationMessages.EmailExistResult)
 {
     <h3 class="text-center text-danger">@emailError</h3>
 }
 <hr />
 <div class="container-fluid w-50">
     <div class="mx-auto">
-        <form asp-action="CreateEmployee" method="post" >
+        <form asp-action="CreateEmployee" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirsName" class="control-label"></label>
@@ -48,11 +48,11 @@
             </div>
             <div class="form-group">
                 @await Component.InvokeAsync("Departments", true)
-                    </div>
-                <div class="form-group text-center mt-4">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-</form>
+            </div>
+            <div class="form-group text-center mt-4">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 

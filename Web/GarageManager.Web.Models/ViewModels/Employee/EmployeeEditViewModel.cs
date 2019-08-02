@@ -1,4 +1,5 @@
 ﻿using GarageManager.Common;
+using GarageManager.Common.GlobalConstant;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -11,19 +12,25 @@ namespace GarageManager.Web.Models.ViewModels.Employee
         public string Id { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.DisplayFirstName)]
-        [StringLength(GlobalConstants.RegisterNameMaxLength, ErrorMessage = GlobalConstants.RegisterNameLengthErrorMessage, MinimumLength = GlobalConstants.RegisterNameMinLength)]
+        [Display(Name = DisplayNameConstants.DisplayFirstName)]
+        [StringLength(
+            CustomerCnstants.RegisterNameMaxLength,
+            ErrorMessage = CustomerCnstants.RegisterNameLengthErrorMessage,
+            MinimumLength = CustomerCnstants.RegisterNameMinLength)]
         public string FirstName { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.DisplayLastName)]
-        [StringLength(GlobalConstants.RegisterNameMaxLength, ErrorMessage = GlobalConstants.RegisterNameLengthErrorMessage, MinimumLength = GlobalConstants.RegisterNameMinLength)]
+        [Display(Name = DisplayNameConstants.DisplayLastName)]
+        [StringLength(
+            CustomerCnstants.RegisterNameMaxLength,
+            ErrorMessage = CustomerCnstants.RegisterNameLengthErrorMessage,
+            MinimumLength = CustomerCnstants.RegisterNameMinLength)]
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(GlobalConstants.PasswordMaxLength,
-           ErrorMessage = GlobalConstants.PasswordErrorMssage,
-            MinimumLength = GlobalConstants.PasswordMinLength)]
+        [StringLength(CustomerCnstants.PasswordMaxLength,
+           ErrorMessage = CustomerCnstants.PasswordErrorMssage,
+            MinimumLength = CustomerCnstants.PasswordMinLength)]
         public string Password { get; set; }
 
         [Required]
@@ -31,7 +38,7 @@ namespace GarageManager.Web.Models.ViewModels.Employee
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.PhoneNumberDisplayName)]
+        [Display(Name = DisplayNameConstants.PhoneNumberDisplayName)]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 

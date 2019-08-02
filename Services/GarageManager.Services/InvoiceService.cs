@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class InvoiceService : IInvoiceService
+    public class InvoiceService : BaseService, IInvoiceService
     {
         private readonly IDeletableEntityRepository<Car> carRepository;
 
@@ -22,44 +22,54 @@ namespace GarageManager.Services
         {
             this.carRepository = carRepository;
         }
+
         public async Task<InvoiceDetails> GetInvoiceDetailsByCarId(string id)
         {
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
 
-            var invoiceDetails = await this.carRepository
-                .All()
-                .Where(car => car.Id == id)
-                .Include(car => car.Services)
-                .Select(car => new InvoiceDetails
-                {
+                var invoiceDetails = await this.carRepository
+               .All()
+               .Where(car => car.Id == id)
+               .Include(car => car.Services)
+               .Select(car => new InvoiceDetails
+               {
                    FullName = car.Customer.FullName,
                    Email = car.Customer.Email,
                    PhoneNumber = car.Customer.PhoneNumber,
                    Parts = car.Services
-                     .First(service => service.Id == car.CurrentServiceId)
-                     .Parts
-                     .Select(part => new InvoicePartDetails
-                      {
-                          Id = part.Id,
-                          Name = part.Name,
-                          Price = part.Price,
-                          Quantity = part.Quantity,
-                          TotalCost = part.TotalCost
-                      }).ToList(),
+                    .First(service => service.Id == car.CurrentServiceId)
+                    .Parts
+                    .Select(part => new InvoicePartDetails
+                    {
+                        Id = part.Id,
+                        Name = part.Name,
+                        Price = part.Price,
+                        Quantity = part.Quantity,
+                        TotalCost = part.TotalCost
+                    }).ToList(),
                    Repairs = car.Services
-                     .First(service => service.Id == car.CurrentServiceId)
-                     .Repairs
-                     .Select(repair => new InvoiceRepairDetails
-                          {
-                              Id = repair.Id,
-                              Description = repair.Description,
-                              Hours = repair.Hours,
-                              PricePerHour = repair.PricePerHour,
-                              TotalCost = repair.TotalCosts,
-                          }).ToList()
+                    .First(service => service.Id == car.CurrentServiceId)
+                    .Repairs
+                    .Select(repair => new InvoiceRepairDetails
+                    {
+                        Id = repair.Id,
+                        Description = repair.Description,
+                        Hours = repair.Hours,
+                        PricePerHour = repair.PricePerHour,
+                        TotalCost = repair.TotalCosts,
+                    }).ToList()
 
-                }).FirstOrDefaultAsync();
+               }).FirstOrDefaultAsync();
 
-            return invoiceDetails;
+                return invoiceDetails;
+            }
+            catch 
+            {
+                return null;
+            }
+           
         }
     }
 }

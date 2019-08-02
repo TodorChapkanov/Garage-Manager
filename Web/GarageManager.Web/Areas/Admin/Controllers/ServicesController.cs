@@ -1,4 +1,5 @@
-﻿using GarageManager.Web.Areas.Admin.Controllers;
+﻿using GarageManager.Common.GlobalConstant;
+using GarageManager.Common.Notification;
 using GarageManager.Services.Contracts;
 using GarageManager.Web.Models.ViewModels.Part;
 using GarageManager.Web.Models.ViewModels.Repair;
@@ -22,27 +23,37 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/Customers/AllCustomers");
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
             }
-          var model = (await this.interventionService.CarServicesHistoryAsync(id))
-                .Select(service => new CarServiceHistoryViewModel
-                {
-                    Id = service.Id,
-                    CarMake = service.CarMake,
-                    CarRegistrtionPlate = service.CarRegistrtionPlate,
-                    FinishedOn = service.FinishedOn,
-                    Price = service.Price
-                })
-                .OrderByDescending(service => service.FinishedOn);
 
-            return this.View(model);
+            try
+            {
+                var model = (await this.interventionService.CarServicesHistoryAsync(id))
+               .Select(service => new CarServiceHistoryViewModel
+               {
+                   Id = service.Id,
+                   CarMake = service.CarMake,
+                   CarRegistrtionPlate = service.CarRegistrtionPlate,
+                   FinishedOn = service.FinishedOn,
+                   Price = service.Price
+               })
+               .OrderByDescending(service => service.FinishedOn);
+
+                return this.View(model);
+            }
+            catch 
+            {
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Error);
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+            }
         }
 
-       /* public async Task<IActionResult> ServiceDetails(string id)
+        public async Task<IActionResult> ServiceDetails(string id)
         {
-            if (!this.ValidateId(id))
+            if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/)
+                return this.Redirect(RedirectUrl_s.HomeIndex);
             }
             var serviceDetails = await this.interventionService.ServiceHistoryDetailsAsync(id);
             var model = new CarServiceHistoryDetailsViewModel
@@ -65,6 +76,6 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             };
 
             return this.View(model);
-        }*/
+        }
     }
 }

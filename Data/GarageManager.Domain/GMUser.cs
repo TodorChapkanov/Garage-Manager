@@ -1,8 +1,6 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Domain
@@ -16,11 +14,11 @@ namespace GarageManager.Domain
         }
 
         [Required]
-        [MaxLength(GlobalConstants.RegisterNameMaxLength)]
+        [MaxLength(CustomerCnstants.RegisterNameMaxLength)]
         public string FirstName { get; set; }
 
         [Required]
-        [MaxLength(GlobalConstants.RegisterNameMaxLength)]
+        [MaxLength(CustomerCnstants.RegisterNameMaxLength)]
         public string LastName { get; set; }
 
         public string FullName => $"{this.FirstName} {this.FirstName}";

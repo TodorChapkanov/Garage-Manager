@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Domain", "Dat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Web", "Web\GarageManager.Web\GarageManager.Web.csproj", "{D156AD31-FA4E-43C0-A06B-A324E94277D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarageManager.Services.Tests", "Tests\GarageManager.Services.Tests\GarageManager.Services.Tests.csproj", "{00144845-53E3-4140-834F-8150A4B8DA47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{D156AD31-FA4E-43C0-A06B-A324E94277D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D156AD31-FA4E-43C0-A06B-A324E94277D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D156AD31-FA4E-43C0-A06B-A324E94277D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00144845-53E3-4140-834F-8150A4B8DA47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00144845-53E3-4140-834F-8150A4B8DA47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00144845-53E3-4140-834F-8150A4B8DA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00144845-53E3-4140-834F-8150A4B8DA47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

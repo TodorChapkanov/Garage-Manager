@@ -1,4 +1,5 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
+using GarageManager.Common.Notification;
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
@@ -13,25 +14,19 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class EmployeesService : IEmployeesService
+    public class EmployeesService : BaseService, IEmployeesService
     {
         private readonly IDeletableEntityRepository<GMUser> employeeRepository;
         private readonly UserManager<GMUser> userManager;
-        private readonly SignInManager<GMUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IDateTimeProvider dateTimeProvider;
 
         public EmployeesService(
             IDeletableEntityRepository<GMUser> employeeRepository,
             UserManager<GMUser> userManager, 
-            SignInManager<GMUser> signInManager,
-            RoleManager<IdentityRole> roleManager,
             IDateTimeProvider dateTimeProvider)
         {
             this.employeeRepository = employeeRepository;
             this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.roleManager = roleManager;
             this.dateTimeProvider = dateTimeProvider;
         }
 
@@ -47,41 +42,51 @@ namespace GarageManager.Services
         {
             if (this.employeeRepository.All().Select(emp => emp.Email).Contains(email))
             {
-                return GlobalConstants.EmailExistResult;
+                return NotificationMessages.EmailExistResult;
             }
 
-            var employee = new GMUser()
+            try
             {
-                FirstName = firstName,
-                LastName = lastName,
-                UserName = email,
-                Email = email,
-                PhoneNumber = phoneNumber,
-                RecruitedOn = recruitedOn,
-                DepartmentId = departmentId,
-                CreatedOn = this.dateTimeProvider.GetDateTime()
-            };
-            
-            var result = await this.userManager.CreateAsync(employee, password);
-            var departmentName = this.userManager.Users
-                .Include(department => department.Department)
-                .Where(user => user.Id == employee.Id)
-                .Select(department => department.Department.Name)
-                .First();
-                
-                
+                var employee = new GMUser()
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    UserName = email,
+                    Email = email,
+                    PhoneNumber = phoneNumber,
+                    RecruitedOn = recruitedOn,
+                    DepartmentId = departmentId,
+                    CreatedOn = this.dateTimeProvider.GetDateTime()
+                };
 
-            if (result.Succeeded)
-            { 
-                var role = departmentName == GlobalConstants.FacilitiesManagement
-                    ? GlobalConstants.AdministratorRoleName 
-                    : GlobalConstants.EmployeeRoleName;
+                this.ValidateEntityState(employee);
 
-                await this.userManager.AddToRoleAsync(employee,role);
-                
+                var result = await this.userManager.CreateAsync(employee, password);
+                var departmentName = this.userManager.Users
+                    .Include(department => department.Department)
+                    .Where(user => user.Id == employee.Id)
+                    .Select(department => department.Department.Name)
+                    .First();
+
+
+
+                if (result.Succeeded)
+                {
+                    var role = departmentName == DepartmentConstants.FacilitiesManagement
+                        ? RoleConstants.AdministratorRoleName
+                        : RoleConstants.EmployeeRoleName;
+
+                    await this.userManager.AddToRoleAsync(employee, role);
+
+                }
+
+                return employee.Id;
             }
-
-            return employee.Id;
+            catch 
+            {
+                return null;
+            }
+           
         }
 
         public Task<List<AllEmployees>> GetAllEmployeesAsync()
@@ -104,7 +109,11 @@ namespace GarageManager.Services
 
         public async Task<EditEmployeeDetails> EditEmployeeDetailsByIdAsync(string id)
         {
-            var employeeFromDb = await this.userManager.Users
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+
+                var employeeFromDb = await this.userManager.Users
                .Select(employee => new EditEmployeeDetails
                {
                    Id = id,
@@ -119,12 +128,21 @@ namespace GarageManager.Services
                 .FirstOrDefaultAsync(employee => employee.Id == id);
 
 
-            return employeeFromDb;
+                return employeeFromDb;
+            }
+            catch 
+            {
+                return null;
+            }
+            
         }
 
         public async Task<EmployeeDetails> GetEmployeeDetailsByIdAsync(string id)
         {
-            var employeeFromDb = await this.userManager.Users
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+                var employeeFromDb = await this.userManager.Users
                 .Include(department => department.Department)
                 .Where(employee => employee.Id == id)
                 .Select(employee => new EmployeeDetails
@@ -141,7 +159,13 @@ namespace GarageManager.Services
                 .FirstOrDefaultAsync();
 
 
-            return employeeFromDb;
+                return employeeFromDb;
+            }
+            catch 
+            {
+                return null;
+            }
+            
         }
 
         public async Task<bool> UpdateEmployeeByIdAsync(
@@ -156,6 +180,7 @@ namespace GarageManager.Services
         {
             try
             {
+                this.ValidateNullOrEmptyString(id, firstName, lastName, email, phonenumber, departmentId, password);
                 var employeeFromDb = await this.userManager.FindByIdAsync(id);
 
                 employeeFromDb.FirstName = firstName;
@@ -172,7 +197,7 @@ namespace GarageManager.Services
 
                 return true;
             }
-            catch (Exception)
+            catch 
             {
 
                 return false;
@@ -182,10 +207,20 @@ namespace GarageManager.Services
 
         public async Task<int> DeleteEmployeeAsync(string id)
         {
-            var employeeFromDb = await this.userManager.FindByIdAsync(id);
-            this.employeeRepository.SoftDelete(employeeFromDb);
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+                var employeeFromDb = await this.userManager.FindByIdAsync(id);
+                this.employeeRepository.SoftDelete(employeeFromDb);
 
-            return await this.employeeRepository.SavaChangesAsync();
+                return await this.employeeRepository.SavaChangesAsync();
+            }
+            catch 
+            {
+
+                return default(int);
+            }
+           
         }
 
         public bool IsAnyEmployee()

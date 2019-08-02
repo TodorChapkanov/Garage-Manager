@@ -1,4 +1,5 @@
-﻿using GarageManager.Common.Notification;
+﻿using GarageManager.Common.GlobalConstant;
+using GarageManager.Common.Notification;
 using GarageManager.Services.Contracts;
 using GarageManager.Web.Models.BindingModels.RepairService;
 using GarageManager.Web.Models.ViewModels.Repair;
@@ -40,24 +41,31 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 
             if (carId != default(string))
             {
-                this.ShowNotification(NotificationMessages.RepairServiceCreateSuccessfull,
-                    NotificationType.Success);
-                    return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+               NotificationType.Warning);
+                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
             }
 
-            this.ShowNotification(NotificationMessages.InvalidOperation,
-                NotificationType.Warning);
-            return this.Redirect("/");
+            this.ShowNotification(NotificationMessages.RepairServiceCreateSuccessfull,
+                     NotificationType.Success);
+            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
         }
 
         public async Task<IActionResult> Edit(string id, string carId)
         {
             if (!this.IsValidId(id) || !this.IsValidId(carId))
             {
-                return this.Redirect("/");
+                return this.Redirect(RedirectUrl_s.HomeIndex);
             }
 
             var partFromDb = await this.repairsService.GetEditDetailsByIdAsync(id);
+
+            if (partFromDb == null)
+            {
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Error);
+                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            }
             var partModel = new RepairEditViewModel
             {
                 Id = partFromDb.Id,
@@ -85,14 +93,19 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 model.Hours,
                 model.PricePerHour,
                 model.IsFinished);
-            if (result != default(int))
+
+            if (result == default(int))
             {
-                ShowNotification(NotificationMessages.RepairServiceEditSuccessfull,
-                    NotificationType.Success);
-                return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Error);
+
+                return this.Redirect("/");
             }
 
-            return this.Redirect("/");
+            ShowNotification(NotificationMessages.RepairServiceEditSuccessfull,
+                   NotificationType.Success);
+
+            return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
         }
 
         public async Task<IActionResult> Delete(string carId, string repairId)
@@ -104,14 +117,18 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 
             var result = await this.repairsService.HardDeleteAsync(repairId);
 
-            if (result != default(int))
+            if (result == default(int))
             {
-                this.ShowNotification(NotificationMessages.RepairServiceDeleteSuccessfull,
-                    NotificationType.Warning);
-                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Error);
+
+                return this.Redirect("/");
             }
 
-            return this.Redirect("/");
+            this.ShowNotification(NotificationMessages.RepairServiceDeleteSuccessfull,
+                    NotificationType.Warning);
+
+            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
         }
     }
 }

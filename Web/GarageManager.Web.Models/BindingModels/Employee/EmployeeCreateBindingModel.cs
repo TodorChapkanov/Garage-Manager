@@ -1,31 +1,29 @@
-﻿using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace GarageManager.Web.Models.BindingModels.Employee
 {
     public class EmployeeCreateBindingModel
     {
         [Required]
-        [Display(Name = GlobalConstants.DisplayFirstName)]
-        [StringLength(GlobalConstants.RegisterNameMaxLength, 
-            ErrorMessage = GlobalConstants.StringLengthErrorMessage,
-            MinimumLength = GlobalConstants.RegisterNameMinLength)]
+        [Display(Name = DisplayNameConstants.DisplayFirstName)]
+        [StringLength(CustomerCnstants.RegisterNameMaxLength, 
+            ErrorMessage = AdminContants.StringLengthErrorMessage,
+            MinimumLength = CustomerCnstants.RegisterNameMinLength)]
         public string FirsName { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.DisplayLastName)]
-        [StringLength(GlobalConstants.RegisterNameMaxLength,
-            ErrorMessage = GlobalConstants.StringLengthErrorMessage,
-            MinimumLength = GlobalConstants.RegisterNameMinLength)]
+        [Display(Name = DisplayNameConstants.DisplayLastName)]
+        [StringLength(CustomerCnstants.RegisterNameMaxLength,
+            ErrorMessage = AdminContants.StringLengthErrorMessage,
+            MinimumLength = CustomerCnstants.RegisterNameMinLength)]
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(GlobalConstants.PasswordMaxLength,
-            ErrorMessage = GlobalConstants.PasswordErrorMssage,
-            MinimumLength = GlobalConstants.PasswordMinLength)]
+        [StringLength(CustomerCnstants.PasswordMaxLength,
+            ErrorMessage = CustomerCnstants.PasswordErrorMssage,
+            MinimumLength = CustomerCnstants.PasswordMinLength)]
         public string Password { get; set; }
 
         [Required]
@@ -33,10 +31,10 @@ namespace GarageManager.Web.Models.BindingModels.Employee
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = GlobalConstants.PhoneNumberDisplayName)]
-        [StringLength(GlobalConstants.PhoneNumberMaxLength, 
-            ErrorMessage = GlobalConstants.StringLengthErrorMessage,
-            MinimumLength = GlobalConstants.PhoneNumberMinLength)]
+        [Display(Name = DisplayNameConstants.PhoneNumberDisplayName)]
+        [StringLength(CustomerCnstants.PhoneNumberMaxLength, 
+            ErrorMessage = AdminContants.StringLengthErrorMessage,
+            MinimumLength = CustomerCnstants.PhoneNumberMinLength)]
         public string PhoneNumber { get; set; }
 
         [DataType(DataType.Date)]

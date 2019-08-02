@@ -1,20 +1,18 @@
-﻿using GarageManager.Web.Models.BindingModels;
-using GarageManager.Web.Models.ViewModels.Customer;
-using GarageManager.Web.Areas.Admin.Controllers;
+﻿using GarageManager.Common;
+using GarageManager.Common.GlobalConstant;
+using GarageManager.Common.Notification;
+using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Extensions.PDFConverter.HtmlToPDF;
 using GarageManager.Extensions.PDFConverter.ViewRender;
 using GarageManager.Services.Contracts;
+using GarageManager.Web.Areas.Admin.Controllers;
+using GarageManager.Web.Models.BindingModels;
+using GarageManager.Web.Models.ViewModels.Customer;
 using GarageManager.Web.Models.ViewModels.Invoice;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Web;
 using System.Threading.Tasks;
-using System;
-using GarageManager.Extensions.DateTimeProviders;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using GarageManager.Common.Notification;
 
 namespace GarageManager.Web.Areas.User.Controllers
 {
@@ -60,13 +58,21 @@ namespace GarageManager.Web.Areas.User.Controllers
             {
                 return this.View(model);
             }
+
+
+            var result = await this.customerService
+                 .CreateAsync(model.FirstName, model.LastName, model.Email, model.PhoneNumber);
+
+            if (result != default(int))
+            {
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Warning);
+                return this.Redirect("/Admin/Customers/AllCustomers");
+            }
+
             this.ShowNotification(string.Format(
                     NotificationMessages.CustomerCreateSuccessfull, model.FirstName, model.LastName),
                     NotificationType.Success);
-
-            await this.customerService
-                .CreateNewAsync(model.FirstName, model.LastName, model.Email, model.PhoneNumber);
-
             return this.Redirect("/Admin/Customers/AllCustomers");
         }
 
@@ -88,12 +94,18 @@ namespace GarageManager.Web.Areas.User.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/Customers/AllCustomers");
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
             }
 
-            var customer = await this.customerService.EditCustomerDetailsByIdAsync(id);
+            var customer = await this.customerService.GetCustomerDetailsByIdAsync(id);
 
-            
+            if (customer == null)
+            {
+                this.ShowNotification(NotificationMessages.CustomerNotExist,
+                    NotificationType.Warning);
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+            }
+
             var result = new CustomerDetailsViewModel()
             {
                 Email = customer.Email,
@@ -102,7 +114,6 @@ namespace GarageManager.Web.Areas.User.Controllers
                 PhoneNumber = customer.PhoneNumber
             };
 
-            //TODO beautify View
             return this.View(result);
         }
 
@@ -110,10 +121,10 @@ namespace GarageManager.Web.Areas.User.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/Customers/AllCustomers");
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
             }
 
-            var customerFromDb = await this.customerService.EditCustomerDetailsByIdAsync(id);
+            var customerFromDb = await this.customerService.GetCustomerDetailsByIdAsync(id);
             var model = new CustomerDetailsViewModel
             {
                 Id = customerFromDb.Id,
@@ -159,18 +170,36 @@ namespace GarageManager.Web.Areas.User.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/Customers/AllCustomers");
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
             }
-            await this.customerService.DeleteAsync(id);
-
-            this.ShowNotification(NotificationMessages.CustomerDeleteSuccessfull,
+            var result = await this.customerService.DeleteAsync(id);
+            if (result != default(int))
+            {
+                this.ShowNotification(NotificationMessages.CustomerDeleteSuccessfull,
                 NotificationType.Warning);
-            return this.Redirect("/Admin/Customers/AllCustomers");
+            }
+
+            this.ShowNotification(NotificationMessages.InvalidOperation,
+                NotificationType.Warning);
+
+
+            return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
         }
 
         public async Task<IActionResult> Invoice(string id)
         {
+            if (this.IsValidId(id))
+            {
+                return this.Redirect(RedirectUrl_s.HomeIndex);
+            }
+
             var invoiceFromDb = await this.invoiseService.GetInvoiceDetailsByCarId(id);
+
+            if (invoiceFromDb == null)
+            {
+                return this.Redirect(RedirectUrl_s.HomeIndex);
+            }
+
             var invoiceModel = new InvoiceViewModel
             {
                 FullName = invoiceFromDb.FullName,
@@ -201,6 +230,10 @@ namespace GarageManager.Web.Areas.User.Controllers
         }
         public async Task<IActionResult> GetPdf(InvoiceViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.Redirect(RedirectUrl_s.HomeIndex);
+            }
 
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Invoice.cshtml", model);
             var fileContents = this.htmlToPdfConverter.Convert(this.environment.ContentRootPath, htmlData, Extensions.PDFConverter.Enums.FormatType.a4, Extensions.PDFConverter.Enums.OrientationType.landscape);
@@ -215,6 +248,13 @@ namespace GarageManager.Web.Areas.User.Controllers
             }
 
             var customerId = await this.carService.CompleteTheOrderByCarId(id);
+            if (customerId == null)
+            {
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Warning);
+
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+            }
 
             this.ShowNotification(NotificationMessages.CustomerOrderCompletedSuccessfully,
                 NotificationType.Success);

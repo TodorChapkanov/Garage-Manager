@@ -1,8 +1,9 @@
-﻿using GarageManager.Web.Models.ViewModels.Department;
+﻿using GarageManager.Common;
+using GarageManager.Common.GlobalConstant;
+using GarageManager.Common.Notification;
 using GarageManager.Services.Contracts;
+using GarageManager.Web.Models.ViewModels.Department;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,9 +21,16 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/");
+
             }
             var result = await this.departmentService.GetDepartmentCars(id);
+
+            if (result == null)
+            {
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Error);
+                return this.Redirect(RedirectUrl_s.HomeIndex);
+            }
             var viewModel = new DepartmentCarsList
             {
                 Name = result.Name,

@@ -1,16 +1,16 @@
-﻿using GarageManager.Web.Models.BindingModels;
+﻿using GarageManager.Common.GlobalConstant;
+using GarageManager.Common.Notification;
+using GarageManager.Services.Contracts;
+using GarageManager.Web.Models.BindingModels;
 using GarageManager.Web.Models.ViewModels.Car;
 using GarageManager.Web.Models.ViewModels.Customer;
-using GarageManager.Domain;
-using GarageManager.Services.Contracts;
+using GarageManager.Web.Models.ViewModels.FuelType;
+using GarageManager.Web.Models.ViewModels.TransmissionType;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GarageManager.Common.Notification;
-using GarageManager.Web.Infrastructure.Filters;
-using System;
 
 namespace GarageManager.Web.Areas.Admin.Controllers
 {
@@ -45,7 +45,6 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [ValidateModelState]
         public async Task<IActionResult> Create(CreateCarBindingModel carBVM)
         {
             if (!ModelState.IsValid)
@@ -53,7 +52,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                return RedirectToAction($"/Admin/Cars/Create/{carBVM.CustomerId}");
             }
 
-            var model = await this.carService.CreateAsync<Car>
+            var reault = await this.carService.CreateAsync
                 (
                 carBVM.CustomerId,
                 carBVM.Vin,
@@ -68,39 +67,54 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 carBVM.TransmissionId
                 );
 
-            this.ShowNotification(string.Format(
+            if (reault)
+            {
+                this.ShowNotification(string.Format(
                     NotificationMessages.CarCreatedSuccessfull, carBVM.RegistrationPlate),
                     NotificationType.Success);
+                return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{carBVM.CustomerId}");
+            }
 
-            return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{carBVM.CustomerId}");
 
+            this.ShowNotification(string.Format(
+                    NotificationMessages.CarCreateFail),
+                    NotificationType.Warning);
+
+            return this.View(carBVM);
         }
 
        
 
         public async Task<IActionResult> Edit(string id)
         {
-           
-
-            var allFuelTypes = default(IEnumerable<FuelType>);
-            var allTransmissionTypes = default(IEnumerable<TransmissionType>);
+            var allFuelTypes = default(IEnumerable<FuelTypeDetails>);
+            var allTransmissionTypes = default(IEnumerable<TransmissionTypeDetails>);
             var allTasks = new List<Task>();
 
             allTasks.Add(Task.Run(async () =>
             {
                 allFuelTypes = (await this.fuelTypeService.GetAllTypesAsync())
-                                                            .OrderBy(fuel => fuel.Type);
+                    .Select(ft => new FuelTypeDetails
+                      {
+                        Id = ft.Id,
+                        Type = ft.Type
+                      })
+                    .OrderBy(fuel => fuel.Type);
             }));
 
             allTasks.Add(Task.Run(async () =>
             {
                 allTransmissionTypes = (await this.transmissionTypeService.GetAllTypesAsync())
-                                                                          .OrderBy(transmission => transmission.Type);
+                .Select(tt => new TransmissionTypeDetails
+                {
+                    Id = tt.Id,
+                    Type = tt.Type
+                })
+                .OrderBy(transmission => transmission.Type);
             }));
 
             await Task.WhenAll(allTasks);
 
-            //TODO Test method with NULL
             var carData = await this.carService.GetCarDetailsByIdAsync(id);
             if (carData == null)
             {
@@ -138,7 +152,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 return this.Redirect($"/Admin/Cars/Edit/{model.Id}");
             }
 
-                await this.carService.UpdateCarByIdAsync(
+              var result = await this.carService.UpdateCarByIdAsync(
                  model.Id,
                  model.RegistrationPlate,
                  model.Кilometers,
@@ -148,12 +162,18 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                  model.FuelTypeId,
                  model.TransmissionId
                  );
-
-            this.ShowNotification(string.Format(
+            if (result != default(int))
+            {
+                this.ShowNotification(string.Format(
                     NotificationMessages.CarUpdatedSuccessfull),
                     NotificationType.Success);
+                return this.Redirect($"/Employees/Cars/Details/{model.Id}");
+            }
 
-            return this.Redirect($"/Employees/Cars/Details/{model.Id}");
+            this.ShowNotification(string.Format(
+                    NotificationMessages.CarEditFail),
+                    NotificationType.Warning);
+            return this.View(model.Id);
         }
 
         public async Task<IActionResult> Delete(string carId, string customerId)
@@ -166,7 +186,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
 
                 this.ShowNotification(string.Format(
-                    NotificationMessages.InvalidCarId),
+                    NotificationMessages.CarNotExist),
                     NotificationType.Error);
             }
 
@@ -180,10 +200,10 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllCarsByCustomerId(string id)
         {
-            throw new InvalidOperationException();
+           
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/Customers/AllCustomers");
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
             }
             var model = new CustomerCarViewModel()
             {
@@ -200,6 +220,14 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                     IsInService = car.IsInService
                 }).ToList();
 
+            if (model.CustomerCars == null)
+            {
+                this.ShowNotification(string.Format(
+                       NotificationMessages.InvalidOperation),
+                       NotificationType.Error);
+
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+            }
             return View(model);
         }
 
@@ -221,11 +249,22 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
         public async Task<JsonResult> AllModels(string id)
         {
+            try
+            {
+                var models = (await this.modelService.GetAllByMakeIdAsync(id)).OrderBy(model => model);
 
-            var models = (await this.modelService.GetAllByMakeIdAsync(id)).OrderBy(model => model);
+                var result = Json(new SelectList(models));
+                return result;
+            }
+            catch 
+            {
+                this.ShowNotification(NotificationMessages.InvalidOperation,
+                    NotificationType.Error);
 
-            var result = Json(new SelectList(models));
-            return result;
+                this.Redirect(RedirectUrl_s.HomeIndex);
+            }
+
+            return null;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace GarageManager.Services.Contracts
 {
     public interface ICustomerService
     {
-        Task CreateNewAsync(
+        Task<int> CreateAsync(
             string firstName,
             string lastName,
             string email,
@@ -17,7 +17,7 @@ namespace GarageManager.Services.Contracts
 
         Task<List<CustomerDetail>> GetAllCustomersDetailsAsync();
 
-         Task<CustomerEditDetails> EditCustomerDetailsByIdAsync(string id);
+         Task<CustomerEditDetails> GetCustomerDetailsByIdAsync(string id);
 
         Task<int> DeleteAsync(string id);
 
