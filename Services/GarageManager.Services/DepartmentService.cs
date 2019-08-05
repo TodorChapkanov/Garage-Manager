@@ -43,7 +43,6 @@ namespace GarageManager.Services
                 var departmentFromDb = await this.departmentRepository
                 .All()
                 .Where(department => department.Id == id)
-                .Include(department => department.Cars)
                 .Select(department => new DepartmentAllCars
                 {
                     Name = department.Name,

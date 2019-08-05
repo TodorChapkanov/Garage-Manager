@@ -60,7 +60,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 carBVM.ManufacturerId,
                 carBVM.ModelName,
                 carBVM.Кilometers,
-                carBVM.ManufacturedOn,
+                carBVM.YearOfManufacturing,
                 carBVM.EngineModel,
                 carBVM.EngineHorsePower,
                 carBVM.FuelTypeId,
@@ -151,7 +151,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
                 return this.Redirect($"/Admin/Cars/Edit/{model.Id}");
             }
-
+            //TODO Add dropdown and rename yearOfManyfacturing for car year
               var result = await this.carService.UpdateCarByIdAsync(
                  model.Id,
                  model.RegistrationPlate,
@@ -233,7 +233,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> CompletedCars()
         {
-            var model = (await this.carService.CompletedCarsList())
+            var model = (await this.carService.CompletedCarsListAsync())
                 .Select(car => new CompletedCarList
                 {
                     Id = car.Id,

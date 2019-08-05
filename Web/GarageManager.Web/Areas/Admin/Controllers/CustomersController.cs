@@ -63,7 +63,7 @@ namespace GarageManager.Web.Areas.User.Controllers
             var result = await this.customerService
                  .CreateAsync(model.FirstName, model.LastName, model.Email, model.PhoneNumber);
 
-            if (result != default(int))
+            if (result == default(int))
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Warning);
@@ -177,10 +177,11 @@ namespace GarageManager.Web.Areas.User.Controllers
             {
                 this.ShowNotification(NotificationMessages.CustomerDeleteSuccessfull,
                 NotificationType.Warning);
+                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
             }
 
             this.ShowNotification(NotificationMessages.InvalidOperation,
-                NotificationType.Warning);
+                NotificationType.Error);
 
 
             return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
@@ -188,7 +189,7 @@ namespace GarageManager.Web.Areas.User.Controllers
 
         public async Task<IActionResult> Invoice(string id)
         {
-            if (this.IsValidId(id))
+            if (!this.IsValidId(id))
             {
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
@@ -247,7 +248,7 @@ namespace GarageManager.Web.Areas.User.Controllers
                 return this.Redirect("/Admin/Customers/AllCustomers");
             }
 
-            var customerId = await this.carService.CompleteTheOrderByCarId(id);
+            var customerId = await this.carService.CompleteTheOrderByCarIdAsync(id);
             if (customerId == null)
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,

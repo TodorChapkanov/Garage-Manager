@@ -9,7 +9,7 @@ namespace GarageManager.Web.Models.BindingModels
 
         public int Кilometers { get; set; }
 
-        public DateTime YearOfManufacturing { get; set; }
+        public int YearOfManufacturing { get; set; }
 
         public string EngineModel { get; set; }
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 
-namespace GarageManager.eb.Views.Shared.Components.Transmissions
+namespace GarageManager.Web.Views.Shared.Components.Transmissions
 {
     public class TransmissionsViewComponent : ViewComponent
     {

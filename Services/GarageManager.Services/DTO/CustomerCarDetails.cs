@@ -15,7 +15,7 @@ namespace GarageManager.Services.DTO
 
         public string RegistrationPlate { get; set; }
 
-        public DateTime? ManufacturedOn { get; set; }
+        public int ManufacturedOn { get; set; }
 
         public string Vin { get; set; }
 

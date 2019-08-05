@@ -25,30 +25,27 @@ namespace GarageManager.Services
             this.serviceRepository = serviceRepository;
             this.dateTimeProvider = dateTimeProvider;
         }
-        public async Task<IEnumerable<CarServiceHistory>> CarServicesHistoryAsync(string id)
+        public async Task<IEnumerable<CarServiceHistory>> GetCarServicesHistoryAsync(string id)
         {
             try
             {
                 this.ValidateNullOrEmptyString(id);
-                var services = await this.serviceRepository.All()
+                var services = await this.serviceRepository
+                    .All()
                     .Where(service => service.CarId == id && service.IsFinished == true)
-                .Include(service => service.Car)
-                .ThenInclude(car => car.Manufacturer)
-                .Include(service => service.Parts)
-                .Include(service => service.Repairs)
-                .Select(service => new CarServiceHistory
-                {
-                    Id = service.Id,
-                    CarMake = service.Car.Manufacturer.Name,
-                    CarRegistrtionPlate = service.Car.RegistrationPlate,
-                    FinishedOn = service.FinishedOn,
-                    Price = service.Parts
-                    .Sum(part => part.TotalCost)
-                    + service.Repairs
-                    .Sum(intervention => intervention.TotalCosts)
+                      .Select(service => new CarServiceHistory
+                      {
+                          Id = service.Id,
+                          CarMake = service.Car.Manufacturer.Name,
+                          CarRegistrtionPlate = service.Car.RegistrationPlate,
+                          FinishedOn = service.FinishedOn,
+                          Price = service.Parts
+                          .Sum(part => part.TotalCost)
+                          + service.Repairs
+                          .Sum(intervention => intervention.TotalCosts)
 
-                })
-                .ToListAsync();
+                      })
+                      .ToListAsync();
 
                 return services;
             }
@@ -60,36 +57,36 @@ namespace GarageManager.Services
 
         }
 
-        public async Task<CarServiceHistoryDetails> ServiceHistoryDetailsAsync(string serviceId)
+        public async Task<CarServiceHistoryDetails> GetServiceHistoryDetailsAsync(string serviceId)
         {
-            //TODO Add Service history
             try
             {
                 this.ValidateNullOrEmptyString(serviceId);
-                var result = await this.serviceRepository
+
+                var model = await this.serviceRepository
                 .All()
                 .Where(service => service.Id == serviceId)
-                .Select(service => new CarServiceHistoryDetails
-                {
-                    CarId = service.CarId,
-                    Parts = service.Parts.Select(part => new ServiceHistoryPartDetails
-                    {
-                        Name = part.Name,
-                        Number = part.Number,
-                        Quantity = part.Quantity,
-                        TotalCost = part.TotalCost
-                    }),
-                    Repairs = service.Repairs.Select(repair => new ServiceHistoryRepairDetails
-                    {
-                        Description = repair.Description,
-                        EmployeeName = repair.Employee.FullName,
-                        Hours = (decimal)repair.Hours,
-                        TotalCost = repair.TotalCosts
-                    })
-                })
-                .FirstOrDefaultAsync();
+                   .Select(service => new CarServiceHistoryDetails
+                   {
+                       CarId = service.CarId,
+                       Parts = service.Parts.Select(part => new ServiceHistoryPartDetails
+                       {
+                           Name = part.Name,
+                           Number = part.Number,
+                           Quantity = part.Quantity,
+                           TotalCost = part.TotalCost
+                       }).ToList(),
+                       Repairs = service.Repairs.Select(repair => new ServiceHistoryRepairDetails
+                       {
+                           Description = repair.Description,
+                           EmployeeName = repair.Employee.FullName,
+                           Hours = (decimal)repair.Hours,
+                           TotalCost = repair.TotalCosts
+                       }).ToList()
+                   })
+                   .FirstOrDefaultAsync();
 
-                return result;
+                return model;
             }
             catch
             {
@@ -99,16 +96,13 @@ namespace GarageManager.Services
 
         }
 
-        public async Task<int> FinishServiceAsync(ServiceIntervention serviceIntervention)
+        public async Task<int> FinishServiceAsync(string id)
         {
-            if (serviceIntervention == null)
-            {
-                return default(int);
-            }
+            this.ValidateNullOrEmptyString(id);
+            var serviceIntervention = await this.serviceRepository.GetEntityByKeyAsync(id);
             serviceIntervention.FinishedOn = this.dateTimeProvider.GetDateTime();
             serviceIntervention.IsFinished = true;
-            this.serviceRepository.Update(serviceIntervention);
-            return await this.serviceRepository.SavaChangesAsync();
+           return await this.serviceRepository.Update(serviceIntervention);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace GarageManager.Services.Contracts
 {
    public  interface IInterventionService
     {
-        Task<IEnumerable<CarServiceHistory>> CarServicesHistoryAsync(string id);
-        Task<int> FinishServiceAsync(ServiceIntervention serviceIntervention);
+        Task<IEnumerable<CarServiceHistory>> GetCarServicesHistoryAsync(string id);
+        Task<int> FinishServiceAsync(string id);
 
-        Task<CarServiceHistoryDetails> ServiceHistoryDetailsAsync(string serviceId);
+        Task<CarServiceHistoryDetails> GetServiceHistoryDetailsAsync(string serviceId);
     }
 }

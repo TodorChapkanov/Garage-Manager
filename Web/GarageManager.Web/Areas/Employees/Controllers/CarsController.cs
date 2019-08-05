@@ -72,7 +72,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             }
 
             var carModel = await this.carService
-                .GetCarServicesAsync(id);
+                .GetCarServiceDetailsByIdAsync(id);
 
             if (carModel == null)
             {
@@ -123,7 +123,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 
             var model = new AddCarToServiceViewModel();
             var carDetails = await  this.carService
-                .GetServiceDescription(id);
+                .GetServiceDescriptionByIdAsync(id);
             if (carDetails == null)
             {
                 this.ShowNotification(NotificationMessages.CarNotExist
@@ -147,7 +147,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             }
 
             var result = await this.carService
-                .AddToService(model.Id, model.Description, model.DepartmentId);
+                .AddToServiceAsync(model.Id, model.Description, model.DepartmentId);
 
             if (result != default(int))
             {

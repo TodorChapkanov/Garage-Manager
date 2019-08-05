@@ -39,7 +39,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 model.PricePerHour,
                 employeeId);
 
-            if (carId != default(string))
+            if (carId == default(string))
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                NotificationType.Warning);
@@ -73,8 +73,9 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 Description = partFromDb.Description,
                 PricePerHour = partFromDb.PricePerHour,
                 Hours = partFromDb.Hours,
+                EmployeeName = partFromDb.EmployeeName,
                 IsFinished = partFromDb.IsFinished
-            };
+            };//TODO Add VC For employees in rapir edit view
 
             return this.View(partModel);
         }

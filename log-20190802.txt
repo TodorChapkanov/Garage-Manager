@@ -10,3 +10,77 @@ WHERE @_outer_Id = [part].[ServiceId]"
 ""SELECT [part].[Id], [part].[DeletedOn], [part].[IsDeleted], [part].[Name], [part].[Number], [part].[Price], [part].[Quantity], [part].[ServiceId]
 FROM [Parts] AS [part]
 WHERE @_outer_Id = [part].[ServiceId]"
+2019-08-02 22:53:03.618 +03:00 - [EventId: 80000039-0007-ff00-b63f-84710c7967bb]  
+[controller, Cars]/[action, Create]/[area, Admin]/[id, 309fb5ff-6ff6-4e09-9786-9c410f8f6cee]  
+Source : GarageManager.Services.CarService+<CreateAsync>d__5  
+ Method: MoveNext 
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at GarageManager.Services.CarService.CreateAsync(String customerId, String vin, String registrationPLate, String manufactirerId, String modelName, Int32 kilometers, DateTime yearOfManufacture, String engineModel, Int32 enginePower, String fuelTypeId, String transmissionId) in C:\Users\User\Desktop\GarageManager\Garage-Manager\Services\GarageManager.Services\CarService.cs:line 75
+   at GarageManager.Web.Areas.Admin.Controllers.CarsController.Create(CreateCarBindingModel carBVM) in C:\Users\User\Desktop\GarageManager\Garage-Manager\Web\GarageManager.Web\Areas\Admin\Controllers\CarsController.cs:line 55
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextExceptionFilterAsync()  
+ 
+------------------------------------------------------------
+2019-08-02 22:53:03.671 +03:00 - An unhandled exception has occurred while executing the request.
+2019-08-02 23:03:55.903 +03:00 - Failed executing DbCommand ("18"ms) [Parameters=["@_outer_Id1='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [repair].[Id], [repair].[DeletedOn], [repair].[Description], [repair].[EmployeeId], [repair].[Hours], [repair].[IsDeleted], [repair].[IsFinished], [repair].[PricePerHour], [repair].[ServiceId], [repair.Employee].[Id], [repair.Employee].[AccessFailedCount], [repair.Employee].[ConcurrencyStamp], [repair.Employee].[CreatedOn], [repair.Employee].[DeletedOn], [repair.Employee].[DepartmentId], [repair.Employee].[Email], [repair.Employee].[EmailConfirmed], [repair.Employee].[FirstName], [repair.Employee].[IsDeleted], [repair.Employee].[LastName], [repair.Employee].[LockoutEnabled], [repair.Employee].[LockoutEnd], [repair.Employee].[NormalizedEmail], [repair.Employee].[NormalizedUserName], [repair.Employee].[PasswordHash], [repair.Employee].[PhoneNumber], [repair.Employee].[PhoneNumberConfirmed], [repair.Employee].[RecruitedOn], [repair.Employee].[SecurityStamp], [repair.Employee].[TwoFactorEnabled], [repair.Employee].[UserName]
+FROM [RepairTypes] AS [repair]
+LEFT JOIN [AspNetUsers] AS [repair.Employee] ON [repair].[EmployeeId] = [repair.Employee].[Id]
+WHERE @_outer_Id1 = [repair].[ServiceId]"
+2019-08-02 23:10:41.628 +03:00 - Failed executing DbCommand ("16"ms) [Parameters=["@_outer_Id='?' (Size = 450)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [part].[Id], [part].[DeletedOn], [part].[IsDeleted], [part].[Name], [part].[Number], [part].[Price], [part].[Quantity], [part].[ServiceId]
+FROM [Parts] AS [part]
+WHERE @_outer_Id = [part].[ServiceId]"
+2019-08-02 23:49:58.060 +03:00 - An exception occurred while iterating over the results of a query for context type '"GarageManager.Data.GMDbContext"'."
+""System.InvalidOperationException: Sequence contains no elements
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()"
+2019-08-02 23:49:58.092 +03:00 - An exception occurred while iterating over the results of a query for context type '"GarageManager.Data.GMDbContext"'."
+""System.InvalidOperationException: Sequence contains no elements
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)"
+2019-08-02 23:50:11.659 +03:00 - [EventId: 8000000e-0004-fd00-b63f-84710c7967bb]  
+[controller, Customers]/[action, Edit]/[area, Admin]/[id, db84a382-f4ea-4f94-9f97-1e5330b28df9]  
+Source : GarageManager.Web.Areas.User.Controllers.CustomersController+<Edit>d__15  
+ Method: MoveNext 
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at GarageManager.Web.Areas.User.Controllers.CustomersController.Edit(String id)
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextExceptionFilterAsync()  
+ 
+------------------------------------------------------------
+2019-08-02 23:50:11.676 +03:00 - An unhandled exception has occurred while executing the request.
+2019-08-02 23:53:23.211 +03:00 - [EventId: 8000001f-0006-ff00-b63f-84710c7967bb]  
+[controller, Customers]/[action, Edit]/[area, Admin]/[id, 309fb5ff-6ff6-4e09-9786-9c410f8f6cee]  
+Source : GarageManager.Web.Areas.User.Controllers.CustomersController+<Edit>d__15  
+ Method: MoveNext 
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at GarageManager.Web.Areas.User.Controllers.CustomersController.Edit(String id) in C:\Users\User\Desktop\GarageManager\Garage-Manager\Web\GarageManager.Web\Areas\Admin\Controllers\CustomersController.cs:line 128
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextExceptionFilterAsync()  
+ 
+------------------------------------------------------------
+2019-08-02 23:53:23.241 +03:00 - An unhandled exception has occurred while executing the request.

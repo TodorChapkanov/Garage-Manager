@@ -22,7 +22,7 @@ namespace GarageManager.Domain
         public string Vin { get; set; }
 
         [Required]
-        public string  ManufactureId { get; set; }
+        public string  ManufacturerId { get; set; }
 
         public VehicleManufacturer Manufacturer { get; set; }
 
@@ -45,8 +45,7 @@ namespace GarageManager.Domain
         public int Кilometers { get; set; }
 
         [Required]
-        [Range(CarConstants.CarMinYearOfManufactore, int.MaxValue)]
-        public DateTime? YearOfManufacture { get; set; }
+        public int YearOfManufacturing { get; set; }
 
         [Required]
         [StringLength(CarConstants.CarMaxEngineModelLength)]
@@ -56,6 +55,7 @@ namespace GarageManager.Domain
         [Range(CarConstants.CarMinEngineHorsePower, CarConstants.CarMaxEngineHorsePower)]
         public int EngineHorsePower { get; set; }
 
+        [Required]
         public string FuelTypeId { get; set; }
 
         public FuelType FuelType { get; set; }
@@ -67,7 +67,7 @@ namespace GarageManager.Domain
         public string TransmissionId { get; set; }
 
         public TransmissionType Transmission { get; set; }
-
+        [Required]
         public string CurrentServiceId { get; set; }
         public ICollection<ServiceIntervention> Services { get; set; }
 

@@ -33,7 +33,6 @@ namespace GarageManager.Services
                 var carFromDb = await this.carRepository
                .All()
                .Where(car => car.Id == carId)
-               .Include(service => service.Services)
                .FirstOrDefaultAsync();
 
                 var part = new Part
@@ -48,8 +47,6 @@ namespace GarageManager.Services
 
                 this.ValidateEntityState(part);
                 await this.partRepository.CreateAsync(part);
-                carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Parts.Add(part);
-                await this.partRepository.SavaChangesAsync();
                 return carFromDb.Id;
             }
             catch 
@@ -100,8 +97,8 @@ namespace GarageManager.Services
                 partFromDb.Quantity = quantity;
                 this.ValidateEntityState(partFromDb);
 
-                this.partRepository.Update(partFromDb);
-                return await this.partRepository.SavaChangesAsync();
+               return await this.partRepository.Update(partFromDb);
+               
             }
             catch 
             {

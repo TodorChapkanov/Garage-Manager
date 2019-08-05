@@ -14,7 +14,7 @@ namespace GarageManager.Data.Repository
 
         Task<int> SavaChangesAsync();
 
-        Task CreateAsync(TEntity entity);
+        Task<int> CreateAsync(TEntity entity);
 
         void SoftDelete(TEntity entity);
 
@@ -23,7 +23,7 @@ namespace GarageManager.Data.Repository
 
         void Undelete(TEntity entity);
 
-        void Update(TEntity entity);
+        Task<int> Update(TEntity entity);
 
         Task<TEntity> GetEntityByKeyAsync(string key);
 

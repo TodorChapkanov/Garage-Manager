@@ -27,13 +27,15 @@ namespace GarageManager.Web.Models.BindingModels
         [Required]
         [MaxLength(CarConstants.CarVinNumberMaxLength)]
         public string Vin { get; set; }
+
         [Required]
         [Range(CarConstants.CarMinKilometers, CarConstants.CarMaxKilometers)]
         public int Кilometers { get; set; }
+
         [Required]
         [Display(Name = DisplayNameConstants.YearOfManufacturingDisplayName)]
-        [DataType(DataType.Date)]
-        public DateTime ManufacturedOn { get; set; }
+        public int YearOfManufacturing { get; set; }
+
         [Required]
         [Display(Name = DisplayNameConstants.EngineModelDisplayName)]
         [StringLength(CarConstants.CarMaxEngineModelLength)]

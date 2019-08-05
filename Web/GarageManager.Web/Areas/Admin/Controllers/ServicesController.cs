@@ -28,7 +28,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
             try
             {
-                var model = (await this.interventionService.CarServicesHistoryAsync(id))
+                var model = (await this.interventionService.GetCarServicesHistoryAsync(id))
                .Select(service => new CarServiceHistoryViewModel
                {
                    Id = service.Id,
@@ -55,7 +55,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
-            var serviceDetails = await this.interventionService.ServiceHistoryDetailsAsync(id);
+            var serviceDetails = await this.interventionService.GetServiceHistoryDetailsAsync(id);
             var model = new CarServiceHistoryDetailsViewModel
             {
                 CarId = serviceDetails.CarId,

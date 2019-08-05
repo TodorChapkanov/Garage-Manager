@@ -27,7 +27,11 @@ namespace GarageManager.Data.Repository
 
         public Task<int> SavaChangesAsync() => this.dbContext.SaveChangesAsync();
 
-        public  Task CreateAsync(TEntity entity) =>   this.dbContext.AddAsync(entity);
+        public async Task<int> CreateAsync(TEntity entity)
+        {
+           await this.dbContext.AddAsync(entity);
+            return await this.SavaChangesAsync();
+        }
 
         public void SoftDelete(TEntity entity)
         {
@@ -46,10 +50,13 @@ namespace GarageManager.Data.Repository
             entity.IsDeleted = false;
             entity.DeletedOn = null;
              this.dbContext.Update(entity);
-          
         }
 
-        public void Update(TEntity entity) => this.dbContext.Update(entity);
+        public async Task<int> Update(TEntity entity)
+        {
+            this.dbContext.Update(entity);
+            return await this.SavaChangesAsync();
+        }
 
         public IQueryable<TEntity> All() => this.dbContext.Set<TEntity>().Where(x => !x.IsDeleted);
 

@@ -49,7 +49,7 @@ namespace GarageManager.Services
                 this.ValidateEntityState(repairService);
                 await this.repairRepository.CreateAsync(repairService);
                 carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Repairs.Add(repairService);
-                await this.repairRepository.SavaChangesAsync();
+               
 
                 return carFromDb.Id;
             }
@@ -66,7 +66,7 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var repairFromDb = await this.repairRepository
-                .All().Include(repair => repair.Employee)
+                .All()
                 .FirstOrDefaultAsync(repair => repair.Id == id);
 
                 var part = new RepairEditDetails
@@ -75,6 +75,7 @@ namespace GarageManager.Services
                     Description = repairFromDb.Description,
                     Hours = repairFromDb.Hours,
                     PricePerHour = repairFromDb.PricePerHour,
+                    EmployeeName = repairFromDb.Employee.FullName,
                     IsFinished = repairFromDb.IsFinished
                 };
 
@@ -103,9 +104,7 @@ namespace GarageManager.Services
                 repairFromDb.IsFinished = isFinished;
 
                 this.ValidateEntityState(repairFromDb);
-                this.repairRepository.Update(repairFromDb);
-
-                return await this.repairRepository.SavaChangesAsync();
+              return await this.repairRepository.Update(repairFromDb);
             }
             catch 
             {

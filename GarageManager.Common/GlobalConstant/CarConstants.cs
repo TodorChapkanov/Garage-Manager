@@ -5,7 +5,7 @@
         public const int CarVinNumberMaxLength = 17;
         public const int CarMinKilometers = 0;
         public const int CarMaxKilometers = 10000000;
-        public const int CarMinYearOfManufactore = 1886;
+        public const int CarMinYearOfManufactorer = 1886;
         public const int CarMaxEngineHorsePower = 5000;
         public const int CarMinEngineHorsePower = 15;
         public const int CarMaxEngineModelLength = 20;

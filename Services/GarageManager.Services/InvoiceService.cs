@@ -32,7 +32,6 @@ namespace GarageManager.Services
                 var invoiceDetails = await this.carRepository
                .All()
                .Where(car => car.Id == id)
-               .Include(car => car.Services)
                .Select(car => new InvoiceDetails
                {
                    FullName = car.Customer.FullName,

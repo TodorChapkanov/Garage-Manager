@@ -18,10 +18,11 @@ namespace GarageManager.Services.Contracts
             string vin,
             string registrationPlate,
             string manufactirerId,
-              string modelId,
+              string modelName,
               int kilometers,
-              DateTime yearOfManufacture,
-              string engineModel, int enginePower,
+              int yearOfManufacture,
+              string engineModel, 
+              int enginePower,
               string FuelTypeId,
               string transmissionId
             );
@@ -32,22 +33,22 @@ namespace GarageManager.Services.Contracts
            string id,
            string registrationPlate,
            int kilometers,
-           DateTime yearOfManufacturing,
+           int yearOfManufacturing,
            string engineModel,
            int engineHorsePower,
            string fuelTypeId,
            string transmissionId);
-        Task<CarServiceDetails> GetServiceDescription(string id);
+        Task<CarServiceDetails> GetServiceDescriptionByIdAsync(string id);
 
-        Task<int> AddToService(string carId, string carDescription, string departmentId);
+        Task<int> AddToServiceAsync(string carId, string carDescription, string departmentId);
 
-        Task<CarServicesDetails> GetCarServicesAsync(string id);
+        Task<CarServicesDetails> GetCarServiceDetailsByIdAsync(string id);
 
         Task<int> FinishCarServiceAsync(string carId);
 
-        Task<List<CompletedCarList>> CompletedCarsList();
+        Task<List<CompletedCarList>> CompletedCarsListAsync();
 
-        Task<string> CompleteTheOrderByCarId(string carId);
+        Task<string> CompleteTheOrderByCarIdAsync(string carId);
 
         Task<int> HardDeleteAsync(string id);
     }

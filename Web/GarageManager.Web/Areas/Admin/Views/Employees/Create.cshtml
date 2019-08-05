@@ -3,14 +3,11 @@
 @{
     ViewData["Title"] = "CreateEmployee";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string emailError = ViewData["Email"]?.ToString();
 }
 
 <h1 class="text-center">Add New Employee</h1>
-@if (emailError == GarageManager.Common.Notification.NotificationMessages.EmailExistResult)
-{
-    <h3 class="text-center text-danger">@emailError</h3>
-}
+
+
 <hr />
 <div class="container-fluid w-50">
     <div class="mx-auto">

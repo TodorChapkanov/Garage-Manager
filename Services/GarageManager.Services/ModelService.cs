@@ -32,5 +32,10 @@ namespace GarageManager.Services
                 return null;
             }
         }
+        public async Task<VehicleModel> GetByNameAsync(string name)
+        {
+            var result =await this.modelRepositoty.All().FirstOrDefaultAsync(model => model.Name == name);
+            return result;
+        }
     }
 }

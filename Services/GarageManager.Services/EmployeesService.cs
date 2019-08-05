@@ -63,7 +63,6 @@ namespace GarageManager.Services
 
                 var result = await this.userManager.CreateAsync(employee, password);
                 var departmentName = this.userManager.Users
-                    .Include(department => department.Department)
                     .Where(user => user.Id == employee.Id)
                     .Select(department => department.Department.Name)
                     .First();
@@ -92,7 +91,6 @@ namespace GarageManager.Services
         public Task<List<AllEmployees>> GetAllEmployeesAsync()
         {
             var allEmployees = this.employeeRepository.All()
-                .Include(employee => employee.Department)
                 .Select(employee => new AllEmployees
                 {
                     Id = employee.Id,
@@ -143,7 +141,6 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var employeeFromDb = await this.userManager.Users
-                .Include(department => department.Department)
                 .Where(employee => employee.Id == id)
                 .Select(employee => new EmployeeDetails
                 {

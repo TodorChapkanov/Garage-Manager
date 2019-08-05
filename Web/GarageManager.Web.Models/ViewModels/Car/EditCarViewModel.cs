@@ -32,8 +32,7 @@ namespace GarageManager.Web.Models.ViewModels.Car
 
         [Required]
         [Display(Name = DisplayNameConstants.YearOfManufacturingDisplayName)]
-        [DataType(DataType.Date)]
-        public DateTime? YearOfManufacturing { get; set; }
+        public int YearOfManufacturing { get; set; }
 
         [Required]
         [Display(Name = DisplayNameConstants.EngineModelDisplayName)]

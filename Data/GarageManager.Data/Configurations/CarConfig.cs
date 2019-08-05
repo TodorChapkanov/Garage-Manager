@@ -11,7 +11,7 @@ namespace GarageManager.Data.Configurations
             builder
                  .HasOne(car => car.Manufacturer)
                  .WithMany(manufactor => manufactor.Cars)
-                 .HasForeignKey(car => car.ManufactureId)
+                 .HasForeignKey(car => car.ManufacturerId)
                  .OnDelete(DeleteBehavior.Restrict);
 
             builder

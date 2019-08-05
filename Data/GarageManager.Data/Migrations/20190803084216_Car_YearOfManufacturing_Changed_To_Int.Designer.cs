@@ -4,14 +4,16 @@ using GarageManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GarageManager.Data.Migrations
 {
     [DbContext(typeof(GMDbContext))]
-    partial class GMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190803084216_Car_YearOfManufacturing_Changed_To_Int")]
+    partial class Car_YearOfManufacturing_Changed_To_Int
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +52,7 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<bool>("IsInService");
 
-                    b.Property<string>("ManufacturerId")
+                    b.Property<string>("ManufactureId")
                         .IsRequired();
 
                     b.Property<string>("ModelId")
@@ -79,7 +81,7 @@ namespace GarageManager.Data.Migrations
 
                     b.HasIndex("FuelTypeId");
 
-                    b.HasIndex("ManufacturerId");
+                    b.HasIndex("ManufactureId");
 
                     b.HasIndex("ModelId");
 
@@ -488,7 +490,7 @@ namespace GarageManager.Data.Migrations
 
                     b.HasOne("GarageManager.Domain.VehicleManufacturer", "Manufacturer")
                         .WithMany("Cars")
-                        .HasForeignKey("ManufacturerId")
+                        .HasForeignKey("ManufactureId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GarageManager.Domain.VehicleModel", "Model")

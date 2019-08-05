@@ -35,8 +35,8 @@ namespace GarageManager.Services
                 };
 
                 this.ValidateEntityState(customer);
-                await this.customerRepository.CreateAsync(customer);
-                return await this.customerRepository.SavaChangesAsync();
+              return  await this.customerRepository.CreateAsync(customer);
+                
             }
             catch 
             {
@@ -109,8 +109,7 @@ namespace GarageManager.Services
                 customerFromDb.Email = email;
                 customerFromDb.PhoneNumber = phonenumber;
 
-                this.customerRepository.Update(customerFromDb);
-                return await this.customerRepository.SavaChangesAsync();
+               return await this.customerRepository.Update(customerFromDb);
             }
             catch 
             {
@@ -126,12 +125,12 @@ namespace GarageManager.Services
                 this.ValidateNullOrEmptyString(id);
 
                 var customerFromDb = this.customerRepository.All()
-            .Include(customer => customer.Cars)
             .FirstOrDefault(customer => customer.Id == id);
 
-                customerFromDb
-                     .Cars
-                     .ToList()
+                this.customerRepository.All()
+                    .Where(customer => customer.Id == id)
+                    .Select(car => car.Cars.ToList())
+                    .First()
                      .ForEach(car => carService.HardDeleteAsync(car.Id).GetAwaiter().GetResult());
 
                 this.customerRepository.SoftDelete(customerFromDb);

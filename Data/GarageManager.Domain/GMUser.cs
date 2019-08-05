@@ -21,7 +21,7 @@ namespace GarageManager.Domain
         [MaxLength(CustomerCnstants.RegisterNameMaxLength)]
         public string LastName { get; set; }
 
-        public string FullName => $"{this.FirstName} {this.FirstName}";
+        public string FullName => $"{this.FirstName} {this.LastName}";
 
         public DateTime CreatedOn { get; set; }
 
