@@ -917,7 +917,7 @@ namespace GarageManager.Services.Tests
                 .Match<Car>(car => car.Id == result.First().Id)
                 .And
                 .Match<Car>(car => car.RegistrationPlate == result.First().RegisterPlate);
-            
+
         }
         #endregion
 
@@ -980,6 +980,22 @@ namespace GarageManager.Services.Tests
                 .BeLessThan(initialCount.Count);
 
         }
+
+        [Theory]
+        [InlineData("100")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public async Task HardDeleteAsyncShouldReturnZeroWithInvalidCarId(string carId)
+        {
+            //Act
+            var result = await this.carService.HardDeleteAsync(carId);
+
+            //Assert
+            result
+                .Should()
+                .Be(0);
+        }
         #endregion
 
         #region Configuration of CarService
@@ -1011,7 +1027,16 @@ namespace GarageManager.Services.Tests
             repository.Setup(getById => getById
             .GetEntityByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync((string id) => testCarList.Where(x => x.Id == id).Single());
-            
+            repository.Setup(delete => delete.HardDelete(It.IsAny<Car>())).ReturnsAsync(
+                (Car[] target) =>
+            {
+                if (testCarList.Contains(target[0]))
+                {
+                    testCarList.Remove(target[0]);
+                    return 1;
+                }
+                return 0;
+            });
 
             repository.Setup(car => car.SavaChangesAsync()).ReturnsAsync(1);
 
@@ -1248,44 +1273,5 @@ namespace GarageManager.Services.Tests
         #endregion
     }
 }
-/*  Task<IEnumerable<CustomerCarListDetails>> GetAllCarsByCustomerIdAsync(string id);
-
-    Task<bool> CreateAsync
-        (
-        string customerIs,
-        string vin,
-        string registrationPlate,
-        string manufactirerId,
-          string modelId,
-          int kilometers,
-          DateTime yearOfManufacture,
-          string engineModel, int enginePower,
-          string FuelTypeId,
-          string transmissionId
-        );
-
-    Task<CustomerCarDetails> GetCarDetailsByIdAsync(string id);
-
-    Task<int> UpdateCarByIdAsync(
-       string id,
-       string registrationPlate,
-       int kilometers,
-       DateTime yearOfManufacturing,
-       string engineModel,
-       int engineHorsePower,
-       string fuelTypeId,
-       string transmissionId);
-
-    Task<CarServiceDetails> GetServiceDescription(string id);
-
-    Task<int> AddToService(string carId, string carDescription, string departmentId);
-
-    Task<CarServicesDetails> GetCarServiceDetailsByIdAsync(string id);
-
-    Task<int> FinishCarServiceAsync(string carId);
-
-    Task<List<CompletedCarList>> CompletedCarsList();
-
-    Task<string> CompleteTheOrderByCarId(string carId);*/
 
 

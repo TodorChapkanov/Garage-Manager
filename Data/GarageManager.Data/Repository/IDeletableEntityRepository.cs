@@ -16,9 +16,9 @@ namespace GarageManager.Data.Repository
 
         Task<int> CreateAsync(TEntity entity);
 
-        void SoftDelete(TEntity entity);
+        Task<int> SoftDeleteAsync(TEntity entity);
 
-        void HardDelete(params TEntity[] entity);
+        Task<int> HardDelete(params TEntity[] entity);
 
 
         void Undelete(TEntity entity);

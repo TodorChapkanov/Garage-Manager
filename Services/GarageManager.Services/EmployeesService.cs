@@ -208,9 +208,7 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var employeeFromDb = await this.userManager.FindByIdAsync(id);
-                this.employeeRepository.SoftDelete(employeeFromDb);
-
-                return await this.employeeRepository.SavaChangesAsync();
+               return await this.employeeRepository.SoftDeleteAsync(employeeFromDb);
             }
             catch 
             {

@@ -112,10 +112,9 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var partFromDb = await this.partRepository.GetEntityByKeyAsync(id);
-                this.partRepository.HardDelete(partFromDb);
-                return await this.partRepository.SavaChangesAsync();
+                return await this.partRepository.HardDelete(partFromDb);
             }
-            catch 
+            catch
             {
                 return default(int);
             }

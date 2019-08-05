@@ -172,7 +172,7 @@ namespace GarageManager.Web.Areas.User.Controllers
             {
                 return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
             }
-            var result = await this.customerService.DeleteAsync(id);
+            var result = await this.customerService.SoftDeleteAsync(id);
             if (result != default(int))
             {
                 this.ShowNotification(NotificationMessages.CustomerDeleteSuccessfull,

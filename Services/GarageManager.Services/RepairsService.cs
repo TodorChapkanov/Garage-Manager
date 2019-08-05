@@ -119,9 +119,9 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var repairFromDb = await this.repairRepository.GetEntityByKeyAsync(id);
-                this.repairRepository.HardDelete(repairFromDb);
+                return await this.repairRepository.HardDelete(repairFromDb);
 
-                return await this.repairRepository.SavaChangesAsync();
+                 
             }
             catch 
             {

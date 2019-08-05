@@ -33,15 +33,20 @@ namespace GarageManager.Data.Repository
             return await this.SavaChangesAsync();
         }
 
-        public void SoftDelete(TEntity entity)
+        public async Task<int> SoftDeleteAsync(TEntity entity)
         {
             entity.IsDeleted = true;
             entity.DeletedOn = DateTime.UtcNow;
              this.dbContext.Update(entity);
-            
+            return await this.SavaChangesAsync();
+
         }
 
-        public void HardDelete(params TEntity[] entity) => dbContext.RemoveRange(entity);
+        public async Task<int> HardDelete(params TEntity[] entity)
+        {
+            dbContext.RemoveRange(entity);
+            return await this.SavaChangesAsync();
+        }
 
         public  Task<TEntity> GetEntityByKeyAsync(string key) =>   this.dbContext.FindAsync<TEntity>(key);
 

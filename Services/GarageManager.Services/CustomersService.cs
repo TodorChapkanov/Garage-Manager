@@ -69,8 +69,7 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var customerFromDb = await this.customerRepository
-                .All()
-                .FirstOrDefaultAsync(customer => customer.Id == id);
+                .GetEntityByKeyAsync(id);
 
                 var customerDetails = new CustomerEditDetails
                 {
@@ -101,8 +100,7 @@ namespace GarageManager.Services
                 this.ValidateNullOrEmptyString(id, firstName, lastName, email, phonenumber);
 
                 var customerFromDb = await this.customerRepository
-                    .All()
-                    .FirstOrDefaultAsync(customer => customer.Id == id);
+                    .GetEntityByKeyAsync(id);
 
                 customerFromDb.FirstName = firstName;
                 customerFromDb.LastName = lastName;
@@ -118,7 +116,7 @@ namespace GarageManager.Services
 
         }
 
-        public async Task<int> DeleteAsync(string id)
+        public async Task<int> SoftDeleteAsync(string id)
         {
             try
             {
@@ -133,8 +131,7 @@ namespace GarageManager.Services
                     .First()
                      .ForEach(car => carService.HardDeleteAsync(car.Id).GetAwaiter().GetResult());
 
-                this.customerRepository.SoftDelete(customerFromDb);
-                return await this.customerRepository.SavaChangesAsync();
+                return await this.customerRepository.SoftDeleteAsync(customerFromDb);
             }
             catch 
             {

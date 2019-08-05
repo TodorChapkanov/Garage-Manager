@@ -19,7 +19,7 @@ namespace GarageManager.Services.Contracts
 
          Task<CustomerEditDetails> GetCustomerDetailsByIdAsync(string id);
 
-        Task<int> DeleteAsync(string id);
+        Task<int> SoftDeleteAsync(string id);
 
         Task<int> UpdateCustomerByIdAsync(
              string id,

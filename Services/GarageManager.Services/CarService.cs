@@ -252,8 +252,8 @@ namespace GarageManager.Services
                 this.ValidateNullOrEmptyString(id);
                 var carFromDb = await this.carRepository.GetEntityByKeyAsync(id);
 
-                this.carRepository.HardDelete(carFromDb);
-                return await this.carRepository.SavaChangesAsync();
+                return await this.carRepository.HardDelete(carFromDb);
+                
             }
             catch 
             {
