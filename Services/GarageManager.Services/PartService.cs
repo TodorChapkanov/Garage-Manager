@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class PartsService : BaseService, IPartsService
+    public class PartService : BaseService, IPartsService
     {
         private readonly IDeletableEntityRepository<Car> carRepository;
         private readonly IDeletableEntityRepository<Part> partRepository;
 
-        public PartsService(
+        public PartService(
             IDeletableEntityRepository<Car> carRepository,
             IDeletableEntityRepository<Part> partRepository)
         {

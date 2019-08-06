@@ -82,9 +82,9 @@ namespace GarageManager
             services.AddScoped<IFuelTypeService, FuelTypeService>();
             services.AddScoped<ITransmissionTypesService, TransimissionTypesService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
-            services.AddScoped<IEmployeesService, EmployeesService>();
-            services.AddScoped<IPartsService, PartsService>();
-            services.AddScoped<IRepairsService, RepairsService>();
+            services.AddScoped<IEmployeesService, EmployeeService>();
+            services.AddScoped<IPartsService, PartService>();
+            services.AddScoped<IRepairsService, RepairService>();
             services.AddScoped<IInvoiceService, InvoiceService>();
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 

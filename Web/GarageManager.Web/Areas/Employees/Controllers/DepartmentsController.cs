@@ -23,7 +23,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             {
 
             }
-            var result = await this.departmentService.GetDepartmentCars(id);
+            var result = await this.departmentService.GetDepartmentCarsAsync(id);
 
             if (result == null)
             {

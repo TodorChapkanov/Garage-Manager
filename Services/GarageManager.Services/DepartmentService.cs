@@ -34,7 +34,7 @@ namespace GarageManager.Services
             return result;
         }
 
-        public async Task<DepartmentAllCars> GetDepartmentCars(string id)
+        public async Task<DepartmentAllCars> GetDepartmentCarsAsync(string id)
         {
             try
             {

@@ -11,7 +11,7 @@ namespace GarageManager.Services.Contracts
     {
         Task<IEnumerable<DepartmentAll>> AllDepartmentsAsync();
 
-        Task<DepartmentAllCars> GetDepartmentCars(string id);
+        Task<DepartmentAllCars> GetDepartmentCarsAsync(string id);
    
     }
 }

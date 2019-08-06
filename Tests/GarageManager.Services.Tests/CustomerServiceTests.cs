@@ -41,24 +41,7 @@ namespace GarageManager.Services.Tests
                 );
             this.carService = this.GetConfiguredCarService();
         }
-        /*Task<int> CreateAsync(
-            string firstName,
-            string lastName,
-            string email,
-            string phoneNumber);
-
-        Task<List<CustomerDetail>> GetAllCustomersDetailsAsync();
-
-         Task<CustomerEditDetails> GetCustomerDetailsByIdAsync(string id);
-
-        Task<int> DeleteAsync(string id);
-
-        Task<int> UpdateCustomerByIdAsync(
-             string id,
-            string firstName,
-            string lastName,
-            string email,
-            string phonenumber);*/
+        
         #region CreateAsync Tests
         [Fact]
         public async Task CreateAsyncShouldSetCorrecrCustomerDataAndSeveCustomerWithCorrectData()
@@ -183,7 +166,7 @@ namespace GarageManager.Services.Tests
             var result = await this.customerService.GetAllCustomersDetailsAsync();
 
             //Assert
-            var actualCustomerCount = this.GetTestCustomerLis().Count();
+            var actualCustomerCount = this.GetTestCustomerList().Count();
             result.Count()
                 .Should()
                 .Be(actualCustomerCount);
@@ -423,7 +406,7 @@ namespace GarageManager.Services.Tests
         #region Configuration of Mock<IDeletableEntityRepository<Customer>>
         private Mock<IDeletableEntityRepository<Customer>> GetConfiguredCustomerRepository()
         {
-            var testCustomerList = this.GetTestCustomerLis();
+            var testCustomerList = this.GetTestCustomerList();
             var repository = new Mock<IDeletableEntityRepository<Customer>>();
             repository.Setup(all => all.All()).Returns(testCustomerList.AsQueryable().BuildMockDbQuery().Object);
 
@@ -522,7 +505,7 @@ namespace GarageManager.Services.Tests
         #endregion
 
         #region TestCustomerList
-        private List<Customer> GetTestCustomerLis()
+        private List<Customer> GetTestCustomerList()
         {
             var list = new List<Customer>
             {

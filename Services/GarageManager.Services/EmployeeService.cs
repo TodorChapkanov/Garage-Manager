@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class EmployeesService : BaseService, IEmployeesService
+    public class EmployeeService : BaseService, IEmployeesService
     {
         private readonly IDeletableEntityRepository<GMUser> employeeRepository;
         private readonly UserManager<GMUser> userManager;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public EmployeesService(
+        public EmployeeService(
             IDeletableEntityRepository<GMUser> employeeRepository,
             UserManager<GMUser> userManager, 
             IDateTimeProvider dateTimeProvider)
