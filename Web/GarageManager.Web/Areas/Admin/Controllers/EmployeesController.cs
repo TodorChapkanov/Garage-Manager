@@ -180,7 +180,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
                 return this.Redirect(RedirectUrl_s.AdminAllEmnployees);
             }
-            var result = await this.employeesService.DeleteEmployeeAsync(id);
+            var result = await this.employeesService.DeleteEmployeeByIdAsync(id);
 
             if (result == default(int))
             {

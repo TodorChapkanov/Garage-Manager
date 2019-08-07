@@ -33,7 +33,7 @@ namespace GarageManager.Services.Contracts
             string password,
             DateTime? recruitedOn);
 
-        Task<int> DeleteEmployeeAsync(string id);
+        Task<int> DeleteEmployeeByIdAsync(string id);
         bool IsAnyEmployee();
     }
 }

@@ -111,7 +111,7 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
 
-                var employeeFromDb = await this.userManager.Users
+                var employeeFromDb = await this.employeeRepository.All()
                .Select(employee => new EditEmployeeDetails
                {
                    Id = id,
@@ -140,7 +140,7 @@ namespace GarageManager.Services
             try
             {
                 this.ValidateNullOrEmptyString(id);
-                var employeeFromDb = await this.userManager.Users
+                var employeeFromDb = await this.employeeRepository.All()
                 .Where(employee => employee.Id == id)
                 .Select(employee => new EmployeeDetails
                 {
@@ -170,20 +170,20 @@ namespace GarageManager.Services
             string firstName,
             string lastName,
             string email,
-            string phonenumber,
+            string phoneNumber,
             string departmentId,
             string password,
             DateTime? recruitedOn)
         {
             try
             {
-                this.ValidateNullOrEmptyString(id, firstName, lastName, email, phonenumber, departmentId, password);
+                this.ValidateNullOrEmptyString(id, firstName, lastName, email, phoneNumber, departmentId, password);
                 var employeeFromDb = await this.userManager.FindByIdAsync(id);
 
                 employeeFromDb.FirstName = firstName;
                 employeeFromDb.LastName = lastName;
                 employeeFromDb.Email = email;
-                employeeFromDb.PhoneNumber = phonenumber;
+                employeeFromDb.PhoneNumber = phoneNumber;
                 employeeFromDb.DepartmentId = departmentId;
                 employeeFromDb.RecruitedOn = recruitedOn;
 
@@ -202,7 +202,7 @@ namespace GarageManager.Services
 
         }
 
-        public async Task<int> DeleteEmployeeAsync(string id)
+        public async Task<int> DeleteEmployeeByIdAsync(string id)
         {
             try
             {

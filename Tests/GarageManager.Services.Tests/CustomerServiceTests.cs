@@ -166,7 +166,7 @@ namespace GarageManager.Services.Tests
             var result = await this.customerService.GetAllCustomersDetailsAsync();
 
             //Assert
-            var actualCustomerCount = this.GetTestCustomerList().Count();
+            var actualCustomerCount = this.GetTestCustomerLis().Count();
             result.Count()
                 .Should()
                 .Be(actualCustomerCount);
@@ -406,7 +406,7 @@ namespace GarageManager.Services.Tests
         #region Configuration of Mock<IDeletableEntityRepository<Customer>>
         private Mock<IDeletableEntityRepository<Customer>> GetConfiguredCustomerRepository()
         {
-            var testCustomerList = this.GetTestCustomerList();
+            var testCustomerList = this.GetTestCustomerLis();
             var repository = new Mock<IDeletableEntityRepository<Customer>>();
             repository.Setup(all => all.All()).Returns(testCustomerList.AsQueryable().BuildMockDbQuery().Object);
 
@@ -505,7 +505,7 @@ namespace GarageManager.Services.Tests
         #endregion
 
         #region TestCustomerList
-        private List<Customer> GetTestCustomerList()
+        private List<Customer> GetTestCustomerLis()
         {
             var list = new List<Customer>
             {
