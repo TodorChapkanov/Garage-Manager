@@ -1077,7 +1077,7 @@ namespace GarageManager.Services.Tests
         private Mock<IInterventionService> GetConfiguredInteventionSerice()
         {
             var interventionService = new Mock<IInterventionService>();
-            interventionService.Setup(intervention => intervention.FinishServiceAsync(It.IsAny<string>())).ReturnsAsync(1);
+            interventionService.Setup(intervention => intervention.FinishServiceByIdAsync(It.IsAny<string>())).ReturnsAsync(1);
             return interventionService;
         }
         #endregion

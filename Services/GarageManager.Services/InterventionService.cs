@@ -24,11 +24,12 @@ namespace GarageManager.Services
             this.serviceRepository = serviceRepository;
             this.dateTimeProvider = dateTimeProvider;
         }
-        public async Task<IEnumerable<CarServiceHistory>> GetCarServicesHistoryAsync(string id)
+        public async Task<IEnumerable<CarServiceHistory>> GetCarServicesHistoryByCarIdAsync(string id)
         {
             try
             {
                 this.ValidateNullOrEmptyString(id);
+                var all = this.serviceRepository.All().ToArray();
                 var services = await this.serviceRepository
                     .All()
                     .Where(service => service.CarId == id && service.IsFinished == true)
@@ -56,7 +57,7 @@ namespace GarageManager.Services
 
         }
 
-        public async Task<CarServiceHistoryDetails> GetServiceHistoryDetailsAsync(string serviceId)
+        public async Task<CarServiceHistoryDetails> GetServiceHistoryDetailsByIdAsync(string serviceId)
         {
             try
             {
@@ -95,13 +96,21 @@ namespace GarageManager.Services
 
         }
 
-        public async Task<int> FinishServiceAsync(string id)
+        public async Task<int> FinishServiceByIdAsync(string id)
         {
-            this.ValidateNullOrEmptyString(id);
-            var serviceIntervention = await this.serviceRepository.GetEntityByKeyAsync(id);
-            serviceIntervention.FinishedOn = this.dateTimeProvider.GetDateTime();
-            serviceIntervention.IsFinished = true;
-           return await this.serviceRepository.Update(serviceIntervention);
+            try
+            {
+                this.ValidateNullOrEmptyString(id);
+                var serviceIntervention = await this.serviceRepository.GetEntityByKeyAsync(id);
+                serviceIntervention.FinishedOn = this.dateTimeProvider.GetDateTime();
+                serviceIntervention.IsFinished = true;
+                return await this.serviceRepository.Update(serviceIntervention);
+            }
+            catch 
+            {
+                return default(int);
+            }
+            
         }
     }
 }

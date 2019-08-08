@@ -333,7 +333,7 @@ namespace GarageManager.Services
                 .Include(car => car.Services)
                 .FirstOrDefaultAsync(car => car.Id == carId);
 
-               var serviceResult = await this.serviceIntervention.FinishServiceAsync(carFromDb.CurrentServiceId);
+               var serviceResult = await this.serviceIntervention.FinishServiceByIdAsync(carFromDb.CurrentServiceId);
 
                 if (serviceResult == default(int))
                 {
