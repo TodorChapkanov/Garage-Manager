@@ -194,7 +194,7 @@ namespace GarageManager.Web.Areas.User.Controllers
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
 
-            var invoiceFromDb = await this.invoiseService.GetInvoiceDetailsByCarId(id);
+            var invoiceFromDb = await this.invoiseService.GetInvoiceDetailsByCarIdAsync(id);
 
             if (invoiceFromDb == null)
             {

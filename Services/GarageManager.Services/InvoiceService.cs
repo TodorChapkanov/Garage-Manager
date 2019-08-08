@@ -23,7 +23,7 @@ namespace GarageManager.Services
             this.carRepository = carRepository;
         }
 
-        public async Task<InvoiceDetails> GetInvoiceDetailsByCarId(string id)
+        public async Task<InvoiceDetails> GetInvoiceDetailsByCarIdAsync(string id)
         {
             try
             {

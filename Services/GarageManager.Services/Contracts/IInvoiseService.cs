@@ -5,6 +5,6 @@ namespace GarageManager.Services.Contracts
 {
     public interface IInvoiceService
     {
-        Task<InvoiceDetails> GetInvoiceDetailsByCarId(string id);
+        Task<InvoiceDetails> GetInvoiceDetailsByCarIdAsync(string id);
     }
 }
