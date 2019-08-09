@@ -48,10 +48,10 @@ namespace GarageManager.Services.Tests
         #endregion
 
         #region Configuration of Mock<IdeletableEntityRepository<VehicleManufacturer>>
-        private Mock<IDeletableEntityRepository<VehicleManufacturer>> GetManufacturerRepository(List<VehicleManufacturer> testFuelTypeList)
+        private Mock<IDeletableEntityRepository<VehicleManufacturer>> GetManufacturerRepository(List<VehicleManufacturer> testManufacturerList)
         {
             var repository = new Mock<IDeletableEntityRepository<VehicleManufacturer>>();
-            repository.Setup(all => all.All()).Returns(testFuelTypeList.Where(x => !x.IsDeleted).AsQueryable().BuildMockDbQuery().Object);
+            repository.Setup(all => all.All()).Returns(testManufacturerList.Where(x => !x.IsDeleted).AsQueryable().BuildMockDbQuery().Object);
             return repository;
         }
         #endregion

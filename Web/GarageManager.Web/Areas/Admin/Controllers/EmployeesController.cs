@@ -15,10 +15,10 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 {
     public class EmployeesController : BaseAdminController
     {
-        private readonly IEmployeesService employeesService;
+        private readonly IEmployeeService employeesService;
         private readonly IDepartmentService departmentService;
 
-        public EmployeesController(IEmployeesService employeesService, IDepartmentService departmentService)
+        public EmployeesController(IEmployeeService employeesService, IDepartmentService departmentService)
         {
             this.employeesService = employeesService;
             this.departmentService = departmentService;

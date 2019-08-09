@@ -10,7 +10,7 @@
         public const int PartQuantityMaxRange = int.MaxValue;
         public const string PartQuantityErrorMessage = "{0} must be greater or equal to {1}";
         public const double PartPriceMinValue = 0.1;
-        public const double PartPriceMaxValue = 50000;
+        public const double PartPriceMaxValue = 20000;
         public const string PartPriceErrorMessage = "{0} must be greater than {1}!";
     }
 }

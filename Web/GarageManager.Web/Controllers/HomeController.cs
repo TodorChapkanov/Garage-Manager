@@ -9,9 +9,9 @@ namespace GarageManager.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IEmployeesService employeesService;
+        private readonly IEmployeeService employeesService;
 
-        public HomeController(IEmployeesService employeesService)
+        public HomeController(IEmployeeService employeesService)
         {
             this.employeesService = employeesService;
         }

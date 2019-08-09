@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class RepairService : BaseService, IRepairsService
+    public class RepairService : BaseService, IRepairService
     {
         private readonly IDeletableEntityRepository<Car> carRepository;
         private readonly IDeletableEntityRepository<Repair> repairRepository;

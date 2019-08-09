@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services.Contracts
 {
-    public interface IRepairsService
+    public interface IRepairService
     {
         Task<string> CreateRepairService(
             string carId,

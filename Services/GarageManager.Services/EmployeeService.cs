@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class EmployeeService : BaseService, IEmployeesService
+    public class EmployeeService : BaseService, IEmployeeService
     {
         private readonly IDeletableEntityRepository<GMUser> employeeRepository;
         private readonly UserManager<GMUser> userManager;

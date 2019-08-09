@@ -11,9 +11,9 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 {
     public class RepairsController : BaseEmployeeController
     {
-        private readonly IRepairsService repairsService;
+        private readonly IRepairService repairsService;
 
-        public RepairsController(IRepairsService repairsService)
+        public RepairsController(IRepairService repairsService)
         {
             this.repairsService = repairsService;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services.Contracts
 {
-    public interface IEmployeesService
+    public interface IEmployeeService
     {
         Task<string> CreateNewEmployeeAsync(
             string firstName,

@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services.Contracts
 {
-    public interface IPartsService
+    public interface IPartService
     {
-        Task<string> CreatePartAsync(
+        Task<string> CreateAsync(
             string carId, 
             string name, 
             string number, 

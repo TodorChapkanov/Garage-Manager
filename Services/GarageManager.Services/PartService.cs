@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
-    public class PartService : BaseService, IPartsService
+    public class PartService : BaseService, IPartService
     {
-        private readonly IDeletableEntityRepository<Car> carRepository;
         private readonly IDeletableEntityRepository<Part> partRepository;
+        private readonly IDeletableEntityRepository<Car> carRepository;
 
         public PartService(
-            IDeletableEntityRepository<Car> carRepository,
-            IDeletableEntityRepository<Part> partRepository)
+            IDeletableEntityRepository<Part> partRepository,
+            IDeletableEntityRepository<Car> carRepository
+            )
         {
             this.carRepository = carRepository;
             this.partRepository = partRepository;
         }
 
-        public async Task<string> CreatePartAsync(
+        public async Task<string> CreateAsync(
             string carId,
             string name,
             string number,
@@ -32,8 +33,7 @@ namespace GarageManager.Services
             {
                 var carFromDb = await this.carRepository
                .All()
-               .Where(car => car.Id == carId)
-               .FirstOrDefaultAsync();
+               .FirstOrDefaultAsync(car => car.Id == carId);
 
                 var part = new Part
                 {
@@ -98,7 +98,6 @@ namespace GarageManager.Services
                 this.ValidateEntityState(partFromDb);
 
                return await this.partRepository.Update(partFromDb);
-               
             }
             catch 
             {

@@ -10,9 +10,9 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 {
     public class PartsController : BaseEmployeeController
     {
-        private readonly IPartsService partsService;
+        private readonly IPartService partsService;
 
-        public PartsController(IPartsService partsService)
+        public PartsController(IPartService partsService)
         {
             this.partsService = partsService;
         }
@@ -32,7 +32,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             }
 
             var carId = await this.partsService
-                .CreatePartAsync(
+                .CreateAsync(
                 model.CarId,
                 model.Name,
                 model.Number,
