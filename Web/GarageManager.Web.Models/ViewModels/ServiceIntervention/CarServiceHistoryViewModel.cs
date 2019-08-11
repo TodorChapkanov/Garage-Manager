@@ -1,8 +1,10 @@
-﻿using System;
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Service;
+using System;
 
 namespace GarageManager.Web.Models.ViewModels.ServiceIntervention
 {
-    public class CarServiceHistoryViewModel
+    public class CarServiceHistoryViewModel : IMapFrom<CarServiceHistory>
     {
         public string Id { get; set; }
 

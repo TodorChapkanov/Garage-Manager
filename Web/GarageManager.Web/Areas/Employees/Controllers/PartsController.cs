@@ -59,23 +59,15 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
 
-            var partFromDb = await this.partsService.GetEditDetailsByIdAsync(id);
+            var result = await this.partsService.GetEditDetailsByIdAsync(id);
 
-            if (partFromDb == null)
+            if (result == null)
             {
                 this.ShowNotification(NotificationMessages.PartNotExist,
                     NotificationType.Warning);
                 return this.Redirect($"/Employees/Cars/ServiceDetails{carId}");
             }
-            var partModel = new PartEditViewModel
-            {
-                Id = partFromDb.Id,
-                CarId = carId,
-                Name = partFromDb.Name,
-                Number = partFromDb.Number,
-                Price = partFromDb.Price,
-                Quantity = partFromDb.Quantity
-            };
+            var partModel = AutoMapper.Mapper.Map<PartEditViewModel>(result);
 
             return this.View(partModel);
         }
@@ -94,6 +86,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                     model.Number,
                     model.Price,
                     model.Quantity);
+
             if (result == default(int))
             {
                 this.ShowNotification(string.Format(NotificationMessages.InvalidOperation),

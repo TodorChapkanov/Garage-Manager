@@ -1,4 +1,5 @@
 ﻿using GarageManager.Domain;
+using GarageManager.Services.Models.Manufacturer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace GarageManager.Services.Contracts
 {
     public interface IManufacturerService
     {
-        Task<IEnumerable<VehicleManufacturer>> GetAllAsync();
+        Task<IEnumerable<ManufacturerDetails>> GetAllAsync();
     }
 }

@@ -31,8 +31,8 @@
                     @foreach (var car in Model.CustomerCars)
                     {
                         <tr class="row mx-auto">
-                            <td class="col-md-3">@car.Make</td>
-                            <td class="col-md-3">@car.Model</td>
+                            <td class="col-md-3">@car.MakeName</td>
+                            <td class="col-md-3">@car.ModelName</td>
                             <td class="col-md-3 ">@car.RegistrationPlate</td>
                             <th class="col-md-3 d-flex justify-content-around">
                                 <a asp-action="Details" 

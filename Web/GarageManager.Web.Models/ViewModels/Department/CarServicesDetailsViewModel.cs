@@ -1,10 +1,12 @@
-﻿using GarageManager.Web.Models.ViewModels.Part;
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Car;
+using GarageManager.Web.Models.ViewModels.Part;
 using GarageManager.Web.Models.ViewModels.Repair;
 using System.Collections.Generic;
 
 namespace GarageManager.Web.Models.ViewModels.Department
 {
-    public class CarServicesDetailsViewModel
+    public class CarServicesDetailsViewModel : IMapFrom<CarServiceDetailsList>
     {
         public string  Id { get; set; }
         public string Make { get; set; }

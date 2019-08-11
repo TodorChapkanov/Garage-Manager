@@ -7,6 +7,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\GarageManager.Data\GarageManager.Data.csproj" />
     <ProjectReference Include="..\GarageManager.Extensions\GarageManager.Extensions.csproj" />
+    <ProjectReference Include="..\GarageManager.Services.Mapping\GarageManager.Services.Mapping.csproj" />
+    <ProjectReference Include="..\GarageManager.Services.Models\GarageManager.Services.Models.csproj" />
   </ItemGroup>
 
 

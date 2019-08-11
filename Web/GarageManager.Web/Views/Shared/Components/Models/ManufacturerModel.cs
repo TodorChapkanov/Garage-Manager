@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using GarageManager.Common.GlobalConstant;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,9 +10,12 @@ namespace GarageManager.Web.Views.Shared.Components.Models
 {
     public class ManufacturerModel
     {
+        [Required ]
+        [Display(Name = DisplayNameConstants.ManufacturersDisplayName)]
         public string ManufacturerId { get; set; }
 
-        [Display(Name ="Manufacturer")]
+        [Required]
+        [Display(Name = DisplayNameConstants.ManufacturersDisplayName)]
         public IEnumerable<SelectListItem> AllManufacturers { get; set; }
     }
 }

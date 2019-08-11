@@ -27,14 +27,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         public async Task<IActionResult> AllEmployees()
         {
             var employeesModel = (await this.employeesService.GetAllEmployeesAsync())
-                .Select(employee => new AllEmployeesViewModel
-                {
-                    Id = employee.Id,
-                    FullName = employee.FullName,
-                    DepartmentName = employee.DepartmentName,
-                    PhoneNumber = employee.PhoneNumber,
-                    Email = employee.Email
-                });
+                .Select(employee => AutoMapper.Mapper.Map<AllEmployeesViewModel>(employee));
 
             return this.View(employeesModel);
         }
@@ -97,6 +90,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
 
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
+
             var employeeModel = new EmployeeEditViewModel
             {
                 Id = employeeFromDb.Id,
@@ -159,18 +153,8 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                     NotificationType.Warning);
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
-            var employeeModel = new EmployeeDetailsViewModel
-            {
-                Id = employeeFromDb.Id,
-                FirstName = employeeFromDb.FirstName,
-                LastName = employeeFromDb.LastName,
-                PhoneNumber = employeeFromDb.PhoneNumber,
-                Email = employeeFromDb.Email,
-                DepartmentName = employeeFromDb.Department,
-                CreatedOn = employeeFromDb.CreatedOn,
-                RecruitedOn = employeeFromDb.RecruitedOn
-            };
-
+            var employeeModel = AutoMapper.Mapper.Map<EmployeeDetailsViewModel>(employeeFromDb);
+           
             return this.View(employeeModel);
         }
 

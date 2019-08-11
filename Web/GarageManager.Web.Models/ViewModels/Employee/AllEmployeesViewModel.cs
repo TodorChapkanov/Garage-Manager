@@ -1,6 +1,9 @@
-﻿namespace GarageManager.Web.Models.ViewModels.Employee
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Employee;
+
+namespace GarageManager.Web.Models.ViewModels.Employee
 {
-    public class AllEmployeesViewModel
+    public class AllEmployeesViewModel : IMapFrom<AllEmployees>
     {
         public string Id { get; set; }
 

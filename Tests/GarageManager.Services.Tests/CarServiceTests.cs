@@ -3,8 +3,7 @@ using GarageManager.Common.GlobalConstant;
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO;
-using GarageManager.Services.DTO.Car;
+using GarageManager.Services.Models.Car;
 using Microsoft.EntityFrameworkCore;
 using MockQueryable.Moq;
 using Moq;
@@ -16,7 +15,7 @@ using Xunit;
 
 namespace GarageManager.Services.Tests
 {
-    public class CarServiceTests
+    public class CarServiceTests : BaseTest
     {
         private Mock<IDeletableEntityRepository<Car>> carRepository;
         private ICarService carService;
@@ -133,7 +132,7 @@ namespace GarageManager.Services.Tests
                 .And
                 .Match<Car>(car => car.RegistrationPlate == SampleRegistrationPlate)
                 .And
-                .Match<Car>(car => car.ManufacturerId == SampleMakeId)
+                .Match<Car>(car => car.MakeId == SampleMakeId)
                 .And
                 .Match<Car>(car => car.Model.Name == SampleModelName)
                 .And
@@ -397,15 +396,15 @@ namespace GarageManager.Services.Tests
                 .Should()
                 .Match<CustomerCarDetails>(car => car.Id == SampleCarId)
                 .And
-                .Match<CustomerCarDetails>(car => car.Make == "Mazda")
+                .Match<CustomerCarDetails>(car => car.MakeName == "Mazda")
                 .And
-                .Match<CustomerCarDetails>(car => car.Model == "323F")
+                .Match<CustomerCarDetails>(car => car.ModelName == "323F")
                 .And
                 .Match<CustomerCarDetails>(car => car.CustomerId == "1")
                 .And
                 .Match<CustomerCarDetails>(car => car.RegistrationPlate == "AA1111AA")
                 .And
-                .Match<CustomerCarDetails>(car => car.ManufacturedOn == 1988)
+                .Match<CustomerCarDetails>(car => car.YearOfManufacturing == 1988)
                 .And
                 .Match<CustomerCarDetails>(car => car.Vin == "1111111111")
                 .And
@@ -415,9 +414,9 @@ namespace GarageManager.Services.Tests
                 .And
                .Match<CustomerCarDetails>(car => car.EngineHorsePower == 125)
                .And
-               .Match<CustomerCarDetails>(car => car.FuelType == "Gasolin")
+               .Match<CustomerCarDetails>(car => car.FuelTypeName == "Gasolin")
                .And
-               .Match<CustomerCarDetails>(car => car.Transmission == "Automatic");
+               .Match<CustomerCarDetails>(car => car.TransmissionName == "Automatic");
         }
 
         [Fact]
@@ -824,14 +823,14 @@ namespace GarageManager.Services.Tests
             //Assert
             carFromService
                 .Should()
-                .Match<CarServicesDetails>(service => service.RegisterPlate == carFromList.RegistrationPlate)
+                .Match<CarServiceDetailsList>(service => service.RegisterPlate == carFromList.RegistrationPlate)
                 .And
-                .Match<CarServicesDetails>(service => service.Id == carFromList.Id)
+                .Match<CarServiceDetailsList>(service => service.Id == carFromList.Id)
                 .And
-                .Match<CarServicesDetails>(
+                .Match<CarServiceDetailsList>(
                        service => service.Parts.First().Name == carFromList.Services.First().Parts.First().Name)
                 .And
-                .Match<CarServicesDetails>(
+                .Match<CarServiceDetailsList>(
                       service => service.Repairs.First().Description == carFromList.Services.First().Repairs.First().Description);
         }
 
@@ -910,13 +909,13 @@ namespace GarageManager.Services.Tests
                 .Should()
                 .Match<Car>(car => car.IsFinished == true)
                 .And
-                .Match<Car>(car => car.Model.Name == result.First().Model)
+                .Match<Car>(car => car.Model.Name == result.First().ModelName)
                 .And
-                .Match<Car>(car => car.Manufacturer.Name == result.First().Make)
+                .Match<Car>(car => car.Make.Name == result.First().MakeName)
                 .And
                 .Match<Car>(car => car.Id == result.First().Id)
                 .And
-                .Match<Car>(car => car.RegistrationPlate == result.First().RegisterPlate);
+                .Match<Car>(car => car.RegistrationPlate == result.First().RegistrationPlate);
 
         }
         #endregion
@@ -939,7 +938,7 @@ namespace GarageManager.Services.Tests
                 .And
                 .Match<Car>(car => car.Description == default(string))
                 .And
-                .Match<Car>(car => car.CurrentServiceId != "1");
+                .Match<Car>(car => car.ServiceId != "1");
         }
 
         [Theory]
@@ -1044,8 +1043,8 @@ namespace GarageManager.Services.Tests
                 (Car target) =>
                 {
                     target.Model = new VehicleModel { Id = SampleModelId, Name = SampleModelName };
-                    target.Manufacturer = new VehicleManufacturer { Id = SampleMakeId, Name = SampleMakeName };
-                    target.ManufacturerId = SampleMakeId;
+                    target.Make = new VehicleManufacturer { Id = SampleMakeId, Name = SampleMakeName };
+                    target.MakeId = SampleMakeId;
 
                     var carCount = testCarList.Count;
                     testCarList.Add(target);
@@ -1092,7 +1091,7 @@ namespace GarageManager.Services.Tests
                 new Car
                 {
                     Id =SampleCarId,
-                    CurrentServiceId = "1",
+                    ServiceId = "1",
                     CustomerId = "1",
                     DeletedOn = DateTime.UtcNow.AddYears(-10),
                     DepartmentId = SampleDepartmentId,
@@ -1103,7 +1102,7 @@ namespace GarageManager.Services.Tests
                     IsDeleted = false,
                     IsFinished = false,
                     IsInService = false,
-                    ManufacturerId = "1",
+                    MakeId = "1",
                     ModelId = "1",
                     RegistrationPlate = "AA1111AA",
                     Services = new List<ServiceIntervention>
@@ -1136,9 +1135,9 @@ namespace GarageManager.Services.Tests
                     FuelType = new FuelType
                     {
                         Id = "1",
-                        Type = "Gasolin"
+                        Name = "Gasolin"
                     },
-                    Manufacturer = new VehicleManufacturer
+                    Make = new VehicleManufacturer
                     {
                         Id = "1",
                         Name = "Mazda"
@@ -1151,13 +1150,13 @@ namespace GarageManager.Services.Tests
                     Transmission = new TransmissionType
                     {
                         Id = "1",
-                        Type = "Automatic"
+                        Name = "Automatic"
                     }
                 },
                 new Car
                 {
                     Id = "2",
-                    CurrentServiceId = "2",
+                    ServiceId = "2",
                     CustomerId = "1",
                     DeletedOn = DateTime.UtcNow.AddYears(-10),
                     DepartmentId = "2",
@@ -1168,7 +1167,7 @@ namespace GarageManager.Services.Tests
                     IsDeleted = false,
                     IsFinished = false,
                     IsInService = false,
-                    ManufacturerId = "2",
+                    MakeId = "2",
                     ModelId = "2",
                     RegistrationPlate = "BB2222BB",
                     Services = new List<ServiceIntervention>(),
@@ -1179,9 +1178,9 @@ namespace GarageManager.Services.Tests
                     FuelType = new FuelType
                     {
                         Id = "2",
-                        Type = "Disel"
+                        Name = "Disel"
                     },
-                    Manufacturer = new VehicleManufacturer
+                    Make = new VehicleManufacturer
                     {
                         Id = "2",
                         Name = "Opel"
@@ -1194,13 +1193,13 @@ namespace GarageManager.Services.Tests
                     Transmission = new TransmissionType
                     {
                         Id = "2",
-                        Type = "Manual"
+                        Name = "Manual"
                     }
                 },
                 new Car
                 {
                     Id = "3",
-                    CurrentServiceId = "3",
+                    ServiceId = "3",
                     CustomerId = "2",
                     DeletedOn = DateTime.UtcNow.AddYears(-10),
                     DepartmentId = "3",
@@ -1211,7 +1210,7 @@ namespace GarageManager.Services.Tests
                     IsDeleted = false,
                     IsFinished = false,
                     IsInService = false,
-                    ManufacturerId = "2",
+                    MakeId = "2",
                     ModelId = "2",
                     RegistrationPlate = "CC3333CC",
                     Services = new List<ServiceIntervention>(),
@@ -1222,9 +1221,9 @@ namespace GarageManager.Services.Tests
                     FuelType = new FuelType
                     {
                         Id = "2",
-                        Type = "Disel"
+                        Name = "Disel"
                     },
-                    Manufacturer = new VehicleManufacturer
+                    Make = new VehicleManufacturer
                     {
                         Id = "2",
                         Name = "Ford"
@@ -1237,7 +1236,7 @@ namespace GarageManager.Services.Tests
                     Transmission = new TransmissionType
                     {
                         Id = "2",
-                        Type = "Manual"
+                        Name = "Manual"
                     }
                 }
             };

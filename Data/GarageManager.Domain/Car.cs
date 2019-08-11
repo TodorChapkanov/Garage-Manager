@@ -22,9 +22,9 @@ namespace GarageManager.Domain
         public string Vin { get; set; }
 
         [Required]
-        public string  ManufacturerId { get; set; }
+        public string  MakeId { get; set; }
 
-        public VehicleManufacturer Manufacturer { get; set; }
+        public VehicleManufacturer Make { get; set; }
 
         [Required]
         public string ModelId { get; set; }
@@ -68,7 +68,7 @@ namespace GarageManager.Domain
 
         public TransmissionType Transmission { get; set; }
         [Required]
-        public string CurrentServiceId { get; set; }
+        public string ServiceId { get; set; }
         public ICollection<ServiceIntervention> Services { get; set; }
 
         public bool IsFinished { get; set; }

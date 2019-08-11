@@ -29,14 +29,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             try
             {
                 var model = (await this.interventionService.GetCarServicesHistoryByCarIdAsync(id))
-               .Select(service => new CarServiceHistoryViewModel
-               {
-                   Id = service.Id,
-                   CarMake = service.CarMake,
-                   CarRegistrtionPlate = service.CarRegistrtionPlate,
-                   FinishedOn = service.FinishedOn,
-                   Price = service.Price
-               })
+               .Select(service => AutoMapper.Mapper.Map<CarServiceHistoryViewModel>(service))
                .OrderByDescending(service => service.FinishedOn);
 
                 return this.View(model);
@@ -56,25 +49,8 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
             var serviceDetails = await this.interventionService.GetServiceHistoryDetailsByIdAsync(id);
-            var model = new CarServiceHistoryDetailsViewModel
-            {
-                CarId = serviceDetails.CarId,
-                Parts = serviceDetails.Parts.Select(part => new CarServiceHistoryPartDetailsViewModel
-                {
-                    Name = part.Name,
-                    Number = part.Number,
-                    Quantity = part.Quantity,
-                    TotalCost = part.TotalCost
-                }),
-                Repairs = serviceDetails.Repairs.Select(repair => new CarServiceHistoryRepairDetailsViewModel
-                {
-                    Description = repair.Description,
-                    EmployeeName = repair.EmployeeName,
-                    Hours = repair.Hours,
-                    TotalCost = repair.TotalCost
-                })
-            };
-
+            var model = AutoMapper.Mapper.Map<CarServiceHistoryDetailsViewModel>(serviceDetails);
+         
             return this.View(model);
         }
     }

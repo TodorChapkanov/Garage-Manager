@@ -1,13 +1,16 @@
-﻿namespace GarageManager.Web.Models.ViewModels.Repair
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Repair;
+
+namespace GarageManager.Web.Models.ViewModels.Repair
 {
-    public class CarServiceHistoryRepairDetailsViewModel
+    public class CarServiceHistoryRepairDetailsViewModel : IMapFrom<ServiceHistoryRepairDetails>
     {
         public string Description { get; set; }
 
-        public string EmployeeName { get; set; }
+        public string EmployeeFullName { get; set; }
 
-        public decimal Hours { get; set; }
+        public double Hours { get; set; }
 
-        public decimal TotalCost { get; set; }
+        public decimal TotalCosts { get; set; }
     }
 }

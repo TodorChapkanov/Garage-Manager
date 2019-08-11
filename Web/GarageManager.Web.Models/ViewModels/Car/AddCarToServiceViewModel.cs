@@ -12,7 +12,6 @@ namespace GarageManager.Web.Models.ViewModels.Car
         public string  Description { get; set; }
 
         [Required]
-        [DataType(DataType.Text)]
         public string DepartmentId { get; set; }
        
     }

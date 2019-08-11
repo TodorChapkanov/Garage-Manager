@@ -2,7 +2,7 @@
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
-using GarageManager.Services.DTO.Employee;
+using GarageManager.Services.Models.Employee;
 using Microsoft.AspNetCore.Identity;
 using MockQueryable.Moq;
 using Moq;
@@ -14,7 +14,7 @@ using Xunit;
 
 namespace GarageManager.Services.Tests
 {
-    public class EmployeeServiceTests
+    public class EmployeeServiceTests : BaseTest
     {
         private const string SampleEmployeeId = "2";
         private const string SampleEmployeePassword = "1234560";

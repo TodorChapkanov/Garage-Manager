@@ -2,7 +2,7 @@
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO.Invoice;
+using GarageManager.Services.Models.Invoice;
 using MockQueryable.Moq;
 using Moq;
 using System.Collections.Generic;
@@ -52,11 +52,11 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .Match<InvoiceDetails>(invoice => invoice.FullName == customerFullName)
+                .Match<InvoiceDetails>(invoice => invoice.CustomerFullName == customerFullName)
                 .And
-                .Match<InvoiceDetails>(invoice => invoice.Email == SampleCustomerEmail)
+                .Match<InvoiceDetails>(invoice => invoice.CustomerEmail == SampleCustomerEmail)
                 .And
-                .Match<InvoiceDetails>(invoice => invoice.PhoneNumber == SampleCustomerPhoneNumber)
+                .Match<InvoiceDetails>(invoice => invoice.CustomerPhoneNumber == SampleCustomerPhoneNumber)
                 .And
                 .Match<InvoiceDetails>(invoice => invoice.Parts.First().Id == SamplePartId)
                 .And
@@ -116,7 +116,7 @@ namespace GarageManager.Services.Tests
                 new Car
                 {
                     Id = SampleCarId,
-                    CurrentServiceId = SampleServiceId,
+                    ServiceId = SampleServiceId,
                     Services = this.GetTestServiceIntervenionList(),
                     Customer = new Customer
                     {
@@ -129,7 +129,7 @@ namespace GarageManager.Services.Tests
                 new Car
                 {
                     Id = "2",
-                    CurrentServiceId = "2",
+                    ServiceId = "2",
                     Services = new List<ServiceIntervention>(),
                     Customer = new Customer { }
                 }

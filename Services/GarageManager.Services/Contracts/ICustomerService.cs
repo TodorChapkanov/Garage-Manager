@@ -1,8 +1,5 @@
-﻿using GarageManager.Domain;
-using GarageManager.Services.DTO;
-using System;
+﻿using GarageManager.Services.Models.Customer;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services.Contracts

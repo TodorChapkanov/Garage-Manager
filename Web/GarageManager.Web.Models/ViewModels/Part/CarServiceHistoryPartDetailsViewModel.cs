@@ -1,6 +1,9 @@
-﻿namespace GarageManager.Web.Models.ViewModels.Part
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Part;
+
+namespace GarageManager.Web.Models.ViewModels.Part
 {
-    public class CarServiceHistoryPartDetailsViewModel
+    public class CarServiceHistoryPartDetailsViewModel : IMapFrom<ServiceHistoryPartDetails>
     {
         public string Name { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using GarageManager.Services.DTO.Invoice;
+﻿using GarageManager.Services.Models.Invoice;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services.Contracts

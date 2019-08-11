@@ -1,9 +1,5 @@
-﻿using GarageManager.Domain;
-using GarageManager.Services.DTO;
-using GarageManager.Services.DTO.Car;
-using System;
+﻿using GarageManager.Services.Models.Car;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services.Contracts
@@ -42,7 +38,7 @@ namespace GarageManager.Services.Contracts
 
         Task<int> AddToServiceAsync(string carId, string carDescription, string departmentId);
 
-        Task<CarServicesDetails> GetCarServiceDetailsByIdAsync(string id);
+        Task<CarServiceDetailsList> GetCarServiceDetailsByIdAsync(string id);
 
         Task<int> FinishCarServiceAsync(string carId);
 

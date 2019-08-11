@@ -1,5 +1,4 @@
-﻿using GarageManager.Data.Repository;
-using GarageManager.Services.DTO.Employee;
+﻿using GarageManager.Services.Models.Employee;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

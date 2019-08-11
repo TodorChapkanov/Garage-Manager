@@ -1,7 +1,8 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO.Repair;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Repair;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,18 +11,18 @@ namespace GarageManager.Services
 {
     public class RepairService : BaseService, IRepairService
     {
-        private readonly IDeletableEntityRepository<Car> carRepository;
         private readonly IDeletableEntityRepository<Repair> repairRepository;
+        private readonly IDeletableEntityRepository<Car> carRepository;
 
         public RepairService(
-            IDeletableEntityRepository<Car> carRepository,
-            IDeletableEntityRepository<Repair> repairRepository)
+            IDeletableEntityRepository<Repair> repairRepository,
+            IDeletableEntityRepository<Car> carRepository)
         {
-            this.carRepository = carRepository;
             this.repairRepository = repairRepository;
+            this.carRepository = carRepository;
         }
 
-        public async Task<string> CreateRepairService(
+        public async Task<string> CreateAsync(
             string carId,
             string description,
             double hours,
@@ -29,28 +30,27 @@ namespace GarageManager.Services
             string employeeId)
         {
 
-            var carFromDb = await this.carRepository
-                .All()
-                .Where(car => car.Id == carId)
-                .Include(service => service.Services)
-                .FirstOrDefaultAsync(car => car.Id == carId);
+            
 
             try
             {
+                //TODO Change carRepository to carService
+                var carFromDb = await this.carRepository
+                .All()
+                .FirstOrDefaultAsync(car => car.Id == carId);
+
                 var repairService = new Repair
                 {
                     Description = description,
                     Hours = hours,
                     PricePerHour = pricePerHour,
-                    ServiceId = carFromDb.CurrentServiceId,
+                    ServiceId = carFromDb.ServiceId,
                     EmployeeId = employeeId
                 };
 
                 this.ValidateEntityState(repairService);
                 await this.repairRepository.CreateAsync(repairService);
-                carFromDb.Services.First(service => service.Id == carFromDb.CurrentServiceId).Repairs.Add(repairService);
                
-
                 return carFromDb.Id;
             }
             catch 
@@ -66,20 +66,10 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var repairFromDb = await this.repairRepository
-                .All()
+                .All().To<RepairEditDetails>()
                 .FirstOrDefaultAsync(repair => repair.Id == id);
 
-                var part = new RepairEditDetails
-                {
-                    Id = repairFromDb.Id,
-                    Description = repairFromDb.Description,
-                    Hours = repairFromDb.Hours,
-                    PricePerHour = repairFromDb.PricePerHour,
-                    EmployeeName = repairFromDb.Employee.FullName,
-                    IsFinished = repairFromDb.IsFinished
-                };
-
-                return part;
+                return repairFromDb;
             }
             catch 
             {

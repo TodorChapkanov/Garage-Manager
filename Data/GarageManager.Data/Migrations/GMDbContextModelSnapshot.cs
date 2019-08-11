@@ -24,8 +24,6 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CurrentServiceId");
-
                     b.Property<string>("CustomerId")
                         .IsRequired();
 
@@ -42,7 +40,8 @@ namespace GarageManager.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(20);
 
-                    b.Property<string>("FuelTypeId");
+                    b.Property<string>("FuelTypeId")
+                        .IsRequired();
 
                     b.Property<bool>("IsDeleted");
 
@@ -50,7 +49,7 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<bool>("IsInService");
 
-                    b.Property<string>("ManufacturerId")
+                    b.Property<string>("MakeId")
                         .IsRequired();
 
                     b.Property<string>("ModelId")
@@ -59,6 +58,9 @@ namespace GarageManager.Data.Migrations
                     b.Property<string>("RegistrationPlate")
                         .IsRequired()
                         .HasMaxLength(10);
+
+                    b.Property<string>("ServiceId")
+                        .IsRequired();
 
                     b.Property<string>("TransmissionId")
                         .IsRequired();
@@ -79,7 +81,7 @@ namespace GarageManager.Data.Migrations
 
                     b.HasIndex("FuelTypeId");
 
-                    b.HasIndex("ManufacturerId");
+                    b.HasIndex("MakeId");
 
                     b.HasIndex("ModelId");
 
@@ -142,7 +144,7 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Name")
                         .IsRequired();
 
                     b.HasKey("Id");
@@ -230,15 +232,20 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(60);
 
-                    b.Property<string>("Number");
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(25);
 
                     b.Property<decimal>("Price");
 
                     b.Property<int>("Quantity");
 
-                    b.Property<string>("ServiceId");
+                    b.Property<string>("ServiceId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -258,7 +265,8 @@ namespace GarageManager.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<string>("EmployeeId");
+                    b.Property<string>("EmployeeId")
+                        .IsRequired();
 
                     b.Property<double>("Hours");
 
@@ -268,7 +276,8 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<decimal>("PricePerHour");
 
-                    b.Property<string>("ServiceId");
+                    b.Property<string>("ServiceId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -311,7 +320,7 @@ namespace GarageManager.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20);
 
@@ -484,11 +493,12 @@ namespace GarageManager.Data.Migrations
 
                     b.HasOne("GarageManager.Domain.FuelType", "FuelType")
                         .WithMany()
-                        .HasForeignKey("FuelTypeId");
+                        .HasForeignKey("FuelTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GarageManager.Domain.VehicleManufacturer", "Manufacturer")
+                    b.HasOne("GarageManager.Domain.VehicleManufacturer", "Make")
                         .WithMany("Cars")
-                        .HasForeignKey("ManufacturerId")
+                        .HasForeignKey("MakeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GarageManager.Domain.VehicleModel", "Model")
@@ -522,7 +532,8 @@ namespace GarageManager.Data.Migrations
                 {
                     b.HasOne("GarageManager.Domain.GMUser", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GarageManager.Domain.ServiceIntervention", "Service")
                         .WithMany("Repairs")

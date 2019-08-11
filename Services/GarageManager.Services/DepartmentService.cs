@@ -1,7 +1,8 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Department;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +25,7 @@ namespace GarageManager.Services
         {
             var result = await this.departmentRepository
                 .All()
-                .Select(department => new DepartmentAll
-                {
-                    Id = department.Id,
-                    Name = department.Name
-                })
+                .To<DepartmentAll>()
                 .ToListAsync();
 
             return result;
@@ -43,17 +40,8 @@ namespace GarageManager.Services
                 var departmentFromDb = await this.departmentRepository
                 .All()
                 .Where(department => department.Id == id)
-                .Select(department => new DepartmentAllCars
-                {
-                    Name = department.Name,
-                    Cars = department.Cars.Where(isDeleteed => !isDeleteed.IsDeleted).Select(car => new DepartmentCarDetails
-                    {
-                        Id = car.Id,
-                        Make = car.Manufacturer.Name,
-                        Model = car.Model.Name,
-                        RegisterPlate = car.RegistrationPlate,
-                    }).ToList()
-                }).FirstOrDefaultAsync();
+                .To<DepartmentAllCars>()
+               .FirstOrDefaultAsync();
 
                 return departmentFromDb;
             }

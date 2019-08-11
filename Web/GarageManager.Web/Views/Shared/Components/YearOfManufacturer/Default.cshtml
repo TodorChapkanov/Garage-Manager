@@ -1,8 +1,12 @@
 ﻿
 @model GarageManager.Web.Views.Shared.Components.Models.AvailableYears
 
-        <label asp-for="YearOfManufacturing" class="control-label"></label>
-        <select asp-for="YearOfManufacturing" asp-items="@Model.Years" class="form-control">
-            <option disabled selected>--- Year ---</option>
-        </select>
-        <span asp-validation-for="YearOfManufacturing" class="text-danger"></span>
+<label asp-for="YearOfManufacturing" class="control-label"></label>
+<select asp-for="YearOfManufacturing" asp-items="@Model.Years" class="form-control">
+    <option disabled selected>--- Year ---</option>
+</select>
+<span asp-validation-for="YearOfManufacturing" class="text-danger"></span>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

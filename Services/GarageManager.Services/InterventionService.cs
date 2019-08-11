@@ -2,9 +2,10 @@
 using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO.Part;
-using GarageManager.Services.DTO.Repair;
-using GarageManager.Services.DTO.Service;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Part;
+using GarageManager.Services.Models.Repair;
+using GarageManager.Services.Models.Service;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,14 +30,13 @@ namespace GarageManager.Services
             try
             {
                 this.ValidateNullOrEmptyString(id);
-                var all = this.serviceRepository.All().ToArray();
                 var services = await this.serviceRepository
                     .All()
                     .Where(service => service.CarId == id && service.IsFinished == true)
                       .Select(service => new CarServiceHistory
                       {
                           Id = service.Id,
-                          CarMake = service.Car.Manufacturer.Name,
+                          CarMake = service.Car.Make.Name,
                           CarRegistrtionPlate = service.Car.RegistrationPlate,
                           FinishedOn = service.FinishedOn,
                           Price = service.Parts
@@ -66,25 +66,8 @@ namespace GarageManager.Services
                 var model = await this.serviceRepository
                 .All()
                 .Where(service => service.Id == serviceId)
-                   .Select(service => new CarServiceHistoryDetails
-                   {
-                       CarId = service.CarId,
-                       Parts = service.Parts.Select(part => new ServiceHistoryPartDetails
-                       {
-                           Name = part.Name,
-                           Number = part.Number,
-                           Quantity = part.Quantity,
-                           TotalCost = part.TotalCost
-                       }).ToList(),
-                       Repairs = service.Repairs.Select(repair => new ServiceHistoryRepairDetails
-                       {
-                           Description = repair.Description,
-                           EmployeeName = repair.Employee.FullName,
-                           Hours = (decimal)repair.Hours,
-                           TotalCost = repair.TotalCosts
-                       }).ToList()
-                   })
-                   .FirstOrDefaultAsync();
+                .To<CarServiceHistoryDetails>()
+                .FirstOrDefaultAsync();
 
                 return model;
             }

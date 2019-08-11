@@ -10,31 +10,30 @@ namespace GarageManager.Domain
         {
             this.Id = Guid.NewGuid().ToString();
         }
+
         public string Id { get; set; }
 
         [Required]
-        [StringLength(
-            RepairConstants.RepairDescriptionMaxLength,
-            ErrorMessage = AdminContants.StringLengthErrorMessage,
-            MinimumLength = RepairConstants.RepairDescriptionMinLength)]
+        [MaxLength(
+            RepairConstants.RepairDescriptionMaxLength)]
         public string Description { get; set; }
         
         [Required]
         [Range(RepairConstants.MinRepairTime,
-            RepairConstants.MaxRepairTime, 
-            ErrorMessage = RepairConstants.RepairTimeErrorMessage)]
+            RepairConstants.MaxRepairTime)]
         public double Hours { get; set; }
 
         [Required]
         [Range(RepairConstants.RepairMinPricePerHour,
-            RepairConstants.RepairMaxPricePerHour, 
-            ErrorMessage = RepairConstants.RepairPricePerHourErrorMessage)]
+            RepairConstants.RepairMaxPricePerHour)]
         public decimal PricePerHour { get; set; }
 
+        [Required]
         public string EmployeeId { get; set; }
 
         public GMUser Employee { get; set; }
 
+        [Required]
         public string ServiceId { get; set; }
 
         public ServiceIntervention Service { get; set; }

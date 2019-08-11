@@ -2,11 +2,13 @@
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO;
-using GarageManager.Services.DTO.Car;
+using GarageManager.Services.Models.Car;
+using GarageManager.Services.Models.Part;
+using GarageManager.Services.Models.Repair;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using GarageManager.Services.Mapping;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services
@@ -35,15 +37,9 @@ namespace GarageManager.Services
                 var result = await this.carRepository
                     .All()
                     .Where(customer => customer.CustomerId == id)
-                    .Select(car => new CustomerCarListDetails
-                    {
-                        Id = car.Id,
-                        Make = car.Manufacturer.Name,
-                        Model = car.Model.Name,
-                        RegistrationPlate = car.RegistrationPlate,
-                        IsInService = car.IsInService
-                    })
+                    .To<CustomerCarListDetails>()
                     .ToListAsync();
+                  
                 return result;
             }
             catch
@@ -78,7 +74,7 @@ namespace GarageManager.Services
                     CustomerId = customerId,
                     Vin = vin,
                     RegistrationPlate = registrationPLate,
-                    ManufacturerId = manufactirerId,
+                    MakeId = manufactirerId,
                     ModelId = modelId,
                     Кilometers = kilometers,
                     YearOfManufacturing = yearOfManufacture,
@@ -86,7 +82,7 @@ namespace GarageManager.Services
                     EngineHorsePower = engineHorsePower,
                     FuelTypeId = fuelTypeId,
                     TransmissionId = transmissionId,
-                    CurrentServiceId = service.Id,
+                    ServiceId = service.Id,
                 };
 
                 car.Services.Add(service);
@@ -111,23 +107,8 @@ namespace GarageManager.Services
 
                 var result = await this.carRepository
                     .All()
-                    .Where(car => car.Id == id)
-                    .Select(car => new CustomerCarDetails
-                    {
-                        Id = car.Id,
-                        CustomerId = car.CustomerId,
-                        Make = car.Manufacturer.Name,
-                        Model = car.Model.Name,
-                        RegistrationPlate = car.RegistrationPlate,
-                        Vin = car.Vin,
-                        ManufacturedOn = car.YearOfManufacturing,
-                        Кilometers = car.Кilometers,
-                        EngineModel = car.EngineModel,
-                        EngineHorsePower = car.EngineHorsePower,
-                        FuelType = car.FuelType.Type,
-                        Transmission = car.Transmission.Type
-
-                    }).SingleOrDefaultAsync();
+                    .Where(car => car.Id == id).To<CustomerCarDetails>()
+                   .SingleOrDefaultAsync();
 
 
                 return result;
@@ -197,7 +178,7 @@ namespace GarageManager.Services
                 return default(int);
             }
         }
-        public async Task<CarServicesDetails> GetCarServiceDetailsByIdAsync(string id)
+        public async Task<CarServiceDetailsList> GetCarServiceDetailsByIdAsync(string id)
         {
             try
             {
@@ -206,15 +187,15 @@ namespace GarageManager.Services
                 var carServices = await this.carRepository
                .All()
                .Where(car => car.Id == id)
-               .Select(car => new CarServicesDetails
+               .Select(car => new CarServiceDetailsList
                {
                    Id = car.Id,
-                   Make = car.Manufacturer.Name,
-                   Model = car.Model.Name,
+                   MakeName = car.Make.Name,
+                   ModelName = car.Model.Name,
                    RegisterPlate = car.RegistrationPlate,
                    Description = car.Description,
                    DepartmentId = car.DepartmentId,
-                   Parts = car.Services.First(service => service.Id == car.CurrentServiceId).Parts.Select(part => new PartDetails
+                   Parts = car.Services.First(service => service.Id == car.ServiceId).Parts.Select(part => new PartDetails
                    {
                        Id = part.Id,
                        Name = part.Name,
@@ -223,7 +204,7 @@ namespace GarageManager.Services
                        Quantity = part.Quantity,
                        TotalCost = part.TotalCost
                    }).ToList(),
-                   Repairs = car.Services.First(service => service.Id == car.CurrentServiceId).Repairs.Select(repair => new RepairDetails
+                   Repairs = car.Services.First(service => service.Id == car.ServiceId).Repairs.Select(repair => new RepairDetails
                    {
                        Id = repair.Id,
                        Description = repair.Description,
@@ -270,11 +251,7 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var carFromDb = await this.carRepository.GetEntityByKeyAsync(id);
-                var result = new CarServiceDetails
-                {
-                    Description = carFromDb.Description,
-                    DepartmentId = carFromDb.DepartmentId
-                };
+                var result = AutoMapper.Mapper.Map<CarServiceDetails>(carFromDb);
 
                 return result;
             }
@@ -309,14 +286,7 @@ namespace GarageManager.Services
         {
             var result = await this.carRepository
              .All()
-             .Where(car => car.IsFinished)
-             .Select(car => new CompletedCarList
-             {
-                 Id = car.Id,
-                 Make = car.Manufacturer.Name,
-                 Model = car.Model.Name,
-                 RegisterPlate = car.RegistrationPlate
-             })
+             .Where(car => car.IsFinished).To<CompletedCarList>()
              .ToListAsync();
 
             return result;
@@ -333,7 +303,7 @@ namespace GarageManager.Services
                 .Include(car => car.Services)
                 .FirstOrDefaultAsync(car => car.Id == carId);
 
-               var serviceResult = await this.serviceIntervention.FinishServiceByIdAsync(carFromDb.CurrentServiceId);
+               var serviceResult = await this.serviceIntervention.FinishServiceByIdAsync(carFromDb.ServiceId);
 
                 if (serviceResult == default(int))
                 {
@@ -343,7 +313,7 @@ namespace GarageManager.Services
                 var newService = new ServiceIntervention();
                 carFromDb.IsFinished = false;
                 carFromDb.Description = default;
-                carFromDb.CurrentServiceId = newService.Id;
+                carFromDb.ServiceId = newService.Id;
                 carFromDb.Services.Add(newService);
                 await this.carRepository.SavaChangesAsync();
                 return carFromDb.CustomerId;

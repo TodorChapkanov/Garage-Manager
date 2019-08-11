@@ -8,7 +8,6 @@
 
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -34,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Services\GarageManager.Extensions\GarageManager.Extensions.csproj" />
+    <ProjectReference Include="..\..\Services\GarageManager.Services.Mapping\GarageManager.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\GarageManager.Services\GarageManager.Services.csproj" />
     <ProjectReference Include="..\GarageManager.Web.Models\GarageManager.Web.Models.csproj" />
   </ItemGroup>

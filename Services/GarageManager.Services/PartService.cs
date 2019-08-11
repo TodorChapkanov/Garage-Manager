@@ -1,9 +1,8 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO.Part;
+using GarageManager.Services.Models.Part;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services
@@ -41,7 +40,7 @@ namespace GarageManager.Services
                     Number = number,
                     Price = price,
                     Quantity = quantity,
-                    ServiceId = carFromDb.CurrentServiceId,
+                    ServiceId = carFromDb.ServiceId,
 
                 };
 
@@ -63,14 +62,8 @@ namespace GarageManager.Services
                 this.ValidateNullOrEmptyString(id);
                 var partFromDb = (await this.partRepository.GetEntityByKeyAsync(id));
 
-                var part = new PartEditDetils
-                {
-                    Id = partFromDb.Id,
-                    Name = partFromDb.Name,
-                    Number = partFromDb.Number,
-                    Price = partFromDb.Price,
-                    Quantity = partFromDb.Quantity
-                };
+                var part = AutoMapper.Mapper.Map<PartEditDetils>(partFromDb);
+               
 
                 return part;
             }

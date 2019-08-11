@@ -1,15 +1,12 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO;
-using GarageManager.Services.DTO.Invoice;
-using GarageManager.Services.DTO.Part;
-using GarageManager.Services.DTO.Repair;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Invoice;
+using GarageManager.Services.Models.Part;
+using GarageManager.Services.Models.Repair;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services
@@ -34,11 +31,11 @@ namespace GarageManager.Services
                .Where(car => car.Id == id)
                .Select(car => new InvoiceDetails
                {
-                   FullName = car.Customer.FullName,
-                   Email = car.Customer.Email,
-                   PhoneNumber = car.Customer.PhoneNumber,
+                   CustomerFullName = car.Customer.FullName,
+                   CustomerEmail = car.Customer.Email,
+                   CustomerPhoneNumber = car.Customer.PhoneNumber,
                    Parts = car.Services
-                    .First(service => service.Id == car.CurrentServiceId)
+                    .First(service => service.Id == car.ServiceId)
                     .Parts
                     .Select(part => new InvoicePartDetails
                     {
@@ -49,7 +46,7 @@ namespace GarageManager.Services
                         TotalCost = part.TotalCost
                     }).ToList(),
                    Repairs = car.Services
-                    .First(service => service.Id == car.CurrentServiceId)
+                    .First(service => service.Id == car.ServiceId)
                     .Repairs
                     .Select(repair => new InvoiceRepairDetails
                     {

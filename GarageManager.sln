@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Domain", "Dat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Web", "Web\GarageManager.Web\GarageManager.Web.csproj", "{D156AD31-FA4E-43C0-A06B-A324E94277D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarageManager.Services.Tests", "Tests\GarageManager.Services.Tests\GarageManager.Services.Tests.csproj", "{00144845-53E3-4140-834F-8150A4B8DA47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Services.Tests", "Tests\GarageManager.Services.Tests\GarageManager.Services.Tests.csproj", "{00144845-53E3-4140-834F-8150A4B8DA47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarageManager.Services.Mapping", "Services\GarageManager.Services.Mapping\GarageManager.Services.Mapping.csproj", "{F2427218-BA54-4BB6-91F3-61F98B3F15B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarageManager.Services.Models", "Services\GarageManager.Services.Models\GarageManager.Services.Models.csproj", "{32DB7CC2-0E03-4B20-B154-7F9AF97B58D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{00144845-53E3-4140-834F-8150A4B8DA47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00144845-53E3-4140-834F-8150A4B8DA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00144845-53E3-4140-834F-8150A4B8DA47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2427218-BA54-4BB6-91F3-61F98B3F15B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2427218-BA54-4BB6-91F3-61F98B3F15B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2427218-BA54-4BB6-91F3-61F98B3F15B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2427218-BA54-4BB6-91F3-61F98B3F15B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32DB7CC2-0E03-4B20-B154-7F9AF97B58D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32DB7CC2-0E03-4B20-B154-7F9AF97B58D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32DB7CC2-0E03-4B20-B154-7F9AF97B58D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32DB7CC2-0E03-4B20-B154-7F9AF97B58D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

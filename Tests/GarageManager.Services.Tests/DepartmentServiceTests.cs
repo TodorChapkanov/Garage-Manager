@@ -1,10 +1,9 @@
 ﻿using FluentAssertions;
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
-using GarageManager.Services.DTO;
+using GarageManager.Services.Models.Department;
 using MockQueryable.Moq;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +11,7 @@ using Xunit;
 
 namespace GarageManager.Services.Tests
 {
-    public class DepartmentServiceTests
+    public class DepartmentServiceTests : BaseTest
     {
         private const string SampleDepartmentId = "1";
         private const string SampleDepartmentName = "Painting";
@@ -89,7 +88,7 @@ namespace GarageManager.Services.Tests
             result
                 .Cars.Count
                 .Should()
-                .Be(2);
+                .Be(3);
 
             result
                 .Should()
@@ -97,15 +96,15 @@ namespace GarageManager.Services.Tests
                 .And
                 .Match<DepartmentAllCars>(department => department
                                               .Cars
-                                              .First(car => car.Id == SampleCarid).RegisterPlate == SampleCarRegistrationPlate)
+                                              .First(car => car.Id == SampleCarid).RegistrationPlate == SampleCarRegistrationPlate)
                 .And
                 .Match<DepartmentAllCars>(department => department
                                              .Cars
-                                             .First(car => car.Id == SampleCarid).Make == SampleCarMakeName)
+                                             .First(car => car.Id == SampleCarid).MakeName == SampleCarMakeName)
                 .And
                 .Match<DepartmentAllCars>(department => department
                                              .Cars
-                                             .First(car => car.Id == SampleCarid).Model == SampleCarModelName);
+                                             .First(car => car.Id == SampleCarid).ModelName == SampleCarModelName);
         }
 
         [Fact]
@@ -196,7 +195,7 @@ namespace GarageManager.Services.Tests
                 new Car
                 {
                      Id = SampleCarid,
-                        Manufacturer =new VehicleManufacturer{Id= "1", Name = "Opel" },
+                        Make =new VehicleManufacturer{Id= "1", Name = "Opel" },
                         Model = new VehicleModel { Id = "1", Name = "Vectra" },
                         RegistrationPlate = SampleCarRegistrationPlate,
                         IsDeleted = false
@@ -204,7 +203,7 @@ namespace GarageManager.Services.Tests
                 new Car
                 {
                      Id = "2",
-                        Manufacturer =new VehicleManufacturer{Id= "1", Name = SampleCarMakeName },
+                        Make =new VehicleManufacturer{Id= "1", Name = SampleCarMakeName },
                         Model = new VehicleModel { Id = "1", Name = SampleCarModelName },
                         RegistrationPlate = "BB 2222 BB",
                         IsDeleted = false
@@ -212,7 +211,7 @@ namespace GarageManager.Services.Tests
                 new Car
                 {
                      Id = "3",
-                        Manufacturer =new VehicleManufacturer{Id= "1", Name = "Reanult" },
+                        Make =new VehicleManufacturer{Id= "1", Name = "Reanult" },
                         Model = new VehicleModel { Id = "1", Name = "Scenic" },
                         RegistrationPlate = "CC 3333 CC",
                         IsDeleted = true

@@ -2,13 +2,12 @@
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO.Part;
+using GarageManager.Services.Models.Part;
 using MockQueryable.Moq;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -177,7 +176,7 @@ namespace GarageManager.Services.Tests
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public async Task CreateAsyncShouldReturnNullWithInvalidPartQuantity(int price)
+        public async Task CreateAsyncShouldReturnNullWithInvalidPartQuantity(int quantity)
         {
             //Arrange
             var testPartId = "10";
@@ -186,7 +185,7 @@ namespace GarageManager.Services.Tests
                testPartId,
                SamplePartName,
                SamplePartNumber,
-               price,
+               quantity,
                SamplePartQuantity);
 
             //Assert
@@ -479,7 +478,7 @@ namespace GarageManager.Services.Tests
                 new Car
                 {
                     Id = SampleCarId,
-                    CurrentServiceId = SampleCarServiceId
+                    ServiceId = SampleCarServiceId
                 }
             };
             var repository = new Mock<IDeletableEntityRepository<Car>>();

@@ -1,4 +1,4 @@
-﻿using GarageManager.Services.DTO.Part;
+﻿using GarageManager.Services.Models.Part;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services.Contracts

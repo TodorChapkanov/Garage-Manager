@@ -32,7 +32,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             }
             var employeeId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var carId = await this.repairsService
-                .CreateRepairService(
+                .CreateAsync(
                 model.CarId,
                 model.Description,
                 model.Hours,
@@ -58,24 +58,16 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
 
-            var partFromDb = await this.repairsService.GetEditDetailsByIdAsync(id);
+            var result = await this.repairsService.GetEditDetailsByIdAsync(id);
 
-            if (partFromDb == null)
+            if (result == null)
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
                 return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
             }
-            var partModel = new RepairEditViewModel
-            {
-                Id = partFromDb.Id,
-                CarId = carId,
-                Description = partFromDb.Description,
-                PricePerHour = partFromDb.PricePerHour,
-                Hours = partFromDb.Hours,
-                EmployeeName = partFromDb.EmployeeName,
-                IsFinished = partFromDb.IsFinished
-            };//TODO Add VC For employees in rapir edit view
+            var partModel = AutoMapper.Mapper.Map<RepairEditViewModel>(result);
+          //TODO Add VC For employees in rapir edit view
 
             return this.View(partModel);
         }

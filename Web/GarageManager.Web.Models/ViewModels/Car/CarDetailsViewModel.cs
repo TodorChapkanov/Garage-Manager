@@ -1,18 +1,20 @@
-﻿using System;
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Car;
+using System;
 
 namespace GarageManager.Web.Models.ViewModels.Car
 {
-    public class CarDetailsViewModel
+    public class CarDetailsViewModel : IMapFrom<CustomerCarDetails>
     {
         public string Id { get; set; }
 
-        public string Make { get; set; }
+        public string MakeName { get; set; }
 
-        public string Model { get; set; }
+        public string ModelName { get; set; }
 
         public string RegistrationPlate { get; set; }
 
-        public int ManufacturedOn { get; set; }
+        public int YearOfManufacturing { get; set; }
 
         public string Vin { get; set; }
 
@@ -22,8 +24,8 @@ namespace GarageManager.Web.Models.ViewModels.Car
 
         public int EngineHorsePower { get; set; }
 
-        public string FuelType { get; set; }
+        public string FuelTypeName { get; set; }
 
-        public string Transmission { get; set; }
+        public string TransmissionName { get; set; }
     }
 }

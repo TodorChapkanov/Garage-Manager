@@ -4,3 +4,7 @@
 <select asp-for="FuelTypeId" asp-items="Model.FuelTypes" class="form-control">
     <option disabled selected>--- Fuel ---</option>
 </select>
+<span asp-validation-for="FuelTypeId" class="text-danger"></span>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

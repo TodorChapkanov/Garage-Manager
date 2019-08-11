@@ -203,9 +203,9 @@ namespace GarageManager.Web.Areas.User.Controllers
 
             var invoiceModel = new InvoiceViewModel
             {
-                FullName = invoiceFromDb.FullName,
-                Email = invoiceFromDb.Email,
-                PhoneNumber = invoiceFromDb.PhoneNumber,
+                FullName = invoiceFromDb.CustomerFullName,
+                Email = invoiceFromDb.CustomerEmail,
+                PhoneNumber = invoiceFromDb.CustomerPhoneNumber,
                 TotalCost = invoiceFromDb.TotalCost,
                 Date = this.dateTimeProvider.GetDateTime()
             };

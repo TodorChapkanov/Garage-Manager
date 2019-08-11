@@ -10,7 +10,7 @@ using Xunit;
 
 namespace GarageManager.Services.Tests
 {
-  public  class ManufacturerServiceTests
+  public  class ManufacturerServiceTests : BaseTest
     {
         #region GetAllTypesAsync Tests
         [Fact]
@@ -34,10 +34,10 @@ namespace GarageManager.Services.Tests
         {
             //Arrange
             var repository = this.GetManufacturerRepository(new List<VehicleManufacturer>());
-            var fuelTypeService = new ManufacturerService(repository.Object);
+            var manufacturerService = new ManufacturerService(repository.Object);
 
             //Act
-            var result = await fuelTypeService.GetAllAsync();
+            var result = await manufacturerService.GetAllAsync();
 
             //Assert
             result
@@ -56,7 +56,7 @@ namespace GarageManager.Services.Tests
         }
         #endregion
 
-        #region TestFuelTypeList
+        #region TestFuelManufacturerList
         private List<VehicleManufacturer> GetTestManufacturerList()
         {
             var list = new List<VehicleManufacturer>

@@ -1,14 +1,17 @@
-﻿namespace GarageManager.Web.Models.ViewModels.Car
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Car;
+
+namespace GarageManager.Web.Models.ViewModels.Car
 {
-    public class CustomerCarDetailsViewModel
+    public class CustomerCarDetailsViewModel : IMapFrom<CustomerCarListDetails>
     {
         public string Id { get; set; }
 
         public string RegistrationPlate { get; set; }
 
-        public string Make { get; set; }
+        public string MakeName { get; set; }
 
-        public string Model { get; set; }
+        public string ModelName { get; set; }
 
         public bool IsInService { get; set; }
     }

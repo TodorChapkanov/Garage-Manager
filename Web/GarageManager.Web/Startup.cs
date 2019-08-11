@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using GarageManager.Data;
+﻿using GarageManager.Data;
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
@@ -8,7 +7,10 @@ using GarageManager.Extensions.PDFConverter.HtmlToPDF;
 using GarageManager.Extensions.PDFConverter.ViewRender;
 using GarageManager.Services;
 using GarageManager.Services.Contracts;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Customer;
 using GarageManager.Web.Infrastructure.Filters;
+using GarageManager.Web.Models.ViewModels.Car;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using System.Reflection;
 
 namespace GarageManager
 {
@@ -47,8 +50,7 @@ namespace GarageManager
                 .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")),ServiceLifetime.Transient);
 
 
-            services.AddIdentity<GMUser, IdentityRole>(/*config =>
-            config.SignIn.RequireConfirmedEmail = true*/)
+            services.AddIdentity<GMUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<GMDbContext>()
                 .AddDefaultTokenProviders();
@@ -80,23 +82,22 @@ namespace GarageManager
             services.AddScoped<IManufacturerService, ManufacturerService>();
             services.AddScoped<IModelService, ModelService>();
             services.AddScoped<IFuelTypeService, FuelTypeService>();
-            services.AddScoped<ITransmissionTypesService, TransimissionTypesService>();
+            services.AddScoped<ITransmissionTypesService, TransimissionService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IPartService, PartService>();
             services.AddScoped<IRepairService, RepairService>();
             services.AddScoped<IInvoiceService, InvoiceService>();
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
-
-
-
-             services
-               .AddAutoMapper(typeof(Startup)); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            AutoMapperConfig.RegisterMappings(
+                typeof(CreateCarViewModel).GetTypeInfo().Assembly,
+                typeof(CustomerDetail).GetTypeInfo().Assembly);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

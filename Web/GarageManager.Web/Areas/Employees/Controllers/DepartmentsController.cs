@@ -31,18 +31,9 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                     NotificationType.Error);
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
-            var viewModel = new DepartmentCarsList
-            {
-                Name = result.Name,
-                Cars = result.Cars.Select(car => new DepartmentCarDetails
-                {
-                    Id = car.Id,
-                    Make = car.Make,
-                    Model = car.Model,
-                    RegistrationPlate = car.RegisterPlate
-                }).ToList()
-            };
 
+            var viewModel = AutoMapper.Mapper.Map<DepartmentCarsList>(result);
+           
             return this.View(viewModel);
         }
 

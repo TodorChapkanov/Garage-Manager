@@ -38,21 +38,8 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 
             if (result != null)
             {
-                var model = new CarDetailsViewModel
-                {
-                    Id = result.Id,
-                    Make = result.Make,
-                    Model = result.Model,
-                    RegistrationPlate = result.RegistrationPlate,
-                    Vin = result.Vin,
-                    ManufacturedOn = result.ManufacturedOn,
-                    Кilometers = result.Кilometers,
-                    EngineModel = result.EngineModel,
-                    EngineHorsePower = result.EngineHorsePower,
-                    FuelType = result.FuelType,
-                    Transmission = result.Transmission
-                };
-
+                var model = AutoMapper.Mapper.Map<CarDetailsViewModel>(result);
+               
                 return this.View(model);
             }
 
@@ -82,34 +69,8 @@ namespace GarageManager.Web.Areas.Employees.Controllers
 
                 return this.Redirect(RedirectUrl_s.HomeIndex);
             }
-            var model = new CarServicesDetailsViewModel
-            {
-                Id = carModel.Id,
-                Make = carModel.Make,
-                Model = carModel.Model,
-                RegisterPlate = carModel.RegisterPlate,
-                Description = carModel.Description,
-                DepartmentId = carModel.DepartmentId,
-                Parts = carModel.Parts
-                .Select(part => new PartDetailsViewModel
-                {
-                    Id = part.Id,
-                    Name = part.Name,
-                    Price = part.Price,
-                    Quantity = part.Quantity,
-                    TotalCost = part.TotalCost
-                }),
-                Repairs = carModel.Repairs
-                .Select(repair => new RepairDetailsViewModel
-                {
-                    Id = repair.Id,
-                    Description = repair.Description,
-                    Hours = repair.Hours,
-                    PricePerHour = repair.PricePerHour,
-                    TotalCost = repair.TotalCosts,
-                    IsFinished = repair.IsFinished
-                })
-            };
+            var model = AutoMapper.Mapper.Map<CarServicesDetailsViewModel>(carModel);
+           //TODO Change Repair TotalCosts
 
             return this.View(model);
         }

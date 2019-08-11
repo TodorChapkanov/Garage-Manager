@@ -5,3 +5,7 @@
 <select asp-for="@Model.DepartmentId" asp-items="@Model.Departments" class="form-control">
     <option disabled selected>--- Department ---</option>
 </select>
+<span asp-validation-for="DepartmentId" class="text-danger"></span>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -31,6 +31,7 @@
                 <div class="form-group w-25">
                     <label asp-for="ModelName" class="control-label"></label>
                     <select asp-for="ModelName" asp-items="@(new SelectList(string.Empty))" class="form-control"></select>
+                    <span asp-validation-for="ModelName" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mx-auto justify-content-around">
@@ -92,6 +93,7 @@
                var items = "<option>-All-</option>";
                 $('#ModelName').empty();
                $.each(data, function (i, vehModel) {
+                
                     items += "<option>" + vehModel.text + "</option>"
                });
                $('#ModelName').html(items);

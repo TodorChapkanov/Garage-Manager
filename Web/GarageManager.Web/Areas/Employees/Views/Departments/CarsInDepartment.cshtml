@@ -21,8 +21,8 @@
             @foreach (var car in Model.Cars)
             {
                 <tr>
-                    <td>@car.Make</td>
-                    <td>@car.Model</td>
+                    <td>@car.MakeName</td>
+                    <td>@car.ModelName</td>
                     <td>@car.RegistrationPlate</td>
                     <th class="d-flex justify-content-around">
                         <a asp-action="ServiceDetails" 

@@ -2,13 +2,12 @@
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
-using GarageManager.Services.DTO.Service;
+using GarageManager.Services.Models.Service;
 using MockQueryable.Moq;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -185,11 +184,11 @@ namespace GarageManager.Services.Tests
                 .And
                 .Match<CarServiceHistoryDetails>(car => car.Repairs.First().Description == SampleRepairDescription)
                 .And
-                .Match<CarServiceHistoryDetails>(car => car.Repairs.First().Hours == ((decimal)SampleRepairHours))
+                .Match<CarServiceHistoryDetails>(car => car.Repairs.First().Hours == SampleRepairHours)
                 .And
-                .Match<CarServiceHistoryDetails>(car => car.Repairs.First().TotalCost == repairTotalCost)
+                .Match<CarServiceHistoryDetails>(car => car.Repairs.First().TotalCosts == repairTotalCost)
                 .And
-                .Match<CarServiceHistoryDetails>(car => car.Repairs.First().EmployeeName == employeeName);
+                .Match<CarServiceHistoryDetails>(car => car.Repairs.First().EmployeeFullName == employeeName);
         }
 
         [Theory]
@@ -260,7 +259,7 @@ namespace GarageManager.Services.Tests
                    Car = new Car
                    {
                        Id = SampleCarId,
-                       Manufacturer = new VehicleManufacturer
+                       Make = new VehicleManufacturer
                        {
                            Name = SampleCarManufacturerName
                        },
@@ -300,7 +299,7 @@ namespace GarageManager.Services.Tests
                    Car = new Car
                    {
                        Id = "2",
-                       Manufacturer = new VehicleManufacturer
+                       Make = new VehicleManufacturer
                        {
                            Name = "Lada"
                        },

@@ -10,7 +10,7 @@ using Xunit;
 
 namespace GarageManager.Services.Tests
 {
-    public class FuelTypeServiceTests
+    public class FuelTypeServiceTests : BaseTest
     {
         #region GetAllTypesAsync Tests
         [Fact]
@@ -64,12 +64,12 @@ namespace GarageManager.Services.Tests
                 new FuelType
                 {
                     Id ="1",
-                    Type = "Disel"
+                    Name = "Disel"
                 },
                 new FuelType
                 {
                     Id ="2",
-                    Type = "Gasoline"
+                    Name = "Gasoline"
                 }
             };
 

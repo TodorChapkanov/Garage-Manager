@@ -2,8 +2,12 @@
 
 
 
-  
-        <label asp-for="AllManufacturers" class="control-label"></label>
-        <select asp-for="ManufacturerId" asp-items="@Model.AllManufacturers" class="form-control">
-            <option disabled selected>--- SELECT ---</option>
-        </select>
+
+<label asp-for="AllManufacturers" class="control-label"></label>
+<select asp-for="ManufacturerId" asp-items="@Model.AllManufacturers" class="form-control">
+    <option disabled selected>--- SELECT ---</option>
+</select>
+<span asp-validation-for="ManufacturerId" class="text-danger"></span>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -9,9 +9,9 @@ namespace GarageManager.Data.Configurations
         public void Configure(EntityTypeBuilder<Car> builder)
         {
             builder
-                 .HasOne(car => car.Manufacturer)
+                 .HasOne(car => car.Make)
                  .WithMany(manufactor => manufactor.Cars)
-                 .HasForeignKey(car => car.ManufacturerId)
+                 .HasForeignKey(car => car.MakeId)
                  .OnDelete(DeleteBehavior.Restrict);
 
             builder

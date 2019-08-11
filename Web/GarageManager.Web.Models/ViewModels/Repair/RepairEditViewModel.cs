@@ -1,9 +1,11 @@
 ﻿using GarageManager.Common.GlobalConstant;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Repair;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Web.Models.ViewModels.Repair
 {
-    public class RepairEditViewModel
+    public class RepairEditViewModel : IMapFrom<RepairEditDetails>
     {
         public string Id { get; set; }
 
@@ -28,7 +30,8 @@ namespace GarageManager.Web.Models.ViewModels.Repair
             ErrorMessage = RepairConstants.RepairPricePerHourErrorMessage)]
         public decimal PricePerHour { get; set; }
 
-        public string EmployeeName { get; set; }
+        [Display(Name = DisplayNameConstants.DisplayEmployeeFullName)]
+        public string EmployeeFullName { get; set; }
 
         public bool IsFinished { get; set; }
     }

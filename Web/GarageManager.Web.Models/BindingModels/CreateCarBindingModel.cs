@@ -11,6 +11,7 @@ namespace GarageManager.Web.Models.BindingModels
         [BindProperty(Name ="id")]
         public string CustomerId { get; set; }
 
+        [Required]
         [Display(Name = DisplayNameConstants.ModelDisplayName)]
         public string ManufacturerId { get; set; }
 

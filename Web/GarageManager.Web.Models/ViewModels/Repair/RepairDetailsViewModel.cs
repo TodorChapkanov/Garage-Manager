@@ -1,6 +1,9 @@
-﻿namespace GarageManager.Web.Models.ViewModels.Repair
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Repair;
+
+namespace GarageManager.Web.Models.ViewModels.Repair
 {
-    public class RepairDetailsViewModel
+    public class RepairDetailsViewModel : IMapFrom<RepairDetails>
     {
         public string Id { get; set; }
 
@@ -12,6 +15,6 @@
 
         public bool IsFinished { get; set; }
 
-        public decimal TotalCost { get; set; }
+        public decimal TotalCosts { get; set; }
     }
 }

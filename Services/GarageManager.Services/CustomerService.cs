@@ -1,9 +1,9 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Customer;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,15 +49,15 @@ namespace GarageManager.Services
 
         public Task<List<CustomerDetail>> GetAllCustomersDetailsAsync()
         {
-            var allCustomersDetails = this.customerRepository.All()
-                 .Select(details => new CustomerDetail
+            var allCustomersDetails =  this.customerRepository.All().To<CustomerDetail>().ToListAsync();
+                /* .Select(details => new CustomerDetail
                  {
                      Id = details.Id,
                      FullName = $"{details.FirstName} {details.LastName}",
                      Email = details.Email
 
                  })
-                 .ToListAsync();
+                 .ToListAsync();*/
 
             return allCustomersDetails;
         }
@@ -71,14 +71,7 @@ namespace GarageManager.Services
                 var customerFromDb = await this.customerRepository
                 .GetEntityByKeyAsync(id);
 
-                var customerDetails = new CustomerEditDetails
-                {
-                    Id = customerFromDb.Id,
-                    FirstName = customerFromDb.FirstName,
-                    LastName = customerFromDb.LastName,
-                    Email = customerFromDb.Email,
-                    PhoneNumber = customerFromDb.PhoneNumber
-                };
+                var customerDetails = AutoMapper.Mapper.Map<CustomerEditDetails>(customerFromDb);
 
                 return customerDetails;
             }

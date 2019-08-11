@@ -47,9 +47,21 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateCarBindingModel carBVM)
         {
+            if (carBVM.ModelName == CarConstants.InvalidModelInput)
+            {
+                this.ShowNotification(string.Format(
+               NotificationMessages.CreateCarModelIsRequired),
+               NotificationType.Warning);
+
+                return this.View(carBVM);
+            }
+
             if (!ModelState.IsValid)
             {
-               return RedirectToAction($"/Admin/Cars/Create/{carBVM.CustomerId}");
+                    this.ShowNotification(string.Format(
+                   NotificationMessages.CarCreateFail),
+                   NotificationType.Warning);
+                return this.View(carBVM);
             }
 
             var reault = await this.carService.CreateAsync
@@ -71,7 +83,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
                 this.ShowNotification(string.Format(
                     NotificationMessages.CarCreatedSuccessfull, carBVM.RegistrationPlate),
-                    NotificationType.Success);
+                    NotificationType.Warning);
                 return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{carBVM.CustomerId}");
             }
 
@@ -97,7 +109,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                     .Select(ft => new FuelTypeDetails
                       {
                         Id = ft.Id,
-                        Type = ft.Type
+                        Type = ft.Name
                       })
                     .OrderBy(fuel => fuel.Type);
             }));
@@ -128,16 +140,16 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 Id = carData.Id,
                 CustomerId = carData.CustomerId,
                 Vin = carData.Vin,
-                Make = carData.Make,
-                Model = carData.Model,
-                YearOfManufacturing = carData.ManufacturedOn,
+                Make = carData.MakeName,
+                Model = carData.ModelName,
+                YearOfManufacturing = carData.YearOfManufacturing,
                 RegistrationPlate = carData.RegistrationPlate,
                 EngineModel = carData.EngineModel,
                 EngineHorsePower = carData.EngineHorsePower,
                 Кilometers = carData.Кilometers,
-                FuelTypeId = allFuelTypes.FirstOrDefault(ft => ft.Type == carData.FuelType).Id,
+                FuelTypeId = allFuelTypes.FirstOrDefault(ft => ft.Type == carData.FuelTypeName).Id,
                 FuelTypes = allFuelTypes.Select(ft => new SelectListItem(ft.Type, ft.Id)),
-                TransmissionId = allTransmissionTypes.First(tr => tr.Type == carData.Transmission).Id,
+                TransmissionId = allTransmissionTypes.First(tr => tr.Type == carData.TransmissionName).Id,
                 Transmissions = allTransmissionTypes.Select(tr => new SelectListItem(tr.Type, tr.Id))
             };
 
@@ -211,14 +223,8 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             };
            
             model.CustomerCars = (await this.carService.GetAllCarsByCustomerIdAsync(model.CustomerId))
-                .Select(car => new CustomerCarDetailsViewModel
-                {
-                    Id = car.Id,
-                    Make = car.Make,
-                    Model = car.Model,
-                    RegistrationPlate = car.RegistrationPlate,
-                    IsInService = car.IsInService
-                }).ToList();
+                .Select(car => AutoMapper.Mapper.Map<CustomerCarDetailsViewModel>(car))
+                .ToList();
 
             if (model.CustomerCars == null)
             {
@@ -234,13 +240,8 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         public async Task<IActionResult> CompletedCars()
         {
             var model = (await this.carService.CompletedCarsListAsync())
-                .Select(car => new CompletedCarList
-                {
-                    Id = car.Id,
-                    Make = car.Make,
-                    Model = car.Model,
-                    RegiserPlate = car.RegisterPlate
-                }).ToList();
+                .Select(car => AutoMapper.Mapper.Map<CompletedCarListViewModel>(car))
+               .ToList();
 
             return this.View(model);
         }

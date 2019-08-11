@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GarageManager.Web.Models.ViewModels.Car.CompletedCarList>
+﻿@model IEnumerable<GarageManager.Web.Models.ViewModels.Car.CompletedCarListViewModel>
 @{
     ViewData["Title"] = "CompletedCars";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -22,19 +22,16 @@
                 @foreach (var car in Model)
                 {
                     <tr class="row mx-auto">
-                        <td class="col-md-3">@car.Make</td>
-                        <td class="col-md-3">@car.Model</td>
-                        <td class="col-md-3 ">@car.RegiserPlate</td>
+                        <td class="col-md-3">@car.MakeName</td>
+                        <td class="col-md-3">@car.ModelName</td>
+                        <td class="col-md-3 ">@car.RegistrationPlate</td>
                         <th class="col-md-3 d-flex justify-content-around">
                             <a asp-action="CompleteTheOrder"
-                               asp-controller="Customers" 
-                               asp-area="Admin" 
-                               asp-route-Id="@car.Id">Finish Order</a>
-
-                            <a asp-action="Invoice" 
                                asp-controller="Customers"
                                asp-area="Admin"
-                               asp-route-Id="@car.Id">Invoice </a>
+                               asp-route-Id="@car.Id">Finish Order</a>
+
+                            <a href="/Admin/Customers/Invoice/@car.Id" target="_blank">Invoice</a>
                         </th>
                     </tr>
                 }

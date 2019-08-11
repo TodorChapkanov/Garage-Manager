@@ -1,10 +1,12 @@
 ﻿using GarageManager.Common;
 using GarageManager.Common.GlobalConstant;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Part;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Web.Models.ViewModels.Part
 {
-    public class PartEditViewModel
+    public class PartEditViewModel : IMapFrom<PartEditDetils>
     {
         public string Id { get; set; }
 

@@ -2,8 +2,8 @@
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO;
-using GarageManager.Services.DTO.Car;
+using GarageManager.Services.Models.Car;
+using GarageManager.Services.Models.Customer;
 using Microsoft.EntityFrameworkCore;
 using MockQueryable.Moq;
 using Moq;
@@ -15,7 +15,7 @@ using Xunit;
 
 namespace GarageManager.Services.Tests
 {
-    public class CustomerServiceTests
+    public class CustomerServiceTests : BaseTest
     {
         private const string SampleCustomerId = "1";
         private const string SampleCustomerFirstName = "Jhon";

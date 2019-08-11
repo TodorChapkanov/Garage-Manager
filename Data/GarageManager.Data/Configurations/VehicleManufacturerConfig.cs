@@ -10,7 +10,7 @@ namespace GarageManager.Data.Configurations
         {
             builder
                 .HasMany(manufacturer => manufacturer.Cars)
-                .WithOne(car => car.Manufacturer)
+                .WithOne(car => car.Make)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder

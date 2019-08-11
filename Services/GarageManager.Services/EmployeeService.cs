@@ -4,7 +4,8 @@ using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.DTO.Employee;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Employee;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,7 +23,7 @@ namespace GarageManager.Services
 
         public EmployeeService(
             IDeletableEntityRepository<GMUser> employeeRepository,
-            UserManager<GMUser> userManager, 
+            UserManager<GMUser> userManager,
             IDateTimeProvider dateTimeProvider)
         {
             this.employeeRepository = employeeRepository;
@@ -30,7 +31,7 @@ namespace GarageManager.Services
             this.dateTimeProvider = dateTimeProvider;
         }
 
-        
+
         public async Task<string> CreateNewEmployeeAsync(
             string firstName,
             string lastName,
@@ -81,24 +82,17 @@ namespace GarageManager.Services
 
                 return employee.Id;
             }
-            catch 
+            catch
             {
                 return null;
             }
-           
+
         }
 
         public Task<List<AllEmployees>> GetAllEmployeesAsync()
         {
             var allEmployees = this.employeeRepository.All()
-                .Select(employee => new AllEmployees
-                {
-                    Id = employee.Id,
-                    FullName = employee.FullName,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    DepartmentName = employee.Department.Name
-                }).ToListAsync();
+                .To<AllEmployees>().ToListAsync();
 
             return allEmployees;
         }
@@ -112,27 +106,17 @@ namespace GarageManager.Services
                 this.ValidateNullOrEmptyString(id);
 
                 var employeeFromDb = await this.employeeRepository.All()
-               .Select(employee => new EditEmployeeDetails
-               {
-                   Id = id,
-                   FirstName = employee.FirstName,
-                   LastName = employee.LastName,
-                   Email = employee.Email,
-                   PhoneNumber = employee.PhoneNumber,
-                   DepartmentId = employee.DepartmentId,
-                   RecruitedOn = employee.RecruitedOn,
-                   CreatedOn = employee.CreatedOn
-               })
+                    .To<EditEmployeeDetails>()
                 .FirstOrDefaultAsync(employee => employee.Id == id);
 
 
                 return employeeFromDb;
             }
-            catch 
+            catch
             {
                 return null;
             }
-            
+
         }
 
         public async Task<EmployeeDetails> GetEmployeeDetailsByIdAsync(string id)
@@ -142,27 +126,17 @@ namespace GarageManager.Services
                 this.ValidateNullOrEmptyString(id);
                 var employeeFromDb = await this.employeeRepository.All()
                 .Where(employee => employee.Id == id)
-                .Select(employee => new EmployeeDetails
-                {
-                    Id = id,
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    Department = employee.Department.Name,
-                    RecruitedOn = employee.RecruitedOn,
-                    CreatedOn = employee.CreatedOn
-                })
+                .To<EmployeeDetails>()
                 .FirstOrDefaultAsync();
 
 
                 return employeeFromDb;
             }
-            catch 
+            catch
             {
                 return null;
             }
-            
+
         }
 
         public async Task<bool> UpdateEmployeeByIdAsync(
@@ -194,7 +168,7 @@ namespace GarageManager.Services
 
                 return true;
             }
-            catch 
+            catch
             {
 
                 return false;
@@ -208,14 +182,14 @@ namespace GarageManager.Services
             {
                 this.ValidateNullOrEmptyString(id);
                 var employeeFromDb = await this.userManager.FindByIdAsync(id);
-               return await this.employeeRepository.SoftDeleteAsync(employeeFromDb);
+                return await this.employeeRepository.SoftDeleteAsync(employeeFromDb);
             }
-            catch 
+            catch
             {
 
                 return default(int);
             }
-           
+
         }
 
         public bool IsAnyEmployee()

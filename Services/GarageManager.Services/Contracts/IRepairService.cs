@@ -1,11 +1,11 @@
-﻿using GarageManager.Services.DTO.Repair;
+﻿using GarageManager.Services.Models.Repair;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services.Contracts
 {
     public interface IRepairService
     {
-        Task<string> CreateRepairService(
+        Task<string> CreateAsync(
             string carId,
             string description,
             double hours,

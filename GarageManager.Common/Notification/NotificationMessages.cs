@@ -27,6 +27,7 @@
         public const string CarAddToServiceFail = "Add Car for Service failed";
         public const string CarServiceCmpletedSuccessfull = "Service was finished successfullly";
         public const string CarServiceNotCompleted = "Service was not finished";
+        public const string CreateCarModelIsRequired = "Car Model is Required";
 
         public const string PartCreateSuccessfull = "Part with number-{0} was added successfully";
         public const string PartEditSuccessfull = "Part was updated successflly";

@@ -23,10 +23,10 @@ namespace GarageManager.Web.Views.Shared.Components.FuelTypes
                     FuelTypes = this.fuelTypeService
                    .GetAllTypesAsync()
                    .Result
-                   .OrderBy(m => m.Type)
+                   .OrderBy(m => m.Name)
                    .Select(m => new SelectListItem
                    {
-                       Text = m.Type,
+                       Text = m.Name,
                        Value = m.Id
                    }).ToList()
                 };

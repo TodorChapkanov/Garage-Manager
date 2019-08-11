@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\GarageManager.Services.Mapping\GarageManager.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\GarageManager.Services\GarageManager.Services.csproj" />
+    <ProjectReference Include="..\..\Web\GarageManager.Web.Models\GarageManager.Web.Models.csproj" />
   </ItemGroup>
 
 </Project>
