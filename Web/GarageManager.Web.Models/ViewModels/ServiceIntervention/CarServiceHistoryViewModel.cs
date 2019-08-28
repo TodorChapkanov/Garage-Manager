@@ -8,6 +8,7 @@ namespace GarageManager.Web.Models.ViewModels.ServiceIntervention
     {
         public string Id { get; set; }
 
+
         public string CarMake { get; set; }
 
         public string CarRegistrtionPlate { get; set; }

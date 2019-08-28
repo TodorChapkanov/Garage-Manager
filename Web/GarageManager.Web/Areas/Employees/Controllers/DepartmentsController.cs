@@ -29,7 +29,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var viewModel = AutoMapper.Mapper.Map<DepartmentCarsList>(result);

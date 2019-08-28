@@ -89,7 +89,7 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = "/Admin/Employees/AllEmployees";
+            returnUrl = "/Identity/Account/Login";
             //TODO constant for the path
             if (ModelState.IsValid)
             {
@@ -113,7 +113,9 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
                         .AllDepartmentsAsync())
                         .FirstOrDefault(department => department.Name == DepartmentConstants.FacilitiesManagement)
                         .Id;
+
                     result = await _userManager.CreateAsync(user, Input.Password);
+
                     await _userManager.AddToRoleAsync(user, RoleConstants.AdministratorRoleName);
                 }
                 else

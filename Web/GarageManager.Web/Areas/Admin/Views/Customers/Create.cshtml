@@ -5,16 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">Create New Customer</h1>
+<h1 class="text-center">Add New Customer</h1>
 
-<hr />
+
 <div class="w-50 mx-auto">
-    <div asp-validation-summary="All" class="text-danger">
-        <div>
-            <form asp-action="Create" method="post">
 
-
+    <div>
+        
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger">
                 <div class="form-group w-75 mx-auto">
+                    <hr />
                     <div class="mx-auto">
                         <label asp-for="FirstName" class="control-label text-dark font-weight-bold"></label>
                     </div>
@@ -45,13 +46,18 @@
                     <input asp-for="PhoneNumber" class="form-control" placeholder="Phone Number..." />
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
+                <hr class="mt-4 w-75"/>
                 <div class="form-group text-center mt-5">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Create" class="btn btn-success" />
+                    <a class="btn btn-secondary ml-5"
+                       asp-action="Index"
+                       asp-controller="Home">Back</a>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

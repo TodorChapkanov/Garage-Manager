@@ -5,38 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1 class="text-center">Edit</h1>
 
-<h4>RepairEditViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container-fluid w-75 mx-auto">
+    <div>
+        <hr />
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group row w-100 mx-auto">
                 <label asp-for="EmployeeFullName" class="control-label"></label>
                 <input asp-for="EmployeeFullName" class="form-control" />
                 <span asp-validation-for="EmployeeFullName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CarId" class="control-label"></label>
-                <input asp-for="CarId" class="form-control" />
-                <span asp-validation-for="CarId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group row w-100 mx-auto">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Hours" class="control-label"></label>
-                <input asp-for="Hours" class="form-control" />
-                <span asp-validation-for="Hours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PricePerHour" class="control-label"></label>
-                <input asp-for="PricePerHour" class="form-control" />
-                <span asp-validation-for="PricePerHour" class="text-danger"></span>
+            <div class="row w-100 mx-auto justify-content-between">
+                <div class="form-group w-45">
+                    <label asp-for="Hours" class="control-label"></label>
+                    <input asp-for="Hours" class="form-control" />
+                    <span asp-validation-for="Hours" class="text-danger"></span>
+                </div>
+                <div class="form-group w-45">
+                    <label asp-for="PricePerHour" class="control-label"></label>
+                    <input asp-for="PricePerHour" class="form-control" />
+                    <span asp-validation-for="PricePerHour" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -44,12 +40,14 @@
                     @Html.DisplayNameFor(model => model.IsFinished)
                 </label>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <hr />
+            <div class="form-group text-center">
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
+<hr />
 
 
 @section Scripts {

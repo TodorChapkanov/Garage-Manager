@@ -1,0 +1,694 @@
+[
+  {
+    "Id": "00205674-d35a-498a-aee2-5c4bb9f9a8bd",
+    "Name": "IVECO"
+  },
+  {
+    "Id": "02b02a48-0436-4539-b691-53ade2d22356",
+    "Name": "Toyota"
+  },
+  {
+    "Id": "06eb49e7-5aba-486c-b84e-37ef8441ae9d",
+    "Name": "Haima"
+  },
+  {
+    "Id": "07ff5590-8e45-4e10-83e9-95a946838fd3",
+    "Name": "Genesis"
+  },
+  {
+    "Id": "0c253184-896b-48b3-b169-471e25fd7e33",
+    "Name": "Haval"
+  },
+  {
+    "Id": "0e45ac5d-f928-4e1f-afd6-b517bbf2021c",
+    "Name": "Ronart"
+  },
+  {
+    "Id": "10443281-7b3a-4d22-813b-83115e3a0380",
+    "Name": "Chery"
+  },
+  {
+    "Id": "10481089-df33-4439-b1c0-4e29cbc277d0",
+    "Name": "Lamborghini"
+  },
+  {
+    "Id": "10fd3d99-dc7b-4084-ac74-c6de68b2bd33",
+    "Name": "Hawtai"
+  },
+  {
+    "Id": "13185197-b7d2-4bfa-a147-354fffbd910b",
+    "Name": "LTI"
+  },
+  {
+    "Id": "13722633-e48b-42f9-b7b8-5ee21e241b3e",
+    "Name": "Ariel"
+  },
+  {
+    "Id": "14c02a8f-81b0-4a5b-b191-d983aec6fab1",
+    "Name": "Fiat"
+  },
+  {
+    "Id": "155d4648-5e6e-4e72-bae8-07ca283d48bb",
+    "Name": "E-Car"
+  },
+  {
+    "Id": "17218203-3c59-4c93-a81a-062527fc92c6",
+    "Name": "Fisker"
+  },
+  {
+    "Id": "177c5afd-4233-4d10-b4ce-64887ca70fed",
+    "Name": "Marussia"
+  },
+  {
+    "Id": "183e3eb0-fedf-419e-a103-71222e4ffae2",
+    "Name": "Invicta"
+  },
+  {
+    "Id": "1886d036-7c85-4cb2-b428-63dd6494243f",
+    "Name": "Lucid"
+  },
+  {
+    "Id": "19bdb5ae-b06b-4de4-a472-35af19deb085",
+    "Name": "MG"
+  },
+  {
+    "Id": "19c80c17-0c84-484b-9b83-59e5e4bed901",
+    "Name": "Lifan"
+  },
+  {
+    "Id": "1a651502-8349-4b6c-bccc-ec6a366028ff",
+    "Name": "Ecomotors"
+  },
+  {
+    "Id": "1c46d435-5577-4523-bc56-37947d08b623",
+    "Name": "Xin Kai"
+  },
+  {
+    "Id": "1d77749a-b193-44ab-aeb2-a6fc0275ff40",
+    "Name": "Changan"
+  },
+  {
+    "Id": "1f2c1ee7-e902-4ce5-af78-db989fa87e6b",
+    "Name": "GMC"
+  },
+  {
+    "Id": "20684ca8-f4b8-4bf9-b2a9-c3a2163eed92",
+    "Name": "Rezvani"
+  },
+  {
+    "Id": "214eebef-8d1a-4557-9154-60144f656a60",
+    "Name": "Tazzari"
+  },
+  {
+    "Id": "21dba530-e719-455c-8af1-14b1f75309a8",
+    "Name": "Brilliance"
+  },
+  {
+    "Id": "23c344a0-d700-41e9-91a5-3cd4a9d9ef0c",
+    "Name": "Volvo"
+  },
+  {
+    "Id": "256b72ba-6e7d-428b-bced-c5016ee2fea6",
+    "Name": "Hummer"
+  },
+  {
+    "Id": "2bc1e965-e4a0-4148-ba69-285bb60fb397",
+    "Name": "W Motors"
+  },
+  {
+    "Id": "2ccadfdd-4823-4132-9942-e216de777f5f",
+    "Name": "Dacia"
+  },
+  {
+    "Id": "2cd71503-5bcd-4f65-baf1-14e1b01d845b",
+    "Name": "Aston Martin"
+  },
+  {
+    "Id": "2dec248f-e55c-4600-9684-f82040437771",
+    "Name": "Lotus"
+  },
+  {
+    "Id": "2e3d2ec9-e633-48c4-9414-02d86f7179bf",
+    "Name": "SsangYong"
+  },
+  {
+    "Id": "311de51c-da1f-44e2-9ea6-e892736a8ef1",
+    "Name": "Mazda"
+  },
+  {
+    "Id": "32c777b4-932a-41aa-b733-d7fa0dcc1008",
+    "Name": "Saturn"
+  },
+  {
+    "Id": "330b2680-a64b-4b8b-b769-27f27749d6ba",
+    "Name": "Rimac"
+  },
+  {
+    "Id": "34766825-53a8-4663-b280-6a7a8ef4d695",
+    "Name": "Opel"
+  },
+  {
+    "Id": "34bbe093-f658-4a12-a1ba-b59659436228",
+    "Name": "Smart"
+  },
+  {
+    "Id": "356e1a07-d2d2-4e49-b14d-7381e3a493e3",
+    "Name": "Datsun"
+  },
+  {
+    "Id": "35c14e38-3759-4034-8103-17c1d0a3c45e",
+    "Name": "Morgan"
+  },
+  {
+    "Id": "362f25ad-010a-4ee5-8e60-3a7e0d2a3e03",
+    "Name": "HuangHai"
+  },
+  {
+    "Id": "3685ab0b-33d1-4903-bc78-1e0051a97beb",
+    "Name": "TATA"
+  },
+  {
+    "Id": "389c609f-88a4-4cf5-83fa-254494750ef5",
+    "Name": "Infiniti"
+  },
+  {
+    "Id": "3afbfd78-37b2-4d03-a253-4ecf64e8a7b5",
+    "Name": "Kombat"
+  },
+  {
+    "Id": "3d95e465-7b8e-47cf-99e8-f2e6f90828a0",
+    "Name": "Proton"
+  },
+  {
+    "Id": "3e62ca58-2199-4c6b-b3be-e24affe9f916",
+    "Name": "ChangFeng"
+  },
+  {
+    "Id": "3f6d7226-fac9-4d44-b348-658adbc445a1",
+    "Name": "Bugatti"
+  },
+  {
+    "Id": "40c5b314-71b6-4f7d-93f3-e445ede15e3b",
+    "Name": "BYD"
+  },
+  {
+    "Id": "41f521a5-bf5f-44fe-8cb1-1e41ceb3ddef",
+    "Name": "Maybach"
+  },
+  {
+    "Id": "4391872d-6c69-4727-9016-182f58949458",
+    "Name": "Landwind"
+  },
+  {
+    "Id": "46cc94c1-96d7-4543-a3c4-d491988363ed",
+    "Name": "Luxgen"
+  },
+  {
+    "Id": "49d0c5c3-edca-4af4-8f5c-78fd3c8ed045",
+    "Name": "Bentley"
+  },
+  {
+    "Id": "4a69ad3b-7286-4123-bf65-fcd4d56f07b8",
+    "Name": "Mitsuoka"
+  },
+  {
+    "Id": "4d85fab3-6e4a-46b8-a76b-b3cb5afbf108",
+    "Name": "Piaggio"
+  },
+  {
+    "Id": "4ee6c02f-120c-4d13-88f2-e3123e6a7a55",
+    "Name": "Zibar"
+  },
+  {
+    "Id": "50cf2df6-8aaf-491a-bd63-77d627eb2fb1",
+    "Name": "Tesla"
+  },
+  {
+    "Id": "5286a8dc-ae0c-45e4-9cca-d1ab9e339b8d",
+    "Name": "Shanghai Maple"
+  },
+  {
+    "Id": "54ee342d-5260-4e91-a6b3-310715065bb3",
+    "Name": "McLaren"
+  },
+  {
+    "Id": "5700d1b1-1b35-490e-9055-5dc414f6e24f",
+    "Name": "Wiesmann"
+  },
+  {
+    "Id": "5848086d-db5d-4dab-938a-ceeb96cff664",
+    "Name": "Bilenkin"
+  },
+  {
+    "Id": "589f1d95-b874-44c1-9384-84d19e168c2d",
+    "Name": "Alpine"
+  },
+  {
+    "Id": "58fc5b57-330e-446f-be55-a6a11e237d49",
+    "Name": "Microcar"
+  },
+  {
+    "Id": "595b3f88-8f37-4c94-8f31-4980a3290456",
+    "Name": "Honda"
+  },
+  {
+    "Id": "5aa91d17-cb4f-4418-aedc-edb01dae43ac",
+    "Name": "Derways"
+  },
+  {
+    "Id": "5b74871c-cd56-4264-872e-3cf8a781c40d",
+    "Name": "Ferrari"
+  },
+  {
+    "Id": "644870e8-4fa8-435f-8239-2ba144a9c168",
+    "Name": "Beijing"
+  },
+  {
+    "Id": "650dd48c-6055-4ef5-a6ce-fdb2b8004110",
+    "Name": "Pontiac"
+  },
+  {
+    "Id": "68b81e8d-38c9-4b25-843c-40464738f496",
+    "Name": "Maserati"
+  },
+  {
+    "Id": "68e7f8c1-ae77-491b-9cdf-bd1ff34a714e",
+    "Name": "Perodua"
+  },
+  {
+    "Id": "69028d61-d882-4d03-8248-3baa2bbbbe8e",
+    "Name": "Lancia"
+  },
+  {
+    "Id": "69a0d2b7-7a1c-4b9c-a71a-00c521c9f31d",
+    "Name": "Ultima"
+  },
+  {
+    "Id": "69e3fd0f-f18c-45a7-9b61-32b2781fd652",
+    "Name": "Subaru"
+  },
+  {
+    "Id": "6a70676e-0388-4237-86c7-65ba9a31e13b",
+    "Name": "Tramontana"
+  },
+  {
+    "Id": "6ddef8be-f1d0-4b01-ae04-9aff95e4e0ac",
+    "Name": "UAZ"
+  },
+  {
+    "Id": "6e115cca-9825-445e-905a-225d0011fff7",
+    "Name": "Daimler"
+  },
+  {
+    "Id": "6f581d7e-2891-4f4f-bbde-d4a93fea8642",
+    "Name": "Citroen"
+  },
+  {
+    "Id": "70b89f75-adf7-4e1f-9095-5764bc1a2f74",
+    "Name": "Spyker"
+  },
+  {
+    "Id": "72cc10f3-daa0-40c6-9f4e-cdad4277b13a",
+    "Name": "Great Wall"
+  },
+  {
+    "Id": "73f94dd1-9da3-413f-9d2b-2b7f0486d625",
+    "Name": "Scion"
+  },
+  {
+    "Id": "75849315-0706-4ed8-bea4-2c7fcac21489",
+    "Name": "Suzuki"
+  },
+  {
+    "Id": "779d9465-ca02-4332-bae3-2815f90ff72a",
+    "Name": "Donkervoort"
+  },
+  {
+    "Id": "7888c577-b80e-466a-a340-1f1d9b91541b",
+    "Name": "Foton"
+  },
+  {
+    "Id": "79eb1543-8244-48e1-908a-7778574b4cd7",
+    "Name": "AM General"
+  },
+  {
+    "Id": "7c37d988-d24e-45d4-aca0-0fdc66615efa",
+    "Name": "Mahindra"
+  },
+  {
+    "Id": "7f828726-e39d-48ba-b140-cbcffb570f89",
+    "Name": "Cadillac"
+  },
+  {
+    "Id": "819bf79a-6640-459d-878b-e798edff6b11",
+    "Name": "GAZ"
+  },
+  {
+    "Id": "8361f87b-18ee-4fac-96e3-5f8fd2c6123d",
+    "Name": "Zotye"
+  },
+  {
+    "Id": "83d16608-e410-44bc-986e-13ac3e40b61c",
+    "Name": "SEAT"
+  },
+  {
+    "Id": "84666b05-b003-46f2-8b5b-34cf63496380",
+    "Name": "Iran Khodro"
+  },
+  {
+    "Id": "88242ad7-6c82-4609-9f14-04f7f7c5ff38",
+    "Name": "Chrysler"
+  },
+  {
+    "Id": "88629d81-57ca-43ce-a44a-08d351fd95d5",
+    "Name": "Rolls-Royce"
+  },
+  {
+    "Id": "8a5f841d-f86a-4f7e-9cd2-c5ff5104bac8",
+    "Name": "MINI"
+  },
+  {
+    "Id": "8adcfe2e-2baf-4545-b88a-d1fd96c97d9e",
+    "Name": "Hafei"
+  },
+  {
+    "Id": "8d78b1b2-490e-4082-829d-47dc3e93406b",
+    "Name": "Daewoo"
+  },
+  {
+    "Id": "8e27171b-9aa7-4082-930f-3ae388187d2c",
+    "Name": "Daihatsu"
+  },
+  {
+    "Id": "8e632fa6-8afd-4c1e-8161-76b5c4257c2a",
+    "Name": "AC"
+  },
+  {
+    "Id": "8ee43737-d062-4d88-90c1-3a28a6d36632",
+    "Name": "Skoda"
+  },
+  {
+    "Id": "8f57b136-b51b-4a97-9818-3023ca41ec02",
+    "Name": "Caterham"
+  },
+  {
+    "Id": "8fae19da-8f72-4fb5-9d40-8ca95caae4ca",
+    "Name": "Borgward"
+  },
+  {
+    "Id": "905f0904-5f99-4106-8df8-5f7378bbfcfc",
+    "Name": "Buick"
+  },
+  {
+    "Id": "9194b953-0558-496d-9ba5-b782c29dd336",
+    "Name": "ZX"
+  },
+  {
+    "Id": "91a568a5-6cc4-4031-a92f-3f95465820d1",
+    "Name": "Mitsubishi"
+  },
+  {
+    "Id": "93a8b94d-424e-4dae-b892-9aaf90a32e59",
+    "Name": "Liebao Motor"
+  },
+  {
+    "Id": "9604dfb1-6583-47e9-9f96-b8a4111e44d2",
+    "Name": "Jinbei"
+  },
+  {
+    "Id": "963548b9-5235-447e-81ac-ee61c43b7c91",
+    "Name": "Geely"
+  },
+  {
+    "Id": "9ad726df-3fbe-4dc1-a830-1a48b443f1c4",
+    "Name": "PUCH"
+  },
+  {
+    "Id": "9d57f8a8-f924-413e-8e8a-dfaa13d7c93d",
+    "Name": "Renault Samsung"
+  },
+  {
+    "Id": "9f49b15c-e105-49a2-bd71-7607c435f852",
+    "Name": "Peugeot"
+  },
+  {
+    "Id": "a07e4d1d-0899-41b9-914e-c1aebc003621",
+    "Name": "Tianma"
+  },
+  {
+    "Id": "a0f006e7-6207-4b14-b6f9-caf0f724a3eb",
+    "Name": "Santana"
+  },
+  {
+    "Id": "a66c5dc2-f532-41d6-bcee-d5af30599012",
+    "Name": "FAW"
+  },
+  {
+    "Id": "a90381f4-56aa-4c45-99dc-22346ed3bb1f",
+    "Name": "Lincoln"
+  },
+  {
+    "Id": "aa311e15-13ec-4310-b437-63e939a7d828",
+    "Name": "Soueast"
+  },
+  {
+    "Id": "acf4fa9c-78fc-4751-ae5e-58cced695daf",
+    "Name": "Ravon"
+  },
+  {
+    "Id": "ad8b2b19-84d8-432c-b66f-ca52eed2b297",
+    "Name": "Hyundai"
+  },
+  {
+    "Id": "b32970fd-c6ff-4b5f-b9ca-1df5ef065c9f",
+    "Name": "Marlin"
+  },
+  {
+    "Id": "b4231ec5-38f6-49a3-ab06-0cd7d317d319",
+    "Name": "TagAZ"
+  },
+  {
+    "Id": "b43b29a9-866d-4d88-b02d-1b114bdc6d3a",
+    "Name": "Dodge"
+  },
+  {
+    "Id": "b5a7ddcd-46af-4470-a0ea-ff57f8aace5e",
+    "Name": "DS"
+  },
+  {
+    "Id": "b6c521f7-196b-4e8a-ae22-77b8005cfa92",
+    "Name": "BMW"
+  },
+  {
+    "Id": "b76437ce-50b6-470a-99f2-8aa6af492aa5",
+    "Name": "Alfa Romeo"
+  },
+  {
+    "Id": "b888e63e-432c-4a41-886a-b0522d63490e",
+    "Name": "Bufori"
+  },
+  {
+    "Id": "ba930a52-2bcf-45e4-8752-9878caab2ece",
+    "Name": "Pagani"
+  },
+  {
+    "Id": "bc02b10f-9445-45a2-9895-f480497eefbc",
+    "Name": "Brabus"
+  },
+  {
+    "Id": "be0f166b-3c26-44be-9bc3-dd8f26954816",
+    "Name": "ShuangHuan"
+  },
+  {
+    "Id": "bf41e991-1131-4d81-b303-5721dc8ccc85",
+    "Name": "Ford"
+  },
+  {
+    "Id": "c0c2ed5d-3eb3-446b-a587-c28d9d5247e3",
+    "Name": "Panoz"
+  },
+  {
+    "Id": "c1a9c207-b6e3-4ecc-a497-5c8cb74e3f9d",
+    "Name": "Jaguar"
+  },
+  {
+    "Id": "c31d0250-b2a8-40ab-89b6-73d720b6790e",
+    "Name": "Nissan"
+  },
+  {
+    "Id": "c3971358-82c7-4881-9ecc-eaab0580c476",
+    "Name": "Zastava"
+  },
+  {
+    "Id": "c49c2b77-4aa9-49b4-a517-62b95953b90e",
+    "Name": "ZAZ"
+  },
+  {
+    "Id": "c5117863-8cee-4645-b769-714f2f262f9f",
+    "Name": "Bajaj"
+  },
+  {
+    "Id": "c5fb28b0-9e14-47d8-bd6d-c2c596fbc395",
+    "Name": "Land Rover"
+  },
+  {
+    "Id": "c71181e3-f0b5-4582-9f55-2136aff9a0ce",
+    "Name": "Zenos"
+  },
+  {
+    "Id": "c8f02bff-be7e-4c21-a997-a82cade70a28",
+    "Name": "JMC"
+  },
+  {
+    "Id": "ccadb653-ebb9-4853-aa5e-efe7e7d9ff77",
+    "Name": "Think"
+  },
+  {
+    "Id": "cd21ca54-8f5a-418b-8a9d-7638db9857f4",
+    "Name": "Noble"
+  },
+  {
+    "Id": "cdc80d81-3c9e-4f16-abef-fcd466be500c",
+    "Name": "Izh"
+  },
+  {
+    "Id": "cf259200-2168-44f6-9cbe-a1da81f82c64",
+    "Name": "VAZ (Lada)"
+  },
+  {
+    "Id": "d187a531-c710-4495-bb5c-d158f7d0aad0",
+    "Name": "Maruti"
+  },
+  {
+    "Id": "d1bd9996-44d1-4fba-a179-2c064dafb537",
+    "Name": "Coggiola"
+  },
+  {
+    "Id": "d31cdc50-1d05-476d-9aea-9fe14dd18fcf",
+    "Name": "JAC"
+  },
+  {
+    "Id": "d58663a8-1a23-4cbd-a1ac-5f11d828f706",
+    "Name": "KTM"
+  },
+  {
+    "Id": "d81d4572-3d43-4083-81f4-11dcea1fd1d5",
+    "Name": "Mercury"
+  },
+  {
+    "Id": "daff5fdd-b27e-4c5a-84d8-6f008cdebd9f",
+    "Name": "Gordon"
+  },
+  {
+    "Id": "dcdcf034-a1c6-4e27-8972-ebb59c9d2b07",
+    "Name": "Gonow"
+  },
+  {
+    "Id": "ddbbfe66-b3e0-46d8-b692-b4df7406f33c",
+    "Name": "Yo-mobile"
+  },
+  {
+    "Id": "de3d4ee5-78b5-41f9-8362-086032c1b98a",
+    "Name": "Vauxhall"
+  },
+  {
+    "Id": "df50fb40-52db-40f2-a20b-8a93dc967e62",
+    "Name": "Porsche"
+  },
+  {
+    "Id": "e010be8c-1270-4b16-8e46-ca172ad9f83c",
+    "Name": "Audi"
+  },
+  {
+    "Id": "e324cfc2-ca55-4290-8a98-d614b3301011",
+    "Name": "Hindustan"
+  },
+  {
+    "Id": "e3a23304-a5f5-4f66-9c3a-ec7490fbc764",
+    "Name": "Vortex"
+  },
+  {
+    "Id": "e46ed379-206c-461a-87a3-408ca7998273",
+    "Name": "Holden"
+  },
+  {
+    "Id": "e4a6fc12-599b-491c-9b1b-857a49967138",
+    "Name": "Chevrolet"
+  },
+  {
+    "Id": "e95bab32-1911-408e-b846-41bed318d406",
+    "Name": "Koenigsegg"
+  },
+  {
+    "Id": "eae34886-31be-4615-bc01-a80723d8dd56",
+    "Name": "Volkswagen"
+  },
+  {
+    "Id": "eae3b358-72a7-4142-992c-73d0f7c7b42a",
+    "Name": "Kia"
+  },
+  {
+    "Id": "eb52a9e5-c2fd-47d2-a12d-d1466153d7e2",
+    "Name": "Bronto"
+  },
+  {
+    "Id": "ed6ecfd5-9937-4b18-8657-66ff17ba9551",
+    "Name": "Westfield"
+  },
+  {
+    "Id": "edcae123-7e98-4f7b-bbb0-d76306ea4d2c",
+    "Name": "Acura"
+  },
+  {
+    "Id": "ee432742-699d-4ffc-af14-4a08786cde99",
+    "Name": "PGO"
+  },
+  {
+    "Id": "eeb274f8-38af-47c5-8d1e-bce37166c0cd",
+    "Name": "Jeep"
+  },
+  {
+    "Id": "f05c93a2-86b0-48c2-8f10-e9b83c66435c",
+    "Name": "DongFeng"
+  },
+  {
+    "Id": "f2070ff6-7dd1-42e3-95c2-d8f992349b17",
+    "Name": "Saab"
+  },
+  {
+    "Id": "f3113047-cd76-4253-9202-7d61b65aece5",
+    "Name": "Mercedes-Benz"
+  },
+  {
+    "Id": "f4c9c3ec-be25-4f67-a604-ab5132543458",
+    "Name": "Bristol"
+  },
+  {
+    "Id": "f5c1d901-9164-453f-a0eb-f31ad5ab7a6d",
+    "Name": "Renault"
+  },
+  {
+    "Id": "f77c06ec-9835-49e1-a08c-9fb6b8a8e23e",
+    "Name": "Byvin"
+  },
+  {
+    "Id": "f9410f25-7b92-4ef3-a44f-d1550773451e",
+    "Name": "Zenvo"
+  },
+  {
+    "Id": "f9d7aa29-6791-40f0-ab49-03c6378d67b8",
+    "Name": "Qoros"
+  },
+  {
+    "Id": "fcf4360f-ef5c-4f0c-80da-2d5eb4fc76a3",
+    "Name": "Fuqi"
+  },
+  {
+    "Id": "fdda3ac0-16db-45de-9950-13429f9971e3",
+    "Name": "Lexus"
+  },
+  {
+    "Id": "ffed9373-9b26-47d7-82ca-8564db8fbd20",
+    "Name": "Isuzu"
+  }
+]

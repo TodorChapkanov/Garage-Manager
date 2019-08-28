@@ -1,18 +1,18 @@
 ﻿using GarageManager.Web.Models.ViewModels.Car;
+using GarageManager.Web.Models.ViewModels.Page;
 using System.Collections.Generic;
 
 namespace GarageManager.Web.Models.ViewModels.Customer
 {
     public class CustomerCarViewModel
     {
-        public CustomerCarViewModel()
-        {
-            this.CustomerCars = new List<CustomerCarDetailsViewModel>();
-        }
+       
         public string CustomerId { get; set; }
 
         public bool IsInService { get; set; }
 
-        public ICollection<CustomerCarDetailsViewModel> CustomerCars { get; set; }
+        public string SearchTerm { get; set; }
+
+        public PaginatedList<CustomerCarDetailsViewModel> CustomerCars { get; set; }
     }
 }

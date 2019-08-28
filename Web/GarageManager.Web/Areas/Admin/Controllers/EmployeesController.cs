@@ -1,15 +1,14 @@
-﻿using GarageManager.Web.Areas.Admin.Controllers;
-using GarageManager.Common;
+﻿using GarageManager.Common.GlobalConstant;
+using GarageManager.Common.Notification;
 using GarageManager.Services.Contracts;
 using GarageManager.Web.Models.BindingModels.Employee;
 using GarageManager.Web.Models.ViewModels.Employee;
-using Microsoft.AspNetCore.Identity;
+using GarageManager.Web.Models.ViewModels.Page;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using GarageManager.Common.Notification;
-using GarageManager.Common.GlobalConstant;
 
 namespace GarageManager.Web.Areas.Admin.Controllers
 {
@@ -24,12 +23,17 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             this.departmentService = departmentService;
         }
 
+
         public async Task<IActionResult> AllEmployees()
         {
             var employeesModel = (await this.employeesService.GetAllEmployeesAsync())
-                .Select(employee => AutoMapper.Mapper.Map<AllEmployeesViewModel>(employee));
+               .Select(employee => AutoMapper.Mapper.Map<AllEmployeesViewModel>(employee));
 
-            return this.View(employeesModel);
+            var model = new PaginatedList<AllEmployeesViewModel>(employeesModel);
+            
+           
+
+            return this.View(model);
         }
         public IActionResult Create()
         {
@@ -65,21 +69,21 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
 
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             this.ShowNotification(string.Format(NotificationMessages.EmployeeCreateSuccessfull,
-                model.FirsName, model.LastName,
-                NotificationType.Success));
+                model.FirsName, model.LastName),
+                NotificationType.Success);
             
-            return this.Redirect($"/Admin/Employees/Details/{employeeId}");
+            return this.RedirectToAction(nameof(Details), employeeId);
         }
 
         public async Task<IActionResult> Edit(string id)
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/Employees/AllEmployees");
+                return this.RedirectToAction(nameof(AllEmployees));
             }
           var employeeFromDb = await this.employeesService.EditEmployeeDetailsByIdAsync(id);
 
@@ -88,7 +92,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 this.ShowNotification(NotificationMessages.EmployeeNotExist,
                     NotificationType.Warning);
 
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var employeeModel = new EmployeeEditViewModel
@@ -113,7 +117,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.Redirect($"/Admin/Employees/Edit/{model.Id}");
+                return this.RedirectToAction(nameof(Edit),model.Id);
             }
 
           var result = await this.employeesService.UpdateEmployeeByIdAsync(
@@ -130,20 +134,20 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation
                     , NotificationType.Error);
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             this.ShowNotification(NotificationMessages.EmployeeEditSuccessfull,
                 NotificationType.Success);
 
-            return this.Redirect($"/Admin/Employees/Details/{model.Id}");
+            return this.RedirectToAction(nameof(Details), model.Id);
         }
 
         public async Task<IActionResult> Details(string id )
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/Employees/AllEmployees");
+                return this.RedirectToAction(nameof(AllEmployees));
             }
             var employeeFromDb = await this.employeesService.GetEmployeeDetailsByIdAsync(id);
 
@@ -151,7 +155,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
                 this.ShowNotification(NotificationMessages.EmployeeNotExist,
                     NotificationType.Warning);
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
             var employeeModel = AutoMapper.Mapper.Map<EmployeeDetailsViewModel>(employeeFromDb);
            
@@ -162,22 +166,29 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!this.IsValidId(id)) 
             {
-                return this.Redirect(RedirectUrl_s.AdminAllEmnployees);
+                return this.Redirect(WebConstants.AdminAllEmnployees);
             }
+            if (id == this.User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                this.ShowNotification(NotificationMessages.DeleteCurentUserErrorMessage,
+                    NotificationType.Error);
+                return this.Redirect(WebConstants.AdminAllEmnployees);
+            }
+
             var result = await this.employeesService.DeleteEmployeeByIdAsync(id);
 
             if (result == default(int))
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
-                //TODO Chek  the action redirect
+
                 return this.RedirectToAction(nameof(Edit), id);
             }
 
             this.ShowNotification(NotificationMessages.EmployeeDeleteSuccessfull,
                    NotificationType.Warning);
             
-            return this.Redirect(RedirectUrl_s.AdminAllEmnployees);
+            return this.Redirect(WebConstants.AdminAllEmnployees);
         }
     }
 }

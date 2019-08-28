@@ -1,6 +1,6 @@
-﻿using GarageManager.Web.Views.Shared.Components.Models;
-using GarageManager.Services;
+﻿using GarageManager.Common.GlobalConstant;
 using GarageManager.Services.Contracts;
+using GarageManager.Web.Views.Shared.Components.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace GarageManager.Web.Views.Shared.Components.Transmissions
                }).ToList()
             };
 
-            return this.View("Default", transmissions);
+            return this.View(WebConstants.ViewComponentDefault, transmissions);
         }
     }
 }

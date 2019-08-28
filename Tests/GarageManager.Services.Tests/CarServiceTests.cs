@@ -48,7 +48,7 @@ namespace GarageManager.Services.Tests
         public async Task GetAllCarsByCustomerIdAsyncShouldReturnCustomerCarsWithCorrectId()
         {
             //Act
-            var result = await this.carService.GetAllCarsByCustomerIdAsync(SampleCustomerId);
+            var result = await this.carService.GetCarsByCustomerIdAsync(SampleCustomerId,1, null);
 
             //Assert
             result
@@ -73,10 +73,10 @@ namespace GarageManager.Services.Tests
         public async Task GetAllCarsByCustomerIdAsyncShouldReturnNullIfNotHaveCarWithCustomerId()
         {
             //Arrange
-            var customerId = "100";
+            var customerId = "10000000";
 
             //Act
-            var result = await this.carService.GetAllCarsByCustomerIdAsync(customerId);
+            var result = await this.carService.GetCarsByCustomerIdAsync(customerId,1,null);
 
             //Assert
             result
@@ -91,7 +91,7 @@ namespace GarageManager.Services.Tests
         public async Task GetAllCarsByCustomerIdShouldThrowExceptionIfIdIsInvalidString(string id)
         {
             //Act
-            var result = await this.carService.GetAllCarsByCustomerIdAsync(id);
+            var result = await this.carService.GetCarsByCustomerIdAsync(id,2, null);
 
             //Assert
             result
@@ -1022,6 +1022,7 @@ namespace GarageManager.Services.Tests
         {
             var repository = new Mock<IDeletableEntityRepository<Car>>();
             repository.Setup(all => all.All()).Returns(testCarList.AsQueryable().BuildMockDbQuery().Object);
+            repository.Setup(all => all.AllAsNoTracking()).Returns(testCarList.AsQueryable().BuildMockDbQuery().Object);
 
             repository.Setup(getById => getById
             .GetEntityByKeyAsync(It.IsAny<string>()))
@@ -1036,8 +1037,6 @@ namespace GarageManager.Services.Tests
                 }
                 return 0;
             });
-
-            repository.Setup(car => car.SavaChangesAsync()).ReturnsAsync(1);
 
             repository.Setup(car => car.CreateAsync(It.IsAny<Car>())).ReturnsAsync(
                 (Car target) =>

@@ -3,6 +3,7 @@
     public class NotificationMessages
     {
         public const string InvalidOperation = "Invalid operation!";
+        public const string DeleteCurentUserErrorMessage = "You cannot delete yourself";
 
         public const string CarCreatedSuccessfull = "Car with registarion plate {0} was added successfully";
         public const string CarCreateFail = "Adding a new car is failed";
@@ -16,6 +17,7 @@
         public const string CustomerDeleteSuccessfull = "Customer was delete successfully";
         public const string CustomerOrderCompletedSuccessfully = "The order was completed successfully";
         public const string CustomerNotExist = "The customer does not exist";
+        public const string InvalidCustomerEmail = "Customer with Email {0} already exist";
 
         public const string EmailExist = "This email is already registered";
         public const string EmployeeCreateSuccessfull = "Employee {0} {1} is added successfully";

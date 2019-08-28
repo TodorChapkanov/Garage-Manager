@@ -10,14 +10,15 @@ address = system.args[1];
 output = system.args[2];
 
 page.viewportSize = { width: 800, height: 600 };
-
 page.paperSize = {
     format: system.args[3],
+    orientation: system.args[4],
     margin: '0.5cm',
+    float: 'left',
     footer: {
         height: "0.5cm",
         contents: phantom.callback(function (pageNum, numPages) {
-            return "<span style='float:right; font-family: sans-serif; font-size: 10px; font-weight: 400;'>" + pageNum + " / " + numPages + "</span>";
+            return "<span style='float:rigth; font-family: sans-serif; font-size: 10px; font-weight: 400;'>" + pageNum + " / " + numPages + "</span>";
         })
     }
 };

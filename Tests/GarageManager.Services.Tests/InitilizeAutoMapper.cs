@@ -14,7 +14,7 @@ namespace GarageManager.Services.Tests
         {
             AutoMapperConfig.RegisterMappings(
                typeof(CreateCarViewModel).GetTypeInfo().Assembly,
-               typeof(CustomerDetail).GetTypeInfo().Assembly);
+               typeof(CustomerDetails).GetTypeInfo().Assembly);
 
         }
     }

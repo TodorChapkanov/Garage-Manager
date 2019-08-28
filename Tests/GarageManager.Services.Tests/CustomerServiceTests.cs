@@ -96,7 +96,7 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .Be(0);
+                .Be(null);
         }
 
         [Theory]
@@ -116,7 +116,7 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .Be(0);
+                .Be(null);
         }
 
         [Theory]
@@ -135,7 +135,7 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .Be(0);
+                .Be(null);
         }
 
         [Theory]
@@ -154,7 +154,7 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .Be(0);
+                .Be(null);
         }
         #endregion
 
@@ -163,7 +163,7 @@ namespace GarageManager.Services.Tests
         public async Task GetAllCustomersDetailsAsyncShouldReturnCorectCountOfCustomersWithCorectDetails()
         {
             //Act
-            var result = await this.customerService.GetAllCustomersDetailsAsync();
+            var result = await this.customerService.GetAllCustomersDetailsAsync(1,null);
 
             //Assert
             var actualCustomerCount = this.GetTestCustomerLis().Count();
@@ -174,9 +174,9 @@ namespace GarageManager.Services.Tests
             result
                 .First(customer => customer.Id == SampleCustomerId)
                 .Should()
-                .Match<CustomerDetail>(customer => customer.FullName == $"{SampleCustomerFirstName} {SampleCustomerLastName}")
+                .Match<CustomerDetails>(customer => customer.FullName == $"{SampleCustomerFirstName} {SampleCustomerLastName}")
                 .And
-                .Match<CustomerDetail>(customer => customer.Email == SampleCustomerEmail); ;
+                .Match<CustomerDetails>(customer => customer.Email == SampleCustomerEmail); ;
         }
         #endregion
 
@@ -231,7 +231,7 @@ namespace GarageManager.Services.Tests
                 .All()
                 .FirstAsync(customer => customer.Id == SampleCustomerId);
             var actualCarsCount = await this.carService.Object
-                .GetAllCarsByCustomerIdAsync(SampleCustomerId);
+                .GetCarsByCustomerIdAsync(SampleCustomerId,2, null);
 
             result
                 .Should()
@@ -410,6 +410,8 @@ namespace GarageManager.Services.Tests
             var repository = new Mock<IDeletableEntityRepository<Customer>>();
             repository.Setup(all => all.All()).Returns(testCustomerList.AsQueryable().BuildMockDbQuery().Object);
 
+            repository.Setup(all => all.AllAsNoTracking()).Returns(testCustomerList.AsQueryable().BuildMockDbQuery().Object);
+
             repository.Setup(getById => getById
             .GetEntityByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync((string id) => testCustomerList.Where(x => x.Id == id).Single());
@@ -464,7 +466,7 @@ namespace GarageManager.Services.Tests
         {
             var testCarList = this.GetTestCarList();
             var carService = new Mock<ICarService>();
-             carService.Setup(getAll => getAll.GetAllCarsByCustomerIdAsync(It.IsAny<string>())).ReturnsAsync((string carId) => testCarList.Where(car => car.CustomerId == carId).Select(car => new CustomerCarListDetails
+             carService.Setup(getAll => getAll.GetCarsByCustomerIdAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync((string carId, int page, string searchTerm) => testCarList.Where(car => car.CustomerId == carId).Select(car => new CustomerCarListDetails
             {
                 Id = car.Id
             }));

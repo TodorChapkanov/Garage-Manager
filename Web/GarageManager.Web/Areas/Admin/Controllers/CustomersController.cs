@@ -1,20 +1,20 @@
-﻿using GarageManager.Common;
-using GarageManager.Common.GlobalConstant;
+﻿using GarageManager.Common.GlobalConstant;
 using GarageManager.Common.Notification;
 using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Extensions.PDFConverter.HtmlToPDF;
 using GarageManager.Extensions.PDFConverter.ViewRender;
 using GarageManager.Services.Contracts;
-using GarageManager.Web.Areas.Admin.Controllers;
 using GarageManager.Web.Models.BindingModels;
 using GarageManager.Web.Models.ViewModels.Customer;
 using GarageManager.Web.Models.ViewModels.Invoice;
+using GarageManager.Web.Models.ViewModels.Page;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GarageManager.Web.Areas.User.Controllers
+namespace GarageManager.Web.Areas.Admin.Controllers
 {
     public class CustomersController : BaseAdminController
     {
@@ -44,6 +44,8 @@ namespace GarageManager.Web.Areas.User.Controllers
             this.environment = environment;
             this.dateTimeProvider = dateTimeProvider;
         }
+        
+        public static int CurrentPage { get; private set; }
 
         [HttpGet]
         public IActionResult Create()
@@ -63,38 +65,69 @@ namespace GarageManager.Web.Areas.User.Controllers
             var result = await this.customerService
                  .CreateAsync(model.FirstName, model.LastName, model.Email, model.PhoneNumber);
 
-            if (result == default(int))
+            if (result == CustomerCnstants.InvalidCustomerEmailCode)
+            {
+                this.ShowNotification(string.Format(NotificationMessages.InvalidCustomerEmail,model.Email),
+                    NotificationType.Warning);
+                return this.View(model);
+            }
+            if (result == null)
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Warning);
-                return this.Redirect("/Admin/Customers/AllCustomers");
+                return this.RedirectToAction(nameof(AllCustomers));
             }
 
             this.ShowNotification(string.Format(
                     NotificationMessages.CustomerCreateSuccessfull, model.FirstName, model.LastName),
                     NotificationType.Success);
-            return this.Redirect("/Admin/Customers/AllCustomers");
+            return this.Redirect(string.Format(WebConstants.AdminCarsCarsByCustomerId,result));
         }
 
 
-        public async Task<IActionResult> AllCustomers()
+        public async Task<IActionResult> AllCustomers(string searchTerm)
         {
-            var result = (await this.customerService.GetAllCustomersDetailsAsync())
+            var watch = new Stopwatch();
+            watch.Start();
+            CurrentPage = 1;
+            var result = (await this.customerService.GetAllCustomersDetailsAsync(CurrentPage++, searchTerm))
                 .Select(details => new AllCustomersDetailsViewModel
                 {
                     Id = details.Id,
-                    FullName = details.FullName,
-                    Email = details.Email
-                }).ToList();
-
-            return this.View(result);
+                    Email = details.Email,
+                    FullName = details.FullName
+                });
+            var model = new AllCustomersWithSearchViewModel
+            {
+                SearchTerm = searchTerm,
+                Customers = new PaginatedList<AllCustomersDetailsViewModel>(result)
+            };
+            System.Console.WriteLine(watch.Elapsed);
+            return this.View(model);
         }
+
+        public async Task<IActionResult> GetNextCustomers(string searchTerm)
+        {
+            var watch = new Stopwatch();
+            watch.Start();
+            var customers = (await this.customerService.GetAllCustomersDetailsAsync(CurrentPage, searchTerm))
+               .Select(customer => AutoMapper.Mapper.Map<AllCustomersDetailsViewModel>(customer))
+               .ToList();
+            if (customers.Count() != 0)
+            {
+                CurrentPage++;
+            }
+            var time = watch.Elapsed;
+            System.Console.WriteLine(time);
+            return PartialView(WebConstants.AllCustomersPartial, customers);
+        }
+
 
         public async Task<IActionResult> Details(string id)
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
 
             var customer = await this.customerService.GetCustomerDetailsByIdAsync(id);
@@ -103,16 +136,11 @@ namespace GarageManager.Web.Areas.User.Controllers
             {
                 this.ShowNotification(NotificationMessages.CustomerNotExist,
                     NotificationType.Warning);
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
 
-            var result = new CustomerDetailsViewModel()
-            {
-                Email = customer.Email,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                PhoneNumber = customer.PhoneNumber
-            };
+            var result = AutoMapper.Mapper.Map<CustomerDetailsViewModel>(customer);
+           
 
             return this.View(result);
         }
@@ -121,7 +149,7 @@ namespace GarageManager.Web.Areas.User.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
 
             var customerFromDb = await this.customerService.GetCustomerDetailsByIdAsync(id);
@@ -154,14 +182,14 @@ namespace GarageManager.Web.Areas.User.Controllers
                 this.ShowNotification(string.Format(
                     NotificationMessages.InvalidOperation),
                     NotificationType.Error);
-                return this.Redirect($"/Admin/Customers/Edit/{model.Id}");
+                return this.RedirectToAction(nameof(Edit), model.Id);
             }
 
             this.ShowNotification(string.Format(
                     NotificationMessages.CustomerEditSuccessfull),
                     NotificationType.Success);
 
-            var redirect = this.Redirect($"/Admin/Customers/Details/{model.Id}");
+            var redirect = this.RedirectToAction(nameof(Details),model.Id);
 
             return redirect;
         }
@@ -170,35 +198,35 @@ namespace GarageManager.Web.Areas.User.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
             var result = await this.customerService.SoftDeleteAsync(id);
             if (result != default(int))
             {
                 this.ShowNotification(NotificationMessages.CustomerDeleteSuccessfull,
                 NotificationType.Warning);
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
 
             this.ShowNotification(NotificationMessages.InvalidOperation,
                 NotificationType.Error);
 
 
-            return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+            return this.Redirect(WebConstants.AdminCustomersAllCustomers);
         }
 
         public async Task<IActionResult> Invoice(string id)
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var invoiceFromDb = await this.invoiseService.GetInvoiceDetailsByCarIdAsync(id);
 
             if (invoiceFromDb == null)
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var invoiceModel = new InvoiceViewModel
@@ -233,19 +261,19 @@ namespace GarageManager.Web.Areas.User.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Invoice.cshtml", model);
-            var fileContents = this.htmlToPdfConverter.Convert(this.environment.ContentRootPath, htmlData, Extensions.PDFConverter.Enums.FormatType.a4, Extensions.PDFConverter.Enums.OrientationType.landscape);
-            return this.File(fileContents, "application/pdf");
+            var fileContents = this.htmlToPdfConverter.Convert(this.environment.ContentRootPath, htmlData,Extensions.PDFConverter.Enums.FormatType.a4,Extensions.PDFConverter.Enums.OrientationType.Portrait);
+            return this.File(fileContents, WebConstants.ApplicationPdf);
         }
 
         public async Task<IActionResult> CompleteTheOrder(string id)
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect("/Admin/Customers/AllCustomers");
+                return this.RedirectToAction(nameof(AllCustomers));
             }
 
             var customerId = await this.carService.CompleteTheOrderByCarIdAsync(id);
@@ -254,13 +282,13 @@ namespace GarageManager.Web.Areas.User.Controllers
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Warning);
 
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
 
             this.ShowNotification(NotificationMessages.CustomerOrderCompletedSuccessfully,
                 NotificationType.Success);
 
-            return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{customerId}");
+            return this.Redirect(string.Format(WebConstants.AdminCarsCarsByCustomerId,customerId));
         }
     }
 }

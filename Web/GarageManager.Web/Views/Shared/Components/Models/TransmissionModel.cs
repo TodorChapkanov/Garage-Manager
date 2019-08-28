@@ -14,7 +14,7 @@ namespace GarageManager.Web.Views.Shared.Components.Models
         public string TransmissionId { get; set; }
 
         [Required]
-        [Display(Name = DisplayNameConstants.DisplayTransmissionType)]
+        [Display(Name = DisplayNameConstants.TransmissionTypeDisplayName)]
         public IEnumerable<SelectListItem>  Transmissions { get; set; }
     }
 }

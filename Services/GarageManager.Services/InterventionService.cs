@@ -3,10 +3,9 @@ using GarageManager.Domain;
 using GarageManager.Extensions.DateTimeProviders;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.Mapping;
-using GarageManager.Services.Models.Part;
-using GarageManager.Services.Models.Repair;
 using GarageManager.Services.Models.Service;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,8 +52,6 @@ namespace GarageManager.Services
             {
                 return null;
             }
-
-
         }
 
         public async Task<CarServiceHistoryDetails> GetServiceHistoryDetailsByIdAsync(string serviceId)
@@ -75,8 +72,6 @@ namespace GarageManager.Services
             {
                 return null;
             }
-            //TODO Change Repair Hours to decimal
-
         }
 
         public async Task<int> FinishServiceByIdAsync(string id)
@@ -89,11 +84,22 @@ namespace GarageManager.Services
                 serviceIntervention.IsFinished = true;
                 return await this.serviceRepository.Update(serviceIntervention);
             }
-            catch 
+            catch
             {
                 return default(int);
             }
-            
+
+        }
+
+        public IDictionary<int, int> GetFinishedCarsForCurrentMunth()
+        {
+            var serviceHistory = this.serviceRepository
+                .All()
+                .Where(service => service.FinishedOn.Month == DateTime.Now.Month && service.IsFinished == true)
+                .GroupBy(ser => ser.FinishedOn.Day)
+                .ToDictionary(ser => ser.Key, ser => ser.Count());
+
+            return serviceHistory;
         }
     }
 }

@@ -77,7 +77,6 @@ namespace GarageManager.Services
                         : RoleConstants.EmployeeRoleName;
 
                     await this.userManager.AddToRoleAsync(employee, role);
-
                 }
 
                 return employee.Id;
@@ -86,12 +85,11 @@ namespace GarageManager.Services
             {
                 return null;
             }
-
         }
 
-        public Task<List<AllEmployees>> GetAllEmployeesAsync()
+        public async Task<IEnumerable<AllEmployees>> GetAllEmployeesAsync()
         {
-            var allEmployees = this.employeeRepository.All()
+            var allEmployees = await this.employeeRepository.All()
                 .To<AllEmployees>().ToListAsync();
 
             return allEmployees;
@@ -109,14 +107,12 @@ namespace GarageManager.Services
                     .To<EditEmployeeDetails>()
                 .FirstOrDefaultAsync(employee => employee.Id == id);
 
-
                 return employeeFromDb;
             }
             catch
             {
                 return null;
             }
-
         }
 
         public async Task<EmployeeDetails> GetEmployeeDetailsByIdAsync(string id)
@@ -161,6 +157,17 @@ namespace GarageManager.Services
                 employeeFromDb.DepartmentId = departmentId;
                 employeeFromDb.RecruitedOn = recruitedOn;
 
+              var isAdmin = (await this.userManager.GetRolesAsync(employeeFromDb))
+                    .Contains(RoleConstants.AdministratorRoleName);
+
+                if (isAdmin &&
+                    this.userManager.Users
+                    .First(user => user.Id == id).Department.Name != DepartmentConstants.FacilitiesManagement)
+                {
+                   await this.userManager.RemoveFromRoleAsync(employeeFromDb, RoleConstants.AdministratorRoleName);
+                    await this.userManager.AddToRoleAsync(employeeFromDb, RoleConstants.EmployeeRoleName);
+                }
+
 
 
                 employeeFromDb.PasswordHash = this.userManager.PasswordHasher.HashPassword(employeeFromDb, password);
@@ -186,16 +193,17 @@ namespace GarageManager.Services
             }
             catch
             {
-
                 return default(int);
             }
-
         }
+
+        //TODO UnitTest
+        public string GetEmployeeDepartmentIdByEmployeeId(string id)
+            =>  this.employeeRepository.All().Where(employee => employee.Id == id).Select(employee => employee.DepartmentId).FirstOrDefault();
 
         public bool IsAnyEmployee()
         {
             var result = this.employeeRepository.All().Count();
-
             return result > 0;
         }
     }

@@ -1,0 +1,12 @@
+﻿@model IEnumerable<GarageManager.Web.Views.Shared.Components.Models.AdminDepartment>
+
+@foreach (var department in Model)
+{
+
+    <div class=" index-link">
+        <a class="border bg-secondary text-white shadow rounded-pill alert" asp-area="Employees"
+           asp-controller="Departments"
+           asp-action="CarsInDepartment"
+           asp-route-id="@department.Id">@department.Name</a>
+    </div>
+}

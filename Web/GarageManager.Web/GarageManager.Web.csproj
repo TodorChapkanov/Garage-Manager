@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-GarageManager-7336C8B8-2079-42DB-BB35-54976AA23ED5</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <NoWin32Manifest>true</NoWin32Manifest>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
 
@@ -41,6 +45,9 @@
 
   <ItemGroup>
     <Content Update="Areas\Admin\Views\Cars\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\rasterize.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,7 +1,6 @@
 ﻿using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.Mapping;
 using GarageManager.Services.Models.Invoice;
 using GarageManager.Services.Models.Part;
 using GarageManager.Services.Models.Repair;

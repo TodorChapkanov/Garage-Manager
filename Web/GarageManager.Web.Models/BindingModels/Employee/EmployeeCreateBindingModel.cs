@@ -32,12 +32,13 @@ namespace GarageManager.Web.Models.BindingModels.Employee
 
         [Required]
         [Display(Name = DisplayNameConstants.PhoneNumberDisplayName)]
-        [StringLength(CustomerCnstants.PhoneNumberMaxLength, 
-            ErrorMessage = AdminContants.StringLengthErrorMessage,
-            MinimumLength = CustomerCnstants.PhoneNumberMinLength)]
+        [RegularExpression(
+            CustomerCnstants.ValidatePhonenNumberRegexPatern,
+            ErrorMessage =CustomerCnstants.PhoneNumberErrorMessage)]
         public string PhoneNumber { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = DisplayNameConstants.RecruitedOn)]
         public DateTime? RecruitedOn { get; set; }
 
         [Required]

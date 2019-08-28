@@ -26,7 +26,7 @@ namespace GarageManager.Web.Views.Shared.Components.YearOfManufacturer
                        .Select(y => new SelectListItem(y.ToString(), y.ToString()))
             };
 
-            return this.View("Default", years);
+            return this.View(WebConstants.ViewComponentDefault, years);
         }
     }
 }

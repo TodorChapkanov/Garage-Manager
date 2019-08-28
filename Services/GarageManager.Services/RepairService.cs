@@ -4,7 +4,6 @@ using GarageManager.Services.Contracts;
 using GarageManager.Services.Mapping;
 using GarageManager.Services.Models.Repair;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services

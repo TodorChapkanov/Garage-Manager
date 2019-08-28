@@ -16,7 +16,7 @@ namespace GarageManager.Services.Contracts
             DateTime? recruitedOn,
             string departmentId);
 
-        Task<List<AllEmployees>> GetAllEmployeesAsync();
+        Task<IEnumerable<AllEmployees>> GetAllEmployeesAsync();
 
         Task<EditEmployeeDetails> EditEmployeeDetailsByIdAsync(string id);
 
@@ -34,5 +34,7 @@ namespace GarageManager.Services.Contracts
 
         Task<int> DeleteEmployeeByIdAsync(string id);
         bool IsAnyEmployee();
+
+        string GetEmployeeDepartmentIdByEmployeeId(string id);
     }
 }

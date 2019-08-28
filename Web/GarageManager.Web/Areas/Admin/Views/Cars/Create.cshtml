@@ -5,11 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">Create</h1>
+<h1 class="text-center">Add New Car</h1>
 
-<hr />
-<div class="">
+
+<div >
     <div class=" mx-auto w-50">
+        <hr />
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row d-flex justify-content-around mx-auto">
@@ -62,15 +63,18 @@
                 </div>
 
                 <div class="form-group w-25">
-                   @await Component.InvokeAsync("Transmissions")
+                    @await Component.InvokeAsync("Transmissions")
                 </div>
             </div>
+            <hr />
             <div class="form-group text-center mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        
     </div>
 </div>
+
 
 
 

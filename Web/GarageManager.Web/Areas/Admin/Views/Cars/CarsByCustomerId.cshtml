@@ -1,0 +1,120 @@
+﻿@model GarageManager.Web.Models.ViewModels.Customer.CustomerCarViewModel
+
+@{
+    ViewData["Title"] = "All Cars";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var search = Model.SearchTerm == null ? "Search" : Model.SearchTerm;
+}
+
+
+
+
+@if (Model.CustomerCars.Count() != 0)
+{
+    @if (Model.CustomerCars.Count() == 1)
+    {
+        <h1 class="text-center">Customer Car</h1>
+    }
+    else
+    {
+        <h1 class="text-center">Customer Cars</h1>
+    }
+
+    <hr class="w-75" />
+    <div class="container-fluid mt-5">
+        <div>
+            <div class="text-center">
+                <a class="btn btn-outline-secondary "
+                   asp-action="Create"
+                   asp-controller="Cars"
+                   asp-area="Admin" 
+                   asp-route-id="@Model.CustomerId" role="button">Add new Car</a>
+
+                <a class="btn btn-outline-secondary ml-2"
+                   asp-action="AllCustomers" 
+                   asp-controller="Customers" 
+                   asp-area="Admin" role="button">Back</a>
+            </div>
+        </div>
+        <div class="mt-3 d-flex justify-content-center">
+            <form action="index" method="get" class="w-75">
+                <input type="text" name="searchTerm" class="form-control bg-light" placeholder="@search" />
+                <button type="submit" class="btn btn-default"><span class="fa fa-search"></span></button>
+            </form>
+        </div>
+    </div>
+    <table class="table table-hover w-75 mx-auto">
+        <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-3">Make</th>
+                <th class="col-md-3">Model</th>
+                <th class="col-md-3">Registration Plate</th>
+                <th class="col-md-3 text-center">Details</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @await Html.PartialAsync("_CarsByCustomerIdPartial", Model.CustomerCars)
+        </tbody>
+    </table>
+
+}
+else
+{
+    <div class="text-center">
+        <a class="btn   btn-outline-secondary " 
+           asp-action="Create" 
+           asp-controller="Cars"
+           asp-area="Admin" 
+           asp-route-id="@Model.CustomerId" role="button">Add new Car</a>
+    </div>
+    <h2 class="text-center text-black-50">The Customer does not have a registered car</h2>
+}
+
+
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        let url = "/Admin/Cars/GetNextCars?id=@Model.CustomerId&searchTerm=@Model.SearchTerm";
+        let scrollHandler = function () {
+            let currentPosition = $(window).scrollTop();
+            let limitPosition = $(document).height() - $(window).height() - 1;
+            let page = @(GarageManager.Web.Areas.Admin.Controllers.CarsController.CurrentPage);
+            let shouldLoad = currentPosition > limitPosition;
+            if (shouldLoad) {
+                loadMoreItems(url, ++page);
+            }
+        };
+
+        $(window).scroll(scrollHandler);
+
+        function loadMoreItems(actionUrl, page) {
+
+            if (page > -1) {
+                $.ajax({
+                    type: 'GET',
+                    url: actionUrl,
+                    data: "pageNumber=" + page,
+                    success: function (data, textstatus) {
+                        if (data != '') {
+                            $("table > tbody").append(data);
+                        }
+                        else {
+                            page = -1;
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                });
+
+            }
+        }
+    </script>
+}
+
+
+

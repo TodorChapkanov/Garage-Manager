@@ -12,6 +12,13 @@ namespace GarageManager.Data.Configurations
                 .HasMany(customer => customer.Cars)
                 .WithOne(car => car.Customer)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasIndex(customer => customer.FirstName);
+
+            builder
+                .HasIndex(customer => customer.LastName);
+
         }
     }
 }

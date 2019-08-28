@@ -17,6 +17,9 @@ namespace GarageManager.Data.Configurations
                 .HasMany(manufacturer => manufacturer.VehicleModels)
                 .WithOne(model => model.Manufacturer)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasIndex(manufacturer => manufacturer.Name);
         }
     }
 }

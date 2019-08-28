@@ -1,18 +1,10 @@
-﻿using GarageManager.Web.Models.BindingModels;
-using GarageManager.Web.Models.BindingModels.Part;
-using GarageManager.Web.Models.BindingModels.RepairService;
-using GarageManager.Web.Models.ViewModels.Car;
-using GarageManager.Web.Models.ViewModels.Department;
-using GarageManager.Web.Models.ViewModels.Part;
-using GarageManager.Web.Models.ViewModels.Repair;
-using GarageManager.Services;
-using GarageManager.Services.Contracts;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GarageManager.Common.GlobalConstant;
 using GarageManager.Common.Notification;
-using GarageManager.Common;
-using GarageManager.Common.GlobalConstant;
+using GarageManager.Services.Contracts;
+using GarageManager.Web.Models.BindingModels;
+using GarageManager.Web.Models.ViewModels.Car;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace GarageManager.Web.Areas.Employees.Controllers
 {
@@ -31,7 +23,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
             var result = await this.carService
                 .GetCarDetailsByIdAsync(id);
@@ -47,7 +39,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                     NotificationMessages.InvalidOperation),
                     NotificationType.Error);
 
-            return this.Redirect(RedirectUrl_s.HomeIndex);
+            return this.Redirect(WebConstants.HomeIndex);
             
         }
 
@@ -55,7 +47,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var carModel = await this.carService
@@ -67,7 +59,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                     NotificationMessages.InvalidOperation),
                     NotificationType.Error);
 
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
             var model = AutoMapper.Mapper.Map<CarServicesDetailsViewModel>(carModel);
            //TODO Change Repair TotalCosts
@@ -79,7 +71,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var model = new AddCarToServiceViewModel();
@@ -89,7 +81,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             {
                 this.ShowNotification(NotificationMessages.CarNotExist
                     , NotificationType.Warning);
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
             model.DepartmentId = carDetails.DepartmentId;
             model.Description = carDetails.Description == null
@@ -104,7 +96,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.LocalRedirect($"/Admin/Cars/Service({model})");
+                return this.View(model);
             }
 
             var result = await this.carService
@@ -115,7 +107,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 this.ShowNotification(NotificationMessages.CarServiceAdded,
                NotificationType.Success);
 
-                return this.Redirect($"/Employees/Departments/CarsInDepartment/{model.DepartmentId}");
+                return this.Redirect(string.Format(WebConstants.EmployeesDepartmentsCarsInDepartment, model.DepartmentId));
             }
 
             this.ShowNotification(NotificationMessages.CarAddToServiceFail,
@@ -128,7 +120,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         {
             if (!this.IsValidId(carId) || !this.IsValidId(departmentId))
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var result = await this.carService.FinishCarServiceAsync(carId);
@@ -138,13 +130,13 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 this.ShowNotification(NotificationMessages.CarServiceNotCompleted,
                 NotificationType.Warning);
 
-                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+                return this.RedirectToAction(nameof(ServiceDetails), carId);
             }
 
             this.ShowNotification(NotificationMessages.CarServiceCmpletedSuccessfull,
                 NotificationType.Success);
 
-            return this.Redirect($"/Employees/Departments/CarsInDepartment/{departmentId}");
+            return this.Redirect(string.Format(WebConstants.EmployeesDepartmentsCarsInDepartment, departmentId));
         }
     }
 }

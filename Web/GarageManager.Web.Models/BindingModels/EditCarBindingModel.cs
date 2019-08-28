@@ -5,6 +5,7 @@ namespace GarageManager.Web.Models.BindingModels
     public class EditCarBindingModel
     {
         public string Id { get; set; }
+
         public string RegistrationPlate { get; set; }
 
         public int Кilometers { get; set; }

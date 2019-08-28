@@ -115,6 +115,10 @@ namespace GarageManager.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FirstName");
+
+                    b.HasIndex("LastName");
+
                     b.ToTable("Customers");
                 });
 
@@ -343,6 +347,8 @@ namespace GarageManager.Data.Migrations
                         .HasMaxLength(30);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("VehicleManufacturers");
                 });

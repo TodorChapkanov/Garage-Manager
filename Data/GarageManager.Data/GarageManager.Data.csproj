@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\GarageManager.Services.Models\GarageManager.Services.Models.csproj" />
     <ProjectReference Include="..\GarageManager.Domain\GarageManager.Domain.csproj" />
   </ItemGroup>
 

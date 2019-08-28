@@ -14,6 +14,8 @@ namespace GarageManager.Extensions.PDFConverter.ViewRender
 {
     public class ViewRenderService : IViewRenderService
     {
+        private const string ExceptionMessage = "{0} does not match any available view";
+
         private readonly IRazorViewEngine razorViewEngine;
         private readonly ITempDataProvider tempDataProvider;
         private readonly IServiceProvider serviceProvider;
@@ -39,7 +41,7 @@ namespace GarageManager.Extensions.PDFConverter.ViewRender
 
                 if (viewResult.View == null)
                 {
-                    throw new ArgumentNullException($"{viewName} does not match any available view");
+                    throw new ArgumentNullException(string.Format(ExceptionMessage, viewName));
                 }
 
                 var viewDictionary =

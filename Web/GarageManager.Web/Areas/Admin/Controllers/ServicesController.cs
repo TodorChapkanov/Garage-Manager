@@ -23,7 +23,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
 
             try
@@ -38,7 +38,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
         }
 
@@ -46,7 +46,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!this.IsValidId(id))
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
             var serviceDetails = await this.interventionService.GetServiceHistoryDetailsByIdAsync(id);
             var model = AutoMapper.Mapper.Map<CarServiceHistoryDetailsViewModel>(serviceDetails);

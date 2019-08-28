@@ -2,13 +2,15 @@
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
+using GarageManager.Services.Enums;
+using GarageManager.Services.Mapping;
 using GarageManager.Services.Models.Car;
+using GarageManager.Services.Models.Enums;
 using GarageManager.Services.Models.Part;
 using GarageManager.Services.Models.Repair;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using GarageManager.Services.Mapping;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services
@@ -29,18 +31,23 @@ namespace GarageManager.Services
             this.serviceIntervention = serviceIntervention;
         }
 
-        public async Task<IEnumerable<CustomerCarListDetails>> GetAllCarsByCustomerIdAsync(string id)
+        public async Task<IEnumerable<CustomerCarListDetails>> GetCarsByCustomerIdAsync(string id, int page, string searchTerm)
         {
             try
             {
                 this.ValidateNullOrEmptyString(id);
-                var result = await this.carRepository
-                    .All()
-                    .Where(customer => customer.CustomerId == id)
-                    .To<CustomerCarListDetails>()
-                    .ToListAsync();
-                  
-                return result;
+                var allCars = this.carRepository.AllAsNoTracking().Where(car => car.CustomerId ==id).OrderBy(car => car.Make.Name);
+                if (!string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    allCars = allCars
+                        .Where(car => car.CustomerId == id)
+                        .Where(car => car.Make.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                        car.Model.Name.ToLower().Contains(searchTerm.ToLower())).OrderBy(car => car.Make.Name);
+                }
+
+                var pageCars = await (base.PaginateEntitiesAsync<Car>(allCars, PaginationOrderMember.Make, OrderDirection.Ascending, page, PaginationConstants.ItemsPerCarPage).To<CustomerCarListDetails>()).ToListAsync();
+
+                return pageCars;
             }
             catch
             {
@@ -160,12 +167,7 @@ namespace GarageManager.Services
             try
             {
                 this.ValidateNullOrEmptyString(carId, carDescription, departmentId);
-                this.ValidateStringLength(
-                    carDescription,
-                    CarConstants.CarDescriptionMinLength,
-                    CarConstants.CarDescriptionMaxLength
-                    );
-
+               
                 var carFromDb = await this.carRepository.All().FirstOrDefaultAsync(car => car.Id == carId);
                 carFromDb.Description = carDescription;
                 carFromDb.DepartmentId = departmentId;
@@ -183,7 +185,7 @@ namespace GarageManager.Services
             try
             {
                 this.ValidateNullOrEmptyString(id);
-
+                var car1 = this.carRepository.All().FirstOrDefault(c => c.Id == id);
                 var carServices = await this.carRepository
                .All()
                .Where(car => car.Id == id)
@@ -291,6 +293,8 @@ namespace GarageManager.Services
 
             return result;
         }
+
+       
 
         public async Task<string> CompleteTheOrderByCarIdAsync(string carId)
         {

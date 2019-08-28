@@ -1,10 +1,12 @@
 ﻿using GarageManager.Common;
 using GarageManager.Common.GlobalConstant;
+using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Customer;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Web.Models.ViewModels.Customer
 {
-    public class CustomerDetailsViewModel
+    public class CustomerDetailsViewModel : IMapFrom<CustomerEditDetails>
     {
         public string Id { get; set; }
 

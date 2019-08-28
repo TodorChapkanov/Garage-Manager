@@ -5,7 +5,6 @@ using GarageManager.Services.Mapping;
 using GarageManager.Services.Models.FuelType;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GarageManager.Services
@@ -24,11 +23,6 @@ namespace GarageManager.Services
         {
             var result = await fuelTypeRepository
                 .All().To<FuelTypeDetails>()
-               /* .Select(ft => new FuelTypeDetails
-                {
-                    Id = ft.Id,
-                    Name = ft.Name
-                })*/
                 .ToListAsync();
 
             return result;

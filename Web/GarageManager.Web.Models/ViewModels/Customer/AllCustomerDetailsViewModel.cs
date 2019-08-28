@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Customer;
+using System.ComponentModel.DataAnnotations;
 
 namespace GarageManager.Web.Models.ViewModels.Customer
 {
-    public class AllCustomersDetailsViewModel
+    public class AllCustomersDetailsViewModel : IMapFrom<CustomerDetails>
     {
         public string Id { get; set; }
 

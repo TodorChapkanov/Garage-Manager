@@ -9,23 +9,28 @@ namespace GarageManager.Extensions.PDFConverter.HtmlToPDF
 
     public class HtmlToPdfConverter : IHtmlToPdfConverter
     {
-        public byte[] Convert(string basePath, string htmlCode, FormatType formatType, OrientationType orientationType)
+        private const string Input = "input_";
+        private const string Output = "output_";
+        private const string PhantomeExe = "phantomjs.exe";
+        private const string RasterzePath = "wwwroot/js/rasterize.js";
+        private const string HtmlFileExtencion = ".html";
+        private const string PdfFileExtencion = ".pdf";
+        public byte[] Convert(string basePath, string htmlCode, FormatType formatType = FormatType.a4, OrientationType orientationType= OrientationType.Portrait)
         {
-            var inputFileName = $@"input_{Guid.NewGuid()}.html";
-            var outputFileName = $"{basePath}/output_{Guid.NewGuid()}.pdf";
+            var inputFileName = $@"{Input}{Guid.NewGuid()}{HtmlFileExtencion}";
+            var outputFileName = $"{basePath}/{Output}{Guid.NewGuid()}{PdfFileExtencion}";
             File.WriteAllText($"{inputFileName}", htmlCode);
-            // inputFileName = $"{basePath}/{inputFileName}";
-            var startInfo = new ProcessStartInfo("phantomjs.exe")
+            var startInfo = new ProcessStartInfo($"{PhantomeExe}")
             {
                 WorkingDirectory = basePath,
-                Arguments = $"{basePath}/wwwroot/js/rasterize.js \"{inputFileName}\" \"{outputFileName}\" \"{formatType}\" \"{orientationType.ToString().ToLower()}\"",
-                UseShellExecute = false,
+                Arguments = $"{RasterzePath} \"{inputFileName}\" \"{outputFileName}\" \"{formatType}\" \"{orientationType.ToString().ToLower()}\"",
+                UseShellExecute = true,
             };
 
             var process = new Process { StartInfo = startInfo };
             process.Start();
             process.WaitForExit();
-            var code = process.ExitCode;
+
 
             var bytes = File.ReadAllBytes($"{outputFileName}");
 
@@ -35,17 +40,6 @@ namespace GarageManager.Extensions.PDFConverter.HtmlToPDF
 
             return bytes;
         }
-
-        public void ConsumeReader(TextReader reader)
-        {
-            string text;
-
-            while ((text = reader.ReadLine()) != null)
-            {
-                Console.WriteLine(text);
-            }
-        }
-
     }
 
 }

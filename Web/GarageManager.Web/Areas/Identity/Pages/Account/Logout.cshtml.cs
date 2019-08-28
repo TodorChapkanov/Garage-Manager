@@ -24,7 +24,7 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGet()
         {
-            var returnUrl = RedirectUrl_s.HomeIndex;
+            var returnUrl = WebConstants.HomeIndex;
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             

@@ -1,0 +1,24 @@
+﻿@model IEnumerable<GarageManager.Web.Models.ViewModels.Customer.AllCustomersDetailsViewModel>
+    @foreach (var customer in Model)
+    {
+        <tr class="row mx-auto ">
+            <td class="col-sm-4 text-justify">@customer.FullName</td>
+            <td class="col-sm-6 text-wrap">@customer.Email</td>
+            <th class="col-sm-2   d-flex justify-content-around">
+                <a asp-action="Details"
+                   asp-controller="Customers"
+                   asp-area="Admin"
+                   asp-route-id="@customer.Id">Details</a>
+
+                <a asp-action="Edit"
+                   asp-controller="Customers"
+                   asp-area="Admin"
+                   asp-route-id="@customer.Id">Edit</a>
+
+                <a asp-action="CarsByCustomerId"
+                   asp-controller="Cars"
+                   asp-area="Admin"
+                   asp-route-id="@customer.Id">Cars</a>
+            </th>
+        </tr>
+    }

@@ -2,7 +2,7 @@
 
 namespace GarageManager.Services.Models.Customer
 {
-    public class CustomerDetail : IMapFrom<Domain.Customer>
+    public class CustomerDetails : IMapFrom<Domain.Customer>
     {
         public string Id { get; set; }
 

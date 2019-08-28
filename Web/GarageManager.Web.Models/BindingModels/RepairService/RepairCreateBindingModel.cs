@@ -24,6 +24,7 @@ namespace GarageManager.Web.Models.BindingModels.RepairService
         public double Hours { get; set; }
 
         [Required]
+        [Display(Name =DisplayNameConstants.RepairServicePricePerHourDisplayName)]
         [Range(RepairConstants.RepairMinPricePerHour,
             RepairConstants.RepairMaxPricePerHour,
             ErrorMessage = RepairConstants.RepairPricePerHourErrorMessage)]

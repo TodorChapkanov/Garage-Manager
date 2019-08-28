@@ -10,7 +10,7 @@ namespace GarageManager.Data.Repository
     {
         // IQueryable<TEntity> AllWithDeleted();
 
-        // IQueryable<TEntity> AllAsNoTrackingWithDeleted();
+         IQueryable<TEntity> AllAsNoTracking();
 
         Task<int> SavaChangesAsync();
 

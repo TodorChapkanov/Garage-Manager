@@ -5,6 +5,7 @@ using GarageManager.Web.Models.BindingModels;
 using GarageManager.Web.Models.ViewModels.Car;
 using GarageManager.Web.Models.ViewModels.Customer;
 using GarageManager.Web.Models.ViewModels.FuelType;
+using GarageManager.Web.Models.ViewModels.Page;
 using GarageManager.Web.Models.ViewModels.TransmissionType;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -38,7 +39,10 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             this.transmissionTypeService = transmissionTypeService;
         }
 
-        [HttpGet("/Admin/Cars/Create/{Id}")]
+        public static int CurrentPage { get; private set; }
+
+
+        [HttpGet(WebConstants.AdminCarsCreateAttributeGetPath)]
         public  IActionResult Create()
         {
             return View();
@@ -83,8 +87,8 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             {
                 this.ShowNotification(string.Format(
                     NotificationMessages.CarCreatedSuccessfull, carBVM.RegistrationPlate),
-                    NotificationType.Warning);
-                return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{carBVM.CustomerId}");
+                    NotificationType.Success);
+                return this.RedirectToAction(nameof(CarsByCustomerId),carBVM.CustomerId);
             }
 
 
@@ -133,7 +137,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 this.ShowNotification(string.Format(
                     NotificationMessages.InvalidOperation),
                     NotificationType.Error);
-                this.Redirect("/Admin/Customers/AllCustomers");
+                this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
             var model = new EditCarViewModel
             {
@@ -161,9 +165,8 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.Redirect($"/Admin/Cars/Edit/{model.Id}");
+                return this.RedirectToAction(nameof(Edit),model.Id);
             }
-            //TODO Add dropdown and rename yearOfManyfacturing for car year
               var result = await this.carService.UpdateCarByIdAsync(
                  model.Id,
                  model.RegistrationPlate,
@@ -179,7 +182,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 this.ShowNotification(string.Format(
                     NotificationMessages.CarUpdatedSuccessfull),
                     NotificationType.Success);
-                return this.Redirect($"/Employees/Cars/Details/{model.Id}");
+                return this.Redirect(string.Format(WebConstants.EmployeesCarsDetails,model.Id));
             }
 
             this.ShowNotification(string.Format(
@@ -206,25 +209,42 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                     NotificationMessages.CarDeletedSuccessfull),
                     NotificationType.Warning);
 
-            return this.Redirect($"/Admin/Cars/AllCarsByCustomerId/{customerId}");
+            return this.RedirectToAction(nameof(CarsByCustomerId),customerId);
         }
 
-
-        public async Task<IActionResult> AllCarsByCustomerId(string id)
+        public async Task<IActionResult> GetNextCars(string id, string searchTerm)
         {
-           
-            if (!this.IsValidId(id))
-            {
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
-            }
-            var model = new CustomerCarViewModel()
-            {
-                CustomerId = id
-            };
-           
-            model.CustomerCars = (await this.carService.GetAllCarsByCustomerIdAsync(model.CustomerId))
+            
+           var cars = (await this.carService.GetCarsByCustomerIdAsync(id, CurrentPage, searchTerm))
                 .Select(car => AutoMapper.Mapper.Map<CustomerCarDetailsViewModel>(car))
                 .ToList();
+            if (cars.Count() !=0)
+            {
+                CurrentPage++;
+            }
+            
+            return PartialView(WebConstants.CarsByCustomerIdPartial, cars);
+        }
+
+        public async Task<IActionResult> CarsByCustomerId(string id, string searchTerm)
+        {
+            
+            if (!this.IsValidId(id))
+            {
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
+            }
+
+            CurrentPage = 1;
+            var cars = (await this.carService.GetCarsByCustomerIdAsync(id, CurrentPage++, searchTerm))
+                .Select(car => AutoMapper.Mapper.Map<CustomerCarDetailsViewModel>(car))
+                .ToList();
+
+            var model = new CustomerCarViewModel()
+            {
+                CustomerId = id,
+                CustomerCars = new PaginatedList<CustomerCarDetailsViewModel>(cars),
+                SearchTerm = searchTerm
+            };
 
             if (model.CustomerCars == null)
             {
@@ -232,7 +252,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                        NotificationMessages.InvalidOperation),
                        NotificationType.Error);
 
-                return this.Redirect(RedirectUrl_s.AdminCustomersAllCustomers);
+                return this.Redirect(WebConstants.AdminCustomersAllCustomers);
             }
             return View(model);
         }
@@ -262,7 +282,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
 
-                this.Redirect(RedirectUrl_s.HomeIndex);
+                this.Redirect(WebConstants.HomeIndex);
             }
 
             return null;

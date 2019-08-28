@@ -6,7 +6,7 @@ namespace GarageManager.Services.Contracts
 {
     public interface ICarService
     {
-        Task<IEnumerable<CustomerCarListDetails>> GetAllCarsByCustomerIdAsync(string id);
+        Task<IEnumerable<CustomerCarListDetails>> GetCarsByCustomerIdAsync(string id, int page, string searchTerm);
 
         Task<bool> CreateAsync
             (
@@ -45,6 +45,7 @@ namespace GarageManager.Services.Contracts
         Task<List<CompletedCarList>> CompletedCarsListAsync();
 
         Task<string> CompleteTheOrderByCarIdAsync(string carId);
+
 
         Task<int> HardDeleteAsync(string id);
     }

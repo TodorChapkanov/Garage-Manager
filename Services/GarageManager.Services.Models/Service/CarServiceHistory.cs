@@ -8,6 +8,8 @@ namespace GarageManager.Services.Models.Service
     {
         public string  Id { get; set; }
 
+        public string CustomerId { get; set; }
+
         public string  CarMake { get; set; }
 
         public string CarRegistrtionPlate { get; set; }

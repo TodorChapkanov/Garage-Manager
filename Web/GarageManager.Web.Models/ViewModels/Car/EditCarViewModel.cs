@@ -49,6 +49,7 @@ namespace GarageManager.Web.Models.ViewModels.Car
 
         public IEnumerable<SelectListItem> FuelTypes { get; set; }
 
+        [Display(Name = DisplayNameConstants.TransmissionTypeDisplayName)]
         public string TransmissionId { get; set; }
 
         public IEnumerable<SelectListItem> Transmissions { get; set; }

@@ -13,7 +13,9 @@
         public const string RegistrationPlateDisplayName = "Registration Plate";
         public const string PhoneNumberDisplayName = "Phone Number";
         public const string DisplayEmployeeFullName = "Empoyee Name";
-        public const string DisplayTransmissionType = "Transmission Type";
+        public const string TransmissionTypeDisplayName = "Transmission Type";
         public const string DisplayDepartment = "Department";
+        public const string RecruitedOn = "Recruited On";
+        public const string RepairServicePricePerHourDisplayName = "Price Per Hour";
     }
 }

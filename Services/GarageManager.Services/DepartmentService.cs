@@ -1,7 +1,9 @@
-﻿using GarageManager.Data.Repository;
+﻿using GarageManager.Common.GlobalConstant;
+using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.Mapping;
+using GarageManager.Services.Models.Charts;
 using GarageManager.Services.Models.Department;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -50,6 +52,22 @@ namespace GarageManager.Services
                 return null;
             }
             
+        }
+
+        public async Task<IEnumerable<SimpleReportViewModel>> GetCarsInDepartments()
+        {
+            var result = await this.departmentRepository
+                 .All()
+                 .Where(department => department.Name != DepartmentConstants.FacilitiesManagement)
+                 .Select(department => new SimpleReportViewModel
+                 {
+                     DimensionOne = department.Name,
+                     Quantity = department.Cars.Count()
+                 }).ToListAsync();
+               // .ToDictionaryAsync(dep => dep.Name, dep => dep.Cars.Count());
+
+            //TODO add check for isFinished
+            return result;
         }
     }
 }

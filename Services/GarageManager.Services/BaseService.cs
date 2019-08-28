@@ -1,6 +1,12 @@
-﻿using System;
+﻿using GarageManager.Domain;
+using GarageManager.Extensions;
+using GarageManager.Services.Enums;
+using GarageManager.Services.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GarageManager.Services
 {
@@ -34,12 +40,31 @@ namespace GarageManager.Services
             
         }
 
-        protected void ValidateStringLength(string value, int minLength, int maxLength)
+        //TODO Chack Pagination for nested types
+        protected IQueryable<TEntity> PaginateEntitiesAsync<TEntity>(
+             IQueryable<TEntity> entities,
+             PaginationOrderMember orderMember,
+             OrderDirection orderDirection,
+             int pageIndex,
+             int itemsPerPage)
         {
-            if (value.Length < minLength || value.Length > maxLength)
+           
+           /* switch (orderDirection)
             {
-                throw new ArgumentException(StringIsOutOfRange);
-            }
+                case OrderDirection.Ascending:
+                default:
+                    entities = entities.OrderByMember(orderMember.ToString()+".Name");
+
+                    break;
+                case OrderDirection.Descending:
+                    entities = entities.OrderByMemberDescending(orderMember.ToString());
+
+                    break;
+            }*/
+            
+            return entities
+                .Skip(((pageIndex-1) * itemsPerPage))
+                .Take(itemsPerPage);
         }
     }
 }

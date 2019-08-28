@@ -1,8 +1,9 @@
-﻿using GarageManager.Data.Repository;
+﻿using GarageManager.Common.GlobalConstant;
+using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.Mapping;
 using GarageManager.Services.Models.Customer;
+using GarageManager.Services.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,12 @@ namespace GarageManager.Services
             this.carService = carService;
         }
 
-        public async Task<int> CreateAsync(string firstName, string lastName, string email, string phoneNumber)
+        public async Task<string> CreateAsync(string firstName, string lastName, string email, string phoneNumber)
         {
+            if (this.customerRepository.All().Any(customer => customer.Email == email))
+            {
+                return CustomerCnstants.InvalidCustomerEmailCode;
+            }
             try
             {
                 var customer = new Customer()
@@ -35,31 +40,41 @@ namespace GarageManager.Services
                 };
 
                 this.ValidateEntityState(customer);
-              return  await this.customerRepository.CreateAsync(customer);
+             await this.customerRepository.CreateAsync(customer);
+
+                return customer.Id;
                 
             }
             catch 
             {
-                return default(int);
+                return null;
             }
-            
-
-          
         }
 
-        public Task<List<CustomerDetail>> GetAllCustomersDetailsAsync()
+        public async Task<List<CustomerDetails>> GetAllCustomersDetailsAsync(int pageNumber, string searchTerm)
         {
-            var allCustomersDetails =  this.customerRepository.All().To<CustomerDetail>().ToListAsync();
-                /* .Select(details => new CustomerDetail
-                 {
-                     Id = details.Id,
-                     FullName = $"{details.FirstName} {details.LastName}",
-                     Email = details.Email
+           
+            var allCustomers = this.customerRepository
+                .AllAsNoTracking()
+                .OrderBy(customer => customer.FirstName)
+                .ThenBy(customer => customer.LastName);
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                allCustomers = allCustomers
+                    .Where(customer => customer.FullName.ToLower().Contains(searchTerm.ToLower()))
+                    .OrderBy(customer => customer.FirstName).ThenBy(customer => customer.LastName);
+            }
 
-                 })
-                 .ToListAsync();*/
+            var pageCustomers = await(base.PaginateEntitiesAsync<Customer>(
+                allCustomers, 
+                Enums.PaginationOrderMember.FullName,
+                OrderDirection.Ascending, pageNumber, 
+                PaginationConstants.ItemPerCustomerPage).Select(customer => AutoMapper.Mapper.Map<CustomerDetails>(customer))
+                .ToListAsync());
 
-            return allCustomersDetails;
+             
+
+            return pageCustomers;
         }
 
 

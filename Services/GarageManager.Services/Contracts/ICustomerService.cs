@@ -6,13 +6,13 @@ namespace GarageManager.Services.Contracts
 {
     public interface ICustomerService
     {
-        Task<int> CreateAsync(
+        Task<string> CreateAsync(
             string firstName,
             string lastName,
             string email,
             string phoneNumber);
 
-        Task<List<CustomerDetail>> GetAllCustomersDetailsAsync();
+        Task<List<CustomerDetails>> GetAllCustomersDetailsAsync(int pageNumber, string searchTerm);
 
          Task<CustomerEditDetails> GetCustomerDetailsByIdAsync(string id);
 

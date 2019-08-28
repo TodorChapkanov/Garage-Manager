@@ -9,6 +9,7 @@ using GarageManager.Services;
 using GarageManager.Services.Contracts;
 using GarageManager.Services.Mapping;
 using GarageManager.Services.Models.Customer;
+using GarageManager.Web.Infrastructure;
 using GarageManager.Web.Infrastructure.Filters;
 using GarageManager.Web.Models.ViewModels.Car;
 using Microsoft.AspNetCore.Builder;
@@ -61,7 +62,7 @@ namespace GarageManager
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
-                options.Password.RequireDigit = true;
+                options.Password.RequireDigit = false;
             });
 
             services
@@ -91,24 +92,22 @@ namespace GarageManager
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             AutoMapperConfig.RegisterMappings(
                 typeof(CreateCarViewModel).GetTypeInfo().Assembly,
-                typeof(CustomerDetail).GetTypeInfo().Assembly);
+                typeof(CustomerDetails).GetTypeInfo().Assembly);
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+           if (env.IsDevelopment())
+           {
+              app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-            }
+           }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
+           }
 
 
             loggerFactory.AddSerilog();
@@ -127,6 +126,8 @@ namespace GarageManager
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.SeedData();
         }
     }
 }

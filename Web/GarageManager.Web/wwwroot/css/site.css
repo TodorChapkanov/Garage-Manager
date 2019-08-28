@@ -18,6 +18,10 @@
     width: 30%;
     resize:none;
 }
+.w-45{
+    width: 45%;
+    resize: none;
+}
 .bg-AliceBlue {
     color: #7FFFD4;
 }
@@ -61,4 +65,13 @@
     height: 60px;
     width: 200px;
 }
-/* Style the links inside the pill navigation menu */
+
+hr{
+    border: 2px solid;
+    color: gray;
+}
+hr.new5 {
+    border: 10px solid green;
+    border-radius: 5px;
+}
+    /* Style the links inside the pill navigation menu */

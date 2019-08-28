@@ -2,9 +2,12 @@
 @if (!User.Identity.IsAuthenticated)
 {
     <div class="jumbotron bg-eventures w-75 mx-auto font-weight-bold">
-        <h1 class="mx-auto font-weight-bold">Eventures - the best ticket service in the world.</h1>
+        <h1 class="mx-auto font-weight-bold">Garag Manager - the best Garag Manager service in the world.</h1>
         <hr class="hr-2 bg-dark" />
         <h4 class="mt-4 mx-auto font-weight-bold "><a href="/Identity/Account/Login">Login</a> to start your work.</h4>
+        <h3> To Login, please use </h3>
+        <h3>Email: garagemanager.root@gmail.com</h3>
+        <h3>Password: Admin</h3>
         @if (((bool)TempData["IsAnyEmployee"]) != true)
         {
             <h4 class="mt-4 mx-auto font-weight-bold "><a href="/Identity/Account/Register"> Register</a></h4>
@@ -18,14 +21,14 @@ else
     {
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-md-3">
                     <div class="text-center">
                         <div class=" index-link">
                             <a class="border bg-secondary text-white shadow rounded-pill alert " asp-action="CompletedCars" asp-controller="Cars" asp-area="Admin">Completed Cars</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-md-3">
                     <div>
                         <div class="text-center">
                             <div class=" index-link">
@@ -40,38 +43,16 @@ else
                 </div>
 
 
-                <div class="col-sm-3">
+                <div class="col-md-3">
                     <div class="text-center">
-                       
+
+
                         <div>
-                            <div class=" index-link">
-                                <a class="border bg-secondary text-white shadow rounded-pill alert" asp-area="Employees"
-                                   asp-controller="Departments"
-                                   asp-action="CarsInDepartment"
-                                   asp-route-id="fe109693-c5fe-46c4-ba1c-a42666c6a822">Cars in Body Repair</a>
-                            </div>
-                            <div class=" index-link">
-                                <a class="border bg-secondary text-white shadow rounded-pill alert index-link" asp-area="Employees"
-                                   asp-controller="Departments"
-                                   asp-action="CarsInDepartment"
-                                   asp-route-id="3d56b8a7-c53f-477e-8bfd-fdd2c80eff36">Cars in Mechanical Repair</a>
-                            </div>
-                            <div class=" index-link">
-                                <a class="border bg-secondary text-white shadow rounded-pill alert " asp-area="Employees"
-                                   asp-controller="Departments"
-                                   asp-action="CarsInDepartment"
-                                   asp-route-id="bd91b3b7-ee4d-4ad1-b171-8919d43f6597">Cars in Painting</a>
-                            </div>
-                            <div class=" index-link">
-                                <a class="border bg-secondary text-white shadow rounded-pill alert " asp-area="Employees"
-                                   asp-controller="Departments"
-                                   asp-action="CarsInDepartment"
-                                   asp-route-id="add6595c-c3ee-4168-8bc2-a0832a4c536b">Cars in Parts</a>
-                            </div>
+                            @await Component.InvokeAsync("AdminDepartments", false)
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-md-3">
                     <div class=" index-link">
                         <a class="border bg-secondary text-white shadow rounded-pill alert
                            " asp-action="AllEmployees"
@@ -79,7 +60,7 @@ else
                            asp-area="Admin">All Employees</a>
                     </div>
                     <div class=" index-link">
-                        <a class="border bg-secondary text-white shadow rounded-pill alert" 
+                        <a class="border bg-secondary text-white shadow rounded-pill alert"
                            asp-action="Create"
                            asp-controller="Employees"
                            asp-area="Admin">Create New Employee</a>
@@ -87,6 +68,19 @@ else
 
                 </div>
             </div>
+            <div class="row mt-5">
+                <div class="col-md-6" >
+                    <div >
+                        @await Component.InvokeAsync("CarsInDepartment")
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        @await Component.InvokeAsync("CompletedCarsInCurrentMunth")
+                    </div>
+                </div>
+            </div>
+            
         </div>
     }
     else

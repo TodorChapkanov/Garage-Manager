@@ -14,36 +14,41 @@
                     <table class="table table-hover table-bordered  mx-auto ">
                         <thead>
                             <tr class="row mx-auto">
-                                <td class="col-sm-3 bg-secondary text-white">Name</td>
-                                <td class="col-sm-3 bg-secondary text-white">Department Name</td>
-                                <td class="col-sm-2 bg-secondary text-white">Phone Number</td>
-                                <td class="col-sm-2 bg-secondary text-white">Email</td>
-                                <td class="col-sm-2 text-center bg-secondary text-white">Actions</td>
+                                <td class="col-lg-3 bg-secondary text-white">Name</td>
+                                <td class="col-lg-2 bg-secondary text-white">Department Name</td>
+                                <td class="col-lg-2 bg-secondary text-white">Phone Number</td>
+                                <td class="col-lg-3 bg-secondary text-white">Email</td>
+                                <td class="col-lg-2 text-center bg-secondary text-white">Actions</td>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var employee in Model)
                             {
-                            <tr class="row mx-auto ">
-                                <td class="col-md-3 container-fluid">@employee.FullName</td>
-                                <td class="col-md-3">@employee.DepartmentName</td>
-                                <td class="col-md-2">@employee.PhoneNumber</td>
-                                <td class="col-md-2">@employee.Email</td>
-                                <th class="col-md-2   d-flex justify-content-around">
-                                    <a asp-action="Details"
-                                       asp-controller="Employees"
-                                       asp-area="Admin" 
-                                       asp-route-id="@employee.Id">Details</a>
+                                <tr class="row mx-auto ">
+                                    <td class="col-lg-3 container-fluid">@employee.FullName</td>
+                                    <td class="col-lg-2">@employee.DepartmentName</td>
+                                    <td class="col-lg-2">@employee.PhoneNumber</td>
+                                    <td class="col-lg-3">@employee.Email</td>
+                                    <th class="col-lg-2   d-flex justify-content-around">
+                                        <a asp-action="Details"
+                                           asp-controller="Employees"
+                                           asp-area="Admin"
+                                           asp-route-id="@employee.Id">Details</a>
 
-                                    <a asp-action="Edit"
-                                       asp-controller="Employees"
-                                       asp-area="Admin"
-                                       asp-route-id="@employee.Id">Edit</a>
-                                </th>
-                            </tr>
+                                        <a asp-action="Edit"
+                                           asp-controller="Employees"
+                                           asp-area="Admin"
+                                           asp-route-id="@employee.Id">Edit</a>
+                                    </th>
+                                </tr>
                             }
                         </tbody>
                     </table>
+                    <div class="text-center">
+                        <a class="btn btn-secondary"
+                           asp-action="Index"
+                           asp-controller="Home">Back</a>
+                    </div>
                 </div>
             </div>
         </div>

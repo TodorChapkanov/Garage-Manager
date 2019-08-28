@@ -43,19 +43,19 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                NotificationType.Warning);
-                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+                return this.Redirect(string.Format(WebConstants.EmployeesCarsServiceDetails, carId));
             }
 
             this.ShowNotification(NotificationMessages.RepairServiceCreateSuccessfull,
                      NotificationType.Success);
-            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            return this.Redirect(string.Format(WebConstants.EmployeesCarsServiceDetails, carId));
         }
 
         public async Task<IActionResult> Edit(string id, string carId)
         {
             if (!this.IsValidId(id) || !this.IsValidId(carId))
             {
-                return this.Redirect(RedirectUrl_s.HomeIndex);
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var result = await this.repairsService.GetEditDetailsByIdAsync(id);
@@ -64,7 +64,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
-                return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+                return this.Redirect(string.Format(WebConstants.EmployeesCarsServiceDetails, carId));
             }
             var partModel = AutoMapper.Mapper.Map<RepairEditViewModel>(result);
           //TODO Add VC For employees in rapir edit view
@@ -77,7 +77,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.Redirect("/Home/Index");
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
          var result =  await this.repairsService.UpdateRepairByIdAsync(
@@ -92,20 +92,20 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
 
-                return this.Redirect("/");
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             ShowNotification(NotificationMessages.RepairServiceEditSuccessfull,
                    NotificationType.Success);
 
-            return this.Redirect($"/Employees/Cars/ServiceDetails/{model.CarId}");
+            return this.Redirect(string.Format(WebConstants.EmployeesCarsServiceDetails, model.CarId));
         }
 
         public async Task<IActionResult> Delete(string carId, string repairId)
         {
             if (!this.IsValidId(carId) || !this.IsValidId(repairId))
             {
-                return this.Redirect("/");
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             var result = await this.repairsService.HardDeleteAsync(repairId);
@@ -115,13 +115,13 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
 
-                return this.Redirect("/");
+                return this.Redirect(WebConstants.HomeIndex);
             }
 
             this.ShowNotification(NotificationMessages.RepairServiceDeleteSuccessfull,
                     NotificationType.Warning);
 
-            return this.Redirect($"/Employees/Cars/ServiceDetails/{carId}");
+            return this.Redirect(string.Format(WebConstants.EmployeesCarsServiceDetails, carId));
         }
     }
 }

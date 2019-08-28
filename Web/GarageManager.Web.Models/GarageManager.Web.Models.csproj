@@ -15,4 +15,8 @@
     <ProjectReference Include="..\..\Services\GarageManager.Services.Models\GarageManager.Services.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Search\" />
+  </ItemGroup>
+
 </Project>
