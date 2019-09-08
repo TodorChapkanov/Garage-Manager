@@ -30,6 +30,10 @@
                                asp-controller="Customers"
                                asp-area="Admin"
                                asp-route-Id="@car.Id">Finish Order</a>
+                            <a asp-action="CompletedCarDetails"
+                               asp-controller="Cars"
+                               asp-area="Admin"
+                               asp-route-Id="@car.Id">Details</a>
 
                             <a href="/Admin/Customers/Invoice/@car.Id" target="_blank">Invoice</a>
                         </th>

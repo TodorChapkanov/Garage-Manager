@@ -639,6 +639,8 @@ namespace GarageManager.Services.Tests
 
             mgr.Setup(x => x.AddToRoleAsync(It.IsAny<GMUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
 
+            mgr.Setup(c => c.GetRolesAsync(It.IsAny<GMUser>())).ReturnsAsync(new List<string>{"ADMIN", "EMPLOYEE" });
+
             mgr.Setup(x => x.Users).Returns(ls.AsQueryable<GMUser>);
 
             mgr.Setup(x => x.DeleteAsync(It.IsAny<GMUser>())).ReturnsAsync(

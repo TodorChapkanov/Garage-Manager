@@ -14,8 +14,6 @@ namespace GarageManager.Data
         {
         }
 
-        //TODO Change user email to be notnulable
-
         public DbSet<Car> Cars { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Department> Departments { get; set; }

@@ -63,7 +63,8 @@ namespace GarageManager.Services
                 this.ValidateEntityState(employee);
 
                 var result = await this.userManager.CreateAsync(employee, password);
-                var departmentName = this.userManager.Users
+
+                var departmentName = this.employeeRepository.All()
                     .Where(user => user.Id == employee.Id)
                     .Select(department => department.Department.Name)
                     .First();
@@ -148,7 +149,7 @@ namespace GarageManager.Services
             try
             {
                 this.ValidateNullOrEmptyString(id, firstName, lastName, email, phoneNumber, departmentId, password);
-                var employeeFromDb = await this.userManager.FindByIdAsync(id);
+                var employeeFromDb = await this.employeeRepository.All().Where(emp => emp.Id == id).Include(emp => emp.Department).FirstOrDefaultAsync();
 
                 employeeFromDb.FirstName = firstName;
                 employeeFromDb.LastName = lastName;
@@ -156,31 +157,19 @@ namespace GarageManager.Services
                 employeeFromDb.PhoneNumber = phoneNumber;
                 employeeFromDb.DepartmentId = departmentId;
                 employeeFromDb.RecruitedOn = recruitedOn;
-
-              var isAdmin = (await this.userManager.GetRolesAsync(employeeFromDb))
-                    .Contains(RoleConstants.AdministratorRoleName);
-
-                if (isAdmin &&
-                    this.userManager.Users
-                    .First(user => user.Id == id).Department.Name != DepartmentConstants.FacilitiesManagement)
-                {
-                   await this.userManager.RemoveFromRoleAsync(employeeFromDb, RoleConstants.AdministratorRoleName);
-                    await this.userManager.AddToRoleAsync(employeeFromDb, RoleConstants.EmployeeRoleName);
-                }
-
-
+                await this.employeeRepository.SavaChangesAsync();
+            
 
                 employeeFromDb.PasswordHash = this.userManager.PasswordHasher.HashPassword(employeeFromDb, password);
-                await this.userManager.UpdateAsync(employeeFromDb);
+
+                await this.employeeRepository.SavaChangesAsync();
 
                 return true;
             }
             catch
             {
-
                 return false;
             }
-
         }
 
         public async Task<int> DeleteEmployeeByIdAsync(string id)
@@ -199,7 +188,7 @@ namespace GarageManager.Services
 
         //TODO UnitTest
         public string GetEmployeeDepartmentIdByEmployeeId(string id)
-            =>  this.employeeRepository.All().Where(employee => employee.Id == id).Select(employee => employee.DepartmentId).FirstOrDefault();
+            => this.employeeRepository.All().Where(employee => employee.Id == id).Select(employee => employee.DepartmentId).FirstOrDefault();
 
         public bool IsAnyEmployee()
         {

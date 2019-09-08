@@ -2,17 +2,40 @@
 @if (!User.Identity.IsAuthenticated)
 {
     <div class="jumbotron bg-eventures w-75 mx-auto font-weight-bold">
-        <h1 class="mx-auto font-weight-bold">Garag Manager - the best Garag Manager service in the world.</h1>
+        <h1 class="mx-auto font-weight-bold">Garage Manager - the best Garage Manager service in the world.</h1>
         <hr class="hr-2 bg-dark" />
         <h4 class="mt-4 mx-auto font-weight-bold "><a href="/Identity/Account/Login">Login</a> to start your work.</h4>
-        <h3> To Login, please use </h3>
+        <h3> To Login as Administrator, please use </h3>
         <h3>Email: garagemanager.root@gmail.com</h3>
         <h3>Password: Admin</h3>
+
         @if (((bool)TempData["IsAnyEmployee"]) != true)
         {
             <h4 class="mt-4 mx-auto font-weight-bold "><a href="/Identity/Account/Register"> Register</a></h4>
             <h4>If you see the register hyperlink, is mean that no users are registered yet and you will be registered like Admin in Garage Manager!!!</h4>
         }
+    </div>
+    <div class=" container-fluid">
+        <div>
+            <h3 class="text-center">GarageManager</h3>
+
+            <h5 class="text-center">
+                is simple system for managing the work flow in automotive repair center.
+            </h5>
+            <hr />
+            <div class="ml-4">
+                <h6>
+                    As Administrator, you can create, update, edit and delete:</h6>
+                   <h6>- Employee (User)</h6>
+                   <h6>- Customer (data entity)</h6>
+                   <h6>- Car</h6>
+                   <h6>- Generate invoice</h6>
+                <h6>- Finish the order for service </h6>
+                   <h6> As Employee, you can create, update, edit and delete:</h6>
+                   <h6>- Part</h6> 
+                   <h6>- Repair Service</h6>
+            </div>
+        </div>
     </div>
 }
 else
@@ -69,8 +92,8 @@ else
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-md-6" >
-                    <div >
+                <div class="col-md-6">
+                    <div>
                         @await Component.InvokeAsync("CarsInDepartment")
                     </div>
                 </div>
@@ -80,7 +103,7 @@ else
                     </div>
                 </div>
             </div>
-            
+
         </div>
     }
     else

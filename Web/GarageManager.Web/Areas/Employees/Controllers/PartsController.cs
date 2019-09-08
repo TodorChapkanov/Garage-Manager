@@ -68,7 +68,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 return this.Redirect(string.Format(WebConstants.EmployeesCarsServiceDetails, carId));
             }
             var partModel = AutoMapper.Mapper.Map<PartEditViewModel>(result);
-
+            partModel.CarId = carId;
             return this.View(partModel);
         }
 

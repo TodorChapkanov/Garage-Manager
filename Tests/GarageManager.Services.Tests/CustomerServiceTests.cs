@@ -17,6 +17,7 @@ namespace GarageManager.Services.Tests
 {
     public class CustomerServiceTests : BaseTest
     {
+        private const int SamplePageNumber = 1;
         private const string SampleCustomerId = "1";
         private const string SampleCustomerFirstName = "Jhon";
         private const string SampleCustomerLastName = "Wick";
@@ -163,7 +164,7 @@ namespace GarageManager.Services.Tests
         public async Task GetAllCustomersDetailsAsyncShouldReturnCorectCountOfCustomersWithCorectDetails()
         {
             //Act
-            var result = await this.customerService.GetAllCustomersDetailsAsync(1,null);
+            var result = await this.customerService.GetAllCustomersDetailsAsync(SamplePageNumber,null);
 
             //Assert
             var actualCustomerCount = this.GetTestCustomerLis().Count();

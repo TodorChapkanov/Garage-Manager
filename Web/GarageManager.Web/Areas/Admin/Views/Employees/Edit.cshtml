@@ -1,10 +1,12 @@
 ﻿@model GarageManager.Web.Models.ViewModels.Employee.EmployeeEditViewModel
+@using System.Security.Claims;
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    
+
     var departmentName = Model.Departments.First(department => department.Value == Model.DepartmentId).Text;
+    var isCurrentUser = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value == Model.Id;
 }
 
 <h1 class="text-center">Employee Details</h1>
@@ -52,22 +54,26 @@
                 <input asp-for="RecruitedOn" class="form-control" />
                 <span asp-validation-for="RecruitedOn" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <label asp-for="Departments" class="control-label"></label>
-                <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control">
-                    <option disabled selected>@departmentName</option>
-                </select>
-            </div>
-            <hr class="mt-4"/>
+            @if (!isCurrentUser)
+            {
+                <div class="form-group">
+                    <label asp-for="Departments" class="control-label"></label>
+                    <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control">
+                        <option disabled selected>@departmentName</option>
+                    </select>
+                </div>
+            }
+            <hr class="mt-4" />
             <div class="text-center">
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-success" />
-                    <a class="btn btn-danger ml-3"
-                       asp-action="Delete"
-                       asp-controller="Employees"
-                       asp-route-Id="@Model.Id">Delete</a>
-
+                    @if (!isCurrentUser)
+                    {
+                        <a class="btn btn-danger ml-3"
+                           asp-action="Delete"
+                           asp-controller="Employees"
+                           asp-route-Id="@Model.Id">Delete</a>
+                    }
                     <a class="btn btn-secondary ml-3"
                        asp-action="AllEmployees"
                        asp-controller="Employees">Back</a>

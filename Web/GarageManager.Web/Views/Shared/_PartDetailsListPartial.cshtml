@@ -1,0 +1,30 @@
+﻿@model IEnumerable<GarageManager.Web.Models.ViewModels.Part.CarServiceHistoryPartDetailsViewModel>
+
+<div>
+    <h3 class="text-center">Parts</h3>
+    <div class=" table-responsive">
+        <table class="table table-hover table-bordered  mx-auto shadow-sm ">
+            <thead>
+                <tr class="row mx-auto">
+                    <td class="col-sm-3 bg-secondary  text-white">Name</td>
+                    <td class="col-sm-3 bg-secondary text-white">Part Number</td>
+                    <td class="col-sm-2 bg-secondary text-white">Price</td>
+                    <td class="col-sm-2 bg-secondary text-white">Quantity</td>
+                    <td class="col-sm-2 bg-secondary text-white">Total</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var part in Model)
+                {
+                <tr class="row mx-auto ">
+                    <td class="col-sm-3">@part.Name</td>
+                    <td class="col-sm-3">@part.Number</td>
+                    <td class="col-sm-2">$@part.Price</td>
+                    <td class="col-sm-2">@part.Quantity</td>
+                    <td class="col-sm-2">$@part.TotalCost.ToString("F2")</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

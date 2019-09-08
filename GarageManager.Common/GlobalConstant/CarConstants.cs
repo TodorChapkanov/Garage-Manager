@@ -16,6 +16,7 @@
         public const int CarDescriptionMinLength = 10;
         public const string CarDescriptionErrorMessage = "The {0} must be between {2} and {1} symbols!";
         public const string InvalidModelInput = "-All-";
+        public const int ExistingVinOrRegistrationPlateIntValue = -258964;
 
     }
 }

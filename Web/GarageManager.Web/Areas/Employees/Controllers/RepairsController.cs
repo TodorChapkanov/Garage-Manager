@@ -25,7 +25,6 @@ namespace GarageManager.Web.Areas.Employees.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRepairService(RepairCreateBindingModel model)
         {
-            //TODO Add View Component for Employees in Department
             if (!ModelState.IsValid)
             {
                 return this.View(model);
@@ -39,7 +38,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 model.PricePerHour,
                 employeeId);
 
-            if (carId == default(string))
+            if (carId == default)
             {
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                NotificationType.Warning);
@@ -67,13 +66,12 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 return this.Redirect(string.Format(WebConstants.EmployeesCarsServiceDetails, carId));
             }
             var partModel = AutoMapper.Mapper.Map<RepairEditViewModel>(result);
-          //TODO Add VC For employees in rapir edit view
-
+            partModel.CarId = carId;
             return this.View(partModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(RepairEditBindingModel model)
+        public async Task<IActionResult> Edit(RepairEditBindingModel model,[FromQuery] string carId)
         {
             if (!ModelState.IsValid)
             {

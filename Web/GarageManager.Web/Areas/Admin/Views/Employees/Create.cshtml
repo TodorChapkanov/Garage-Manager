@@ -1,7 +1,7 @@
 ﻿@model GarageManager.Web.Models.BindingModels.Employee.EmployeeCreateBindingModel
 
 @{
-    ViewData["Title"] = "CreateEmployee";
+    ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,7 +11,7 @@
 <hr />
 <div class="container-fluid w-50">
     <div class="mx-auto">
-        <form asp-action="CreateEmployee" method="post">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirsName" class="control-label"></label>

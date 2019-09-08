@@ -1,0 +1,61 @@
+﻿@model GarageManager.Web.Models.ViewModels.ServiceIntervention.CompletedCarServiceDetailsViewModel
+
+@{
+    ViewData["Title"] = "CompletedCarDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Details</h1>
+
+<div class="container-fluid">
+    <div>
+        <hr />
+        <div class="row justify-content-around">
+            <div class="col-md-4">
+                <h5 class="text-center">Vehicle Details</h5>
+                <ul class="list-group-flush ">
+                    <li class="list-group-item">
+                        <h6 class="text-bold">Make: @Model.MakeName</h6>
+                    </li>
+                    <li class="list-group-item">
+                        <h6 class="text-bold ">Model: @Model.ModelName</h6>
+                    </li>
+                    <li class="list-group-item">
+                        <h6 class="text-bold">Registration Plate: @Model.RegistrationPlate</h6>
+                    </li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="text-center">Customer Details</h5>
+                <ul class="list-group-flush">
+                    <li class="list-group-item">
+                        <h6 class="text-bold">Name: @Model.CustomerFullName</h6>
+                    </li>
+                    <li class="list-group-item">
+                        <h6 class="text-bold ">Phone Number: @Model.CustomerPhoneNumber</h6>
+                    </li>
+                    <li class="list-group-item">
+                        <h6 class="text-bold">Email: @Model.CustomerEmail</h6>
+                    </li>
+                   <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-xl-6">
+            @await Html.PartialAsync("_PartDetailsListPartial", Model.ServicesParts)
+        </div>
+        <div class="col-xl-6">
+            @await Html.PartialAsync("_RepairServiceDetailsListPartial", Model.ServicesRepairs)
+        </div>
+    </div>
+    <div class="mt-4 text-center">
+        <a class="btn btn-secondary shadow"
+           asp-action="CompletedCars"
+           asp-controller="Cars"
+           asp-area="Admin">Back</a>
+    </div>
+</div>

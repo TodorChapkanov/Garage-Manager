@@ -1,4 +1,5 @@
 ﻿using GarageManager.Services.Models.Car;
+using GarageManager.Services.Models.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace GarageManager.Services.Contracts
     {
         Task<IEnumerable<CustomerCarListDetails>> GetCarsByCustomerIdAsync(string id, int page, string searchTerm);
 
-        Task<bool> CreateAsync
+        Task<int> CreateAsync
             (
             string customerIs,
             string vin,
@@ -48,5 +49,7 @@ namespace GarageManager.Services.Contracts
 
 
         Task<int> HardDeleteAsync(string id);
+
+        CompletedCarServiceDetails GetCompletedCarDetailsByCarId(string id);
     }
 }

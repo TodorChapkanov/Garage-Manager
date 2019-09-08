@@ -11,10 +11,11 @@
         public const string CarEditFail = "Update Car data  failed";
         public const string CarNotExist = "The car does not exist in database";
         public const string CarDeletedSuccessfull = "Car was deleted successfully";
+        public const string ExistingVinOrRegistrationPlate = "Car with Vin({0}) or Registration Plate ({1}) already exist";
 
         public const string CustomerCreateSuccessfull = "Customer {0} {1} was added successesfully";
         public const string CustomerEditSuccessfull = "Customer details was updated successfully";
-        public const string CustomerDeleteSuccessfull = "Customer was delete successfully";
+        public const string CustomerDeleteSuccessfull = "Customer was deleted successfully";
         public const string CustomerOrderCompletedSuccessfully = "The order was completed successfully";
         public const string CustomerNotExist = "The customer does not exist";
         public const string InvalidCustomerEmail = "Customer with Email {0} already exist";

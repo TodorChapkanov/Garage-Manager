@@ -1,5 +1,4 @@
-﻿using GarageManager.Common.Notification;
-using GarageManager.Web.Controllers;
+﻿using GarageManager.Web.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

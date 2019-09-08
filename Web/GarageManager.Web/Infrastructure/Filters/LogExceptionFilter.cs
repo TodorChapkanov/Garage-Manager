@@ -23,14 +23,14 @@ namespace GarageManager.Web.Infrastructure.Filters
 
             var eventId = context.HttpContext.TraceIdentifier;
             var stackTrace = context.Exception.StackTrace.ToString();
-           var source = context
-                .ExceptionDispatchInfo
-                .SourceException
-                .TargetSite
-                .ReflectedType
-                .FullName != null
-                ? $"Source : {context.ExceptionDispatchInfo.SourceException.TargetSite.ReflectedType.FullName}"
-                : string.Empty;
+          // var source = context
+           //     .ExceptionDispatchInfo
+          //      .SourceException
+          //      .TargetSite
+          //      .ReflectedType
+          //      .FullName != null
+          //      ? $"Source : {context.ExceptionDispatchInfo.SourceException.TargetSite.ReflectedType.FullName}"
+          //      : string.Empty;
 
             var method = context
                 .ExceptionDispatchInfo
@@ -43,7 +43,7 @@ namespace GarageManager.Web.Infrastructure.Filters
 
             this.logger.LogError($"[EventId: {eventId}]  {Environment.NewLine}" +
                 $"{string.Join('/', path.Values)}  {Environment.NewLine}" +
-                $"{source}  {Environment.NewLine}" +
+             //   $"{source}  {Environment.NewLine}" +
                 $"{method} {Environment.NewLine}" +
                 $"{sourceException}  {Environment.NewLine}" +
                 $"{innerException} {Environment.NewLine}" +

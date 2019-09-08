@@ -182,14 +182,14 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 this.ShowNotification(string.Format(
                     NotificationMessages.InvalidOperation),
                     NotificationType.Error);
-                return this.RedirectToAction(nameof(Edit), model.Id);
+                return this.Redirect(string.Format(WebConstants.AdminCustomersEdit, model.Id));
             }
 
             this.ShowNotification(string.Format(
                     NotificationMessages.CustomerEditSuccessfull),
                     NotificationType.Success);
 
-            var redirect = this.RedirectToAction(nameof(Details),model.Id);
+            var redirect = this.Redirect(string.Format(WebConstants.AdminCustomersDetails,model.Id));
 
             return redirect;
         }

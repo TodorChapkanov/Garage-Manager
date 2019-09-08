@@ -6,7 +6,7 @@ namespace GarageManager.Domain
 {
     public class Part : IDeletableEntity
     {
-        //TODO Add Anotations
+     
         public Part()
         {
             this.Id = Guid.NewGuid().ToString();

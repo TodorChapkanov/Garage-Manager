@@ -62,7 +62,6 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 return this.Redirect(WebConstants.HomeIndex);
             }
             var model = AutoMapper.Mapper.Map<CarServicesDetailsViewModel>(carModel);
-           //TODO Change Repair TotalCosts
 
             return this.View(model);
         }
@@ -130,7 +129,7 @@ namespace GarageManager.Web.Areas.Employees.Controllers
                 this.ShowNotification(NotificationMessages.CarServiceNotCompleted,
                 NotificationType.Warning);
 
-                return this.RedirectToAction(nameof(ServiceDetails), carId);
+                return this.Redirect(string.Format(WebConstants.EmployeesCarsServiceDetails,carId));
             }
 
             this.ShowNotification(NotificationMessages.CarServiceCmpletedSuccessfull,

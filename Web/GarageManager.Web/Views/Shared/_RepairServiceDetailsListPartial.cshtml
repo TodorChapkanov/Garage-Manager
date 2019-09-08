@@ -1,0 +1,30 @@
+﻿@model IEnumerable<GarageManager.Web.Models.ViewModels.Repair.CarServiceHistoryRepairDetailsViewModel>
+
+<div >
+    <h3 class="text-center">Repair Services</h3>
+    <div class=" table-responsive">
+        <table class="table table-hover table-bordered  mx-auto shadow-sm ">
+            <thead>
+                <tr class="row mx-auto">
+                    <td class="col-md-3 bg-secondary  text-white">Description</td>
+                    <td class="col-md-3 bg-secondary text-white">Completed By</td>
+                    <td class="col-md-2 bg-secondary text-white">Per Hour</td>
+                    <td class="col-md-2 bg-secondary text-white">Hours</td>
+                    <td class="col-md-2 bg-secondary text-white">Total</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var repair in Model)
+                {
+                <tr class="row mx-auto ">
+                    <td class="col-md-3">@repair.Description</td>
+                    <td class="col-md-3">@repair.EmployeeFullName</td>
+                    <td class="col-md-2">$@repair.PricePerHour</td>
+                    <td class="col-md-2">@repair.Hours</td>
+                    <td class="col-md-2">$@repair.TotalCosts.ToString("F2")</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

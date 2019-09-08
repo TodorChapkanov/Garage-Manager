@@ -64,9 +64,7 @@ namespace GarageManager.Services
                      DimensionOne = department.Name,
                      Quantity = department.Cars.Count()
                  }).ToListAsync();
-               // .ToDictionaryAsync(dep => dep.Name, dep => dep.Cars.Count());
 
-            //TODO add check for isFinished
             return result;
         }
     }

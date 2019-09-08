@@ -33,7 +33,7 @@ namespace GarageManager
         {
             Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
             Configuration = configuration;
-            
+
         }
 
         public IConfiguration Configuration { get; }
@@ -43,12 +43,12 @@ namespace GarageManager
         {
             var result = this.Configuration.GetSection("SendGridApiKey");
             services.Configure<SendGridOptions>(this.Configuration.GetSection("SendGride"));
-          
+
 
             services
                 .AddDbContext<GMDbContext>(options =>
                 options
-                .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")),ServiceLifetime.Transient);
+                .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
 
 
             services.AddIdentity<GMUser, IdentityRole>()
@@ -72,7 +72,7 @@ namespace GarageManager
                     options.Filters.Add<LogExceptionFilter>();
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
             services.AddTransient(typeof(IDeletableEntityRepository<>), typeof(DeletableEntityRepository<>));
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<ICustomerService, CustomerService>();
@@ -85,7 +85,7 @@ namespace GarageManager
             services.AddScoped<IFuelTypeService, FuelTypeService>();
             services.AddScoped<ITransmissionTypesService, TransimissionService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
-            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddScoped<IPartService, PartService>();
             services.AddScoped<IRepairService, RepairService>();
             services.AddScoped<IInvoiceService, InvoiceService>();
@@ -98,16 +98,16 @@ namespace GarageManager
                 typeof(CreateCarViewModel).GetTypeInfo().Assembly,
                 typeof(CustomerDetails).GetTypeInfo().Assembly);
 
-           if (env.IsDevelopment())
-           {
-              app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-           }
+            }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
-           }
+            }
 
 
             loggerFactory.AddSerilog();

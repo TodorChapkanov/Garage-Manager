@@ -66,9 +66,7 @@ namespace GarageManager.Services
             }
 
             var pageCustomers = await(base.PaginateEntitiesAsync<Customer>(
-                allCustomers, 
-                Enums.PaginationOrderMember.FullName,
-                OrderDirection.Ascending, pageNumber, 
+                allCustomers, pageNumber, 
                 PaginationConstants.ItemPerCustomerPage).Select(customer => AutoMapper.Mapper.Map<CustomerDetails>(customer))
                 .ToListAsync());
 

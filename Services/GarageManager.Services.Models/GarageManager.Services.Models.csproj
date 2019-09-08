@@ -9,4 +9,8 @@
     <ProjectReference Include="..\GarageManager.Services.Mapping\GarageManager.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ServiceIntervention\" />
+  </ItemGroup>
+
 </Project>

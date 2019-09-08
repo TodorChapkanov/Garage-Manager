@@ -6,6 +6,7 @@ using GarageManager.Web.Models.ViewModels.Car;
 using GarageManager.Web.Models.ViewModels.Customer;
 using GarageManager.Web.Models.ViewModels.FuelType;
 using GarageManager.Web.Models.ViewModels.Page;
+using GarageManager.Web.Models.ViewModels.ServiceIntervention;
 using GarageManager.Web.Models.ViewModels.TransmissionType;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -68,7 +69,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 return this.View(carBVM);
             }
 
-            var reault = await this.carService.CreateAsync
+            var result = await this.carService.CreateAsync
                 (
                 carBVM.CustomerId,
                 carBVM.Vin,
@@ -83,12 +84,22 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 carBVM.TransmissionId
                 );
 
-            if (reault)
+            if (result > default(int))
             {
                 this.ShowNotification(string.Format(
                     NotificationMessages.CarCreatedSuccessfull, carBVM.RegistrationPlate),
                     NotificationType.Success);
-                return this.RedirectToAction(nameof(CarsByCustomerId),carBVM.CustomerId);
+
+                return this.Redirect(string.Format(WebConstants.AdminCarsCarsByCustomerId,carBVM.CustomerId));
+            }
+
+            if (result < default(int))
+            {
+                this.ShowNotification(string.Format(
+                   NotificationMessages.ExistingVinOrRegistrationPlate, carBVM.Vin, carBVM.RegistrationPlate),
+                   NotificationType.Warning);
+
+                return this.View(carBVM);
             }
 
 
@@ -165,7 +176,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.RedirectToAction(nameof(Edit),model.Id);
+                return this.Redirect(string.Format(WebConstants.AdminCarsEdit, model.Id));
             }
               var result = await this.carService.UpdateCarByIdAsync(
                  model.Id,
@@ -209,7 +220,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                     NotificationMessages.CarDeletedSuccessfull),
                     NotificationType.Warning);
 
-            return this.RedirectToAction(nameof(CarsByCustomerId),customerId);
+            return this.Redirect(string.Format(WebConstants.AdminCarsCarsByCustomerId,customerId));
         }
 
         public async Task<IActionResult> GetNextCars(string id, string searchTerm)
@@ -266,7 +277,13 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             return this.View(model);
         }
 
-        
+        public IActionResult CompletedCarDetails(string id)
+        {
+            var result = AutoMapper.Mapper.Map<CompletedCarServiceDetailsViewModel>( this.carService.GetCompletedCarDetailsByCarId(id));
+
+            return this.View(result);
+        }
+
 
         public async Task<JsonResult> AllModels(string id)
         {

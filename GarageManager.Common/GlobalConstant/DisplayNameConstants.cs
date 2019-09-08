@@ -2,7 +2,7 @@
 {
     public class DisplayNameConstants
     {
-        public const string DisplayFirstName = "Firs Name";
+        public const string DisplayFirstName = "First Name";
         public const string DisplayLastName = "Last Name";
         public const string YearOfManufacturingDisplayName = "Year of Manufacturing";
         public const string EngineModelDisplayName = "Engine Model";
@@ -16,6 +16,7 @@
         public const string TransmissionTypeDisplayName = "Transmission Type";
         public const string DisplayDepartment = "Department";
         public const string RecruitedOn = "Recruited On";
+        public const string CreatedOn = "Created On";
         public const string RepairServicePricePerHourDisplayName = "Price Per Hour";
     }
 }

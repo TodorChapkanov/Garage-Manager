@@ -39,19 +39,24 @@ namespace GarageManager.Web.Models.ViewModels.Employee
 
         [Required]
         [Display(Name = DisplayNameConstants.PhoneNumberDisplayName)]
-        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(
+            CustomerCnstants.ValidatePhonenNumberRegexPatern,
+            ErrorMessage = CustomerCnstants.PhoneNumberErrorMessage)]
         public string PhoneNumber { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name =DisplayNameConstants.CreatedOn)]
         public DateTime CreatedOn { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name =DisplayNameConstants.RecruitedOn)]
         public DateTime? RecruitedOn { get; set; }
 
         public string DepartmentId { get; set; }
 
         public string TransmissionId { get; set; }
 
+        [Display(Name = DisplayNameConstants.DisplayDepartment)]
         public IEnumerable<SelectListItem> Departments { get; set; }
     }
 }

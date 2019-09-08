@@ -122,7 +122,7 @@ namespace GarageManager.Services.Tests
             var actual = await this.carRepository.Object.All().LastAsync();
             result
                 .Should()
-                .BeTrue();
+                .BePositive();
 
             actual
                 .Should()
@@ -149,11 +149,57 @@ namespace GarageManager.Services.Tests
                 .Match<Car>(car => car.TransmissionId == SampleTransmissionId);
         }
 
+        [Fact]
+        public async Task CreateAsyncShouldReturnNegativeNumberoWithExistingCarVin()
+        {
+            //Act
+            var result = await this.carService.CreateAsync(
+                SampleCustomerId,
+                "1111111111",
+                SampleRegistrationPlate,
+                SampleMakeId,
+                SampleModelName,
+                SampleKilometers,
+                SampleYearOfManufacturing,
+                SampleEngineModel,
+                SampleEngineHorsePower,
+                SampleFuelTypeId,
+                SampleTransmissionId);
+
+            //Assert
+            result
+                .Should()
+                .BeNegative();
+        }
+
+        [Fact]
+        public async Task CreateAsyncShouldReturnNegativeNumberoWithExistingCarRegistrationPlate()
+        {
+            //Act
+            var result = await this.carService.CreateAsync(
+                SampleCustomerId,
+                SampleVin,
+                "CC3333CC",
+                SampleMakeId,
+                SampleModelName,
+                SampleKilometers,
+                SampleYearOfManufacturing,
+                SampleEngineModel,
+                SampleEngineHorsePower,
+                SampleFuelTypeId,
+                SampleTransmissionId);
+
+            //Assert
+            result
+                .Should()
+                .BeNegative();
+        }
+
         [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("     ")]
-        public async Task CreateAsyncShouldReturnNullWithInvalidCustomerId(string customerId)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidCustomerId(string customerId)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -172,14 +218,14 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
 
         [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("     ")]
-        public async Task CreateAsyncShouldReturnNullWithInvalidVin(string vin)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidVin(string vin)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -198,7 +244,7 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
 
         [Theory]
@@ -206,7 +252,7 @@ namespace GarageManager.Services.Tests
         [InlineData(null)]
         [InlineData("     ")]
         [InlineData("AAAAAAAAAAA")]
-        public async Task CreateAsyncShouldReturnNullWithInvalidRegistrationPlate(string registrationPlate)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidRegistrationPlate(string registrationPlate)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -225,14 +271,14 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
 
         [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("     ")]
-        public async Task CreateAsyncShouldReturnNullWithInvalidMakeId(string makeId)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidMakeId(string makeId)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -251,7 +297,7 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
 
         [Theory]
@@ -259,7 +305,7 @@ namespace GarageManager.Services.Tests
         [InlineData(null)]
         [InlineData("     ")]
         [InlineData("NoModel")]
-        public async Task CreateAsyncShouldReturnNullWithInvalidModelName(string modelName)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidModelName(string modelName)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -278,7 +324,7 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
 
         [Theory]
@@ -286,7 +332,7 @@ namespace GarageManager.Services.Tests
         [InlineData(null)]
         [InlineData("     ")]
         [InlineData(SampleLongEnginModel + "!!!")]
-        public async Task CreateAsyncShouldReturnNullWithInvalidEnginModel(string engineModel)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidEnginModel(string engineModel)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -305,13 +351,13 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
 
         [Theory]
         [InlineData(-1)]
         [InlineData(5000000)]
-        public async Task CreateAsyncShouldReturnNullWithInvalidEngineHorsePower(int engineHorsePower)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidEngineHorsePower(int engineHorsePower)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -330,14 +376,14 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
 
         [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("     ")]
-        public async Task CreateAsyncShouldReturnNullWithInvalidFuelTypeId(string fuelTypeId)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidFuelTypeId(string fuelTypeId)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -356,14 +402,14 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
 
         [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("     ")]
-        public async Task CreateAsyncShouldReturnNullWithInvalidTransmissionId(string transmissionId)
+        public async Task CreateAsyncShouldReturnZeroWithInvalidTransmissionId(string transmissionId)
         {
             //Act
             var result = await this.carService.CreateAsync(
@@ -382,7 +428,7 @@ namespace GarageManager.Services.Tests
             //Assert
             result
                 .Should()
-                .BeFalse();
+                .Be(0);
         }
         #endregion
 

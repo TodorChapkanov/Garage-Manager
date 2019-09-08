@@ -76,7 +76,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 model.FirsName, model.LastName),
                 NotificationType.Success);
             
-            return this.RedirectToAction(nameof(Details), employeeId);
+            return this.Redirect(string.Format(WebConstants.AdminEmployeesDetails, employeeId));
         }
 
         public async Task<IActionResult> Edit(string id)
@@ -117,7 +117,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.RedirectToAction(nameof(Edit),model.Id);
+                return this.Redirect(string.Format(WebConstants.AdminEmployeesEdit,model.Id));
             }
 
           var result = await this.employeesService.UpdateEmployeeByIdAsync(
@@ -140,7 +140,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
             this.ShowNotification(NotificationMessages.EmployeeEditSuccessfull,
                 NotificationType.Success);
 
-            return this.RedirectToAction(nameof(Details), model.Id);
+            return this.Redirect(string.Format(WebConstants.AdminEmployeesDetails, model.Id));
         }
 
         public async Task<IActionResult> Details(string id )
@@ -182,7 +182,7 @@ namespace GarageManager.Web.Areas.Admin.Controllers
                 this.ShowNotification(NotificationMessages.InvalidOperation,
                     NotificationType.Error);
 
-                return this.RedirectToAction(nameof(Edit), id);
+                return this.Redirect(string.Format(WebConstants.AdminEmployeesEdit, id));
             }
 
             this.ShowNotification(NotificationMessages.EmployeeDeleteSuccessfull,

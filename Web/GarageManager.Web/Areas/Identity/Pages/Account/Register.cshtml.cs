@@ -84,6 +84,11 @@ namespace GarageManager.Web.Areas.Identity.Pages.Account
 
         public void OnGet(string returnUrl = null)
         {
+            if (_userManager.Users.Count() != 0)
+            {
+                Response.Redirect("/Home/Index");
+            }
+
             ReturnUrl = returnUrl;
         }
 

@@ -26,11 +26,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Views\Errors\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <None Include="wwwroot\js\rasterize.js" />
   </ItemGroup>
 

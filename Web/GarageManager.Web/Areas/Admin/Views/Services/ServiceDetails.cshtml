@@ -10,64 +10,14 @@
     <div class="row">
 
         <div class="col-xl-6">
-            <div>
-                <h3 class="text-center">Parts</h3>
-                <div class=" table-responsive">
-                    <table class="table table-hover table-bordered  mx-auto shadow-sm ">
-                        <thead>
-                            <tr class="row mx-auto">
-                                <td class="col-sm-4 bg-secondary  text-white">Name</td>
-                                <td class="col-sm-4 bg-secondary text-white">Part Number</td>
-                                <td class="col-sm-2 bg-secondary text-white">Quantity</td>
-                                <td class="col-sm-2 bg-secondary text-white">Price</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var part in Model.Parts)
-                            {
-                                <tr class="row mx-auto ">
-                                    <td class="col-sm-4">@part.Name</td>
-                                    <td class="col-sm-4">@part.Number</td>
-                                    <td class="col-sm-2">@part.Quantity</td>
-                                    <td class="col-sm-2">@part.TotalCost.ToString("F2")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @await Html.PartialAsync("_PartDetailsListPartial", Model.Parts)
         </div>
         <div class="col-xl-6">
-            <div>
-                <h3 class="text-center">Repair Services</h3>
-                <div class=" table-responsive">
-                    <table class="table table-hover table-bordered  mx-auto shadow-sm ">
-                        <thead>
-                            <tr class="row mx-auto">
-                                <td class="col-sm-4 bg-secondary  text-white">Description</td>
-                                <td class="col-sm-3 bg-secondary text-white">Done by Employee</td>
-                                <td class="col-sm-2 bg-secondary text-white">Hours</td>
-                                <td class="col-sm-3 bg-secondary text-white">Total</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var repair in Model.Repairs)
-                            {
-                                <tr class="row mx-auto ">
-                                    <td class="col-sm-4">@repair.Description</td>
-                                    <td class="col-sm-3">@repair.EmployeeFullName</td>
-                                    <td class="col-sm-2">@repair.Hours</td>
-                                    <td class="col-sm-3">@repair.TotalCosts.ToString("F2")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @await Html.PartialAsync("_RepairServiceDetailsListPartial", Model.Repairs)
         </div>
     </div>
     <div class="mt-4">
-        <a class="border bg-secondary text-white shadow rounded-pill alert"
+        <a class="btn btn-secondary shadow"
            asp-action="ServiceHistoryByCarId" 
            asp-controller="Services" 
            asp-area="Admin" 

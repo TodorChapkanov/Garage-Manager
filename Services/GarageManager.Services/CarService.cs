@@ -2,12 +2,11 @@
 using GarageManager.Data.Repository;
 using GarageManager.Domain;
 using GarageManager.Services.Contracts;
-using GarageManager.Services.Enums;
 using GarageManager.Services.Mapping;
 using GarageManager.Services.Models.Car;
-using GarageManager.Services.Models.Enums;
 using GarageManager.Services.Models.Part;
 using GarageManager.Services.Models.Repair;
+using GarageManager.Services.Models.Service;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,16 +35,16 @@ namespace GarageManager.Services
             try
             {
                 this.ValidateNullOrEmptyString(id);
-                var allCars = this.carRepository.AllAsNoTracking().Where(car => car.CustomerId ==id).OrderBy(car => car.Make.Name);
+                var allCars = this.carRepository.AllAsNoTracking().Where(car => car.CustomerId == id && car.IsFinished != true).OrderBy(car => car.Make.Name);
                 if (!string.IsNullOrWhiteSpace(searchTerm))
                 {
                     allCars = allCars
-                        .Where(car => car.CustomerId == id)
+                        .Where(car => car.CustomerId == id && car.IsFinished != true)
                         .Where(car => car.Make.Name.ToLower().Contains(searchTerm.ToLower()) ||
                         car.Model.Name.ToLower().Contains(searchTerm.ToLower())).OrderBy(car => car.Make.Name);
                 }
 
-                var pageCars = await (base.PaginateEntitiesAsync<Car>(allCars, PaginationOrderMember.Make, OrderDirection.Ascending, page, PaginationConstants.ItemsPerCarPage).To<CustomerCarListDetails>()).ToListAsync();
+                var pageCars = await (base.PaginateEntitiesAsync<Car>(allCars, page, PaginationConstants.ItemsPerCarPage).To<CustomerCarListDetails>()).ToListAsync();
 
                 return pageCars;
             }
@@ -56,7 +55,7 @@ namespace GarageManager.Services
             
         }
 
-        public async Task<bool> CreateAsync
+        public async Task<int> CreateAsync
             (
             string customerId,
             string vin,
@@ -71,6 +70,11 @@ namespace GarageManager.Services
             string transmissionId)
 
         {
+
+            if (await this.carRepository.All().AnyAsync(car => car.Vin == vin || car.RegistrationPlate == registrationPLate))
+            {
+                return CarConstants.ExistingVinOrRegistrationPlateIntValue;
+            }
             try
             {
                 var modelId = (await this.modelServices.GetByNameAsync(modelName)).Id;
@@ -95,12 +99,12 @@ namespace GarageManager.Services
                 car.Services.Add(service);
 
                 this.ValidateEntityState(car);
-               var result=  await this.carRepository.CreateAsync(car);
-                return true;
+                return  await this.carRepository.CreateAsync(car);
+               
             }
             catch
             {
-                return false;
+                return default(int);
             }
         }
 
@@ -294,7 +298,39 @@ namespace GarageManager.Services
             return result;
         }
 
-       
+        public CompletedCarServiceDetails GetCompletedCarDetailsByCarId(string id)
+        {
+            var result =  this.carRepository.All().Where(car => car.Id == id)
+                .Select(car => new CompletedCarServiceDetails
+                {
+                    MakeName = car.Make.Name,
+                    ModelName = car.Model.Name,
+                    RegistrationPlate = car.RegistrationPlate,
+                    CustomerEmail = car.Customer.Email,
+                    CustomerPhoneNumber = car.Customer.PhoneNumber,
+                    CustomerFullName = car.Customer.FullName,
+                    ServicesParts = car.Services
+                        .First(service => service.Id == car.ServiceId)
+                        .Parts
+                        .Select(part => AutoMapper.Mapper.Map<CarServiceHistoryPartDetails>(part)),
+                    ServicesRepairs = car.Services
+                        .Where(service => service.Id == car.ServiceId)
+                        .First()
+                        .Repairs
+                        .Select(repair => new CarServiceHistoryRepairDetails
+                              {
+                                  Description = repair.Description,
+                                  EmployeeFullName = repair.Employee.FullName,
+                                  PricePerHour = repair.PricePerHour,
+                                  Hours = repair.Hours,
+                                  TotalCosts = repair.TotalCosts
+                              })
+                }).FirstOrDefault();
+
+            return result;
+        }
+
+
 
         public async Task<string> CompleteTheOrderByCarIdAsync(string carId)
         {

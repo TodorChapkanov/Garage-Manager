@@ -40,28 +40,12 @@ namespace GarageManager.Services
             
         }
 
-        //TODO Chack Pagination for nested types
+        
         protected IQueryable<TEntity> PaginateEntitiesAsync<TEntity>(
              IQueryable<TEntity> entities,
-             PaginationOrderMember orderMember,
-             OrderDirection orderDirection,
              int pageIndex,
              int itemsPerPage)
         {
-           
-           /* switch (orderDirection)
-            {
-                case OrderDirection.Ascending:
-                default:
-                    entities = entities.OrderByMember(orderMember.ToString()+".Name");
-
-                    break;
-                case OrderDirection.Descending:
-                    entities = entities.OrderByMemberDescending(orderMember.ToString());
-
-                    break;
-            }*/
-            
             return entities
                 .Skip(((pageIndex-1) * itemsPerPage))
                 .Take(itemsPerPage);
