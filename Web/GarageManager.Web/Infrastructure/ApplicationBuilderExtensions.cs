@@ -27,8 +27,8 @@ namespace GarageManager.Web.Infrastructure
                 {
                     dbContext.Database.Migrate();
 
-                    SeedRequiredData(dbContext);
-                    SeedOptionalData(serviceScope, dbContext);
+                  //  SeedRequiredData(dbContext);
+                  //  SeedOptionalData(serviceScope, dbContext);
                 }
 
 
